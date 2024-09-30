@@ -129,3 +129,5 @@ endif ()
 
 # vim: set sw=2 sts=2 et:
 
+add_executable(new_target src/client/main.cpp
+        src/client/main.cpp)
