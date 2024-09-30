@@ -1,12 +1,11 @@
 # L’HISTOIRE :
 
-Samuel Lenoir est retrouvé mort dans sa demeure… La police a découvert sur place six suspects et six armes disséminées dans les 9 pièces de la maison mais n’a pas pu résoudre le mystère. A vous de mener votre enquête pour trouver la solution !
+Samuel Lenoir est retrouvé mort dans sa demeure… La police a découvert sur place six suspects et six armes disséminées dans les 9 pièces de la maison mais n’a pas pu résoudre le mystère. A vous de mener votre enquête pour trouver la solution ! 
 
 Pour remporter la partie, vous devez déterminer :
 1. Qui a tué Samuel Lenoir ?
 2. Avec quelle arme ?
 3. Et dans quelle pièce ? 
-
 
 Les six suspects :
 - Violet
@@ -82,9 +81,7 @@ NON ! Oups ! Vous avez commis une erreur : vous êtes éliminé !
 - Quand vous êtes éliminé, vous ne pouvez plus porter d’accusation ni émettre d’hypothèses.
 - Vous continuez cependant à répondre aux autres joueurs lorsqu’ils émettent des hypothèses.
 
-
 **Si tous les joueurs se trompent ? L’affaire reste non résolue.**
-
 
 **Déplacements futés :**
 Des passages secrets sont présents dans la maison. Vous pouvez les utiliser pour passer d’une pièce a une autre.
