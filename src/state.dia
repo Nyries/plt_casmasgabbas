@@ -147,13 +147,13 @@
         <dia:point val="6.75382,-1.1994"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="6.70382,-1.2494;18.8538,3.0506"/>
+        <dia:rectangle val="6.70382,-1.2494;25.0138,3.0506"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="6.75382,-1.1994"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="12.050000000000001"/>
+        <dia:real val="18.210000000000001"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="4.2000000000000002"/>
@@ -254,7 +254,7 @@
             <dia:string>#players#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::vector&lt;Player&amp;&gt;#</dia:string>
+            <dia:string>#std::vector&lt;std::shared_ptr&lt;Player&gt;&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -2475,20 +2475,24 @@
     </dia:object>
     <dia:object type="UML - Association" version="2" id="O18">
       <dia:attribute name="obj_pos">
-        <dia:point val="18.8038,0.7006"/>
+        <dia:point val="24.9638,0.7006"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="18.0538,-0.0594;24.9962,5.12262"/>
+        <dia:rectangle val="24.2138,-0.0594;26.7638,5.12262"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="18.8038,0.7006"/>
-        <dia:point val="24.7962,0.7006"/>
+        <dia:point val="24.9638,0.7006"/>
+        <dia:point val="26.7138,0.7006"/>
+        <dia:point val="26.7138,2.48661"/>
+        <dia:point val="24.7962,2.48661"/>
         <dia:point val="24.7962,4.32262"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
+        <dia:enum val="0"/>
+        <dia:enum val="1"/>
         <dia:enum val="0"/>
         <dia:enum val="1"/>
       </dia:attribute>
