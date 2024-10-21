@@ -42,6 +42,8 @@ Les neuf pièces :
 
 - Résoudre le mystère ! Pour gagner, vous devez être le premier joueur à trouver quelles sont les cartes suspect, arme et pièce qui se trouvent dans l’étui confidentiel.
 
+Le Cluedo se joue de 4 à 6 joueurs.
+
 ## Comment jouer :
 
 **1. Qui commence :**
