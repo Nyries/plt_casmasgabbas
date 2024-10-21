@@ -19,4 +19,4 @@ L'objectif de ce projet est de réaliser le jeu de plateau Cluedo en C++.
 Le Cluedo est un jeu de plateau qui se joue de 3 à 6 joueurs dans lequel les joueurs doivent trouver qui, où et comment a été tué Samuel Lenoir. Pour plus de détails concernant les règles du jeu, je vous renvoie vers le [markdown associé](../Rules.md).
 
 ### 1.3 Ressources
-En ce qui concerne les ressources du jeu, nous disposons d'un plateau de jeu, la ["map"](../maison_map.png), et des cartes composants les suspects, armes et salles.
+En ce qui concerne les ressources du jeu, nous disposons d'un plateau de jeu, la ["map"](../ressources/maison_map.png), et des [cartes](../ressources/allcards/ensemble_cartes.png) composants les suspects, armes et salles.
