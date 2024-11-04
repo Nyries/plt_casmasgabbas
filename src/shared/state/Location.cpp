@@ -3,6 +3,9 @@
 //
 #include "Location.h"
 namespace state{
+	Location::Location(LocationType type): type(type) {
+
+	}
 
 	LocationType Location::getType(){
           return type;
