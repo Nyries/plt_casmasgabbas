@@ -10,5 +10,4 @@ namespace state {
     RoomName RoomCard::getValue() {
         return room;
     }
-
 }
