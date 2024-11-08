@@ -17,6 +17,7 @@ namespace state {
                 // On laisse le joueur choisir une porte de sortie comme point de départ
             }
             // Puis on se déplace depuis une cellule
+            
         }
     }
 }
