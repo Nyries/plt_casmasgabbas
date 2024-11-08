@@ -25,4 +25,9 @@ namespace state {
             it = list.begin();
         }
     }
+
+    int CircularPlayerList::size() {
+        return list.size();
+    }
+
 }
