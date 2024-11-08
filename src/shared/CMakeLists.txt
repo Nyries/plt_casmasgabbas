@@ -11,7 +11,19 @@ file(GLOB_RECURSE shared_sources *.cpp)
 
 # Build the "shared" library and add required includes
 add_library(${lib_shared_target} STATIC ${shared_sources} ${jsoncpp_sources}
-        state/Location.cpp state/Map.cpp)
+        state/Location.cpp state/Map.cpp
+        state/UtilityFunctions.cpp
+        state/CircularLinkedList.cpp
+        state/Cell.cpp
+        state/Room.h
+        state/Room.h
+        state/Room.h
+        state/Room.cpp
+        state/Room.h
+        state/Card.cpp
+        state/WeaponCard.cpp
+        state/SuspectCard.cpp
+        state/RoomCard.cpp)
 add_dependencies(${lib_shared_target} generate-headers)
 target_include_directories(${lib_shared_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
