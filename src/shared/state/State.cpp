@@ -4,6 +4,9 @@
 #include "State.h"
 
 namespace state {
-    State::State(int playerCount, std::string dataFilePath): players(*this, playerCount), accusationSuccess(false) {
+    State::State(int playerCount, std::string dataFilePath): players(*this, playerCount), accusationSuccess(false),
+                                                             map(std::move(dataFilePath)) {
+        //TODO: Initialization of the Rooms
+
     }
 }
