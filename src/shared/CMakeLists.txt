@@ -13,7 +13,7 @@ file(GLOB_RECURSE shared_sources *.cpp)
 add_library(${lib_shared_target} STATIC ${shared_sources} ${jsoncpp_sources}
         state/Location.cpp state/Map.cpp
         state/UtilityFunctions.cpp
-        state/CircularLinkedList.cpp
+        state/CircularList.cpp
         state/Cell.cpp
         state/Room.h
         state/Room.h
@@ -23,7 +23,9 @@ add_library(${lib_shared_target} STATIC ${shared_sources} ${jsoncpp_sources}
         state/Card.cpp
         state/WeaponCard.cpp
         state/SuspectCard.cpp
-        state/RoomCard.cpp)
+        state/RoomCard.cpp
+        state/Player.cpp
+        state/State.cpp)
 add_dependencies(${lib_shared_target} generate-headers)
 target_include_directories(${lib_shared_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
