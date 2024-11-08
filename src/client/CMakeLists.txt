@@ -13,7 +13,7 @@ list(REMOVE_ITEM client_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 add_library(${lib_client_target} STATIC ${client_sources} ${jsoncpp_sources}
         ../shared/state/Location.cpp ../shared/state/Map.cpp
         ../shared/state/UtilityFunctions.cpp
-        ../shared/state/CircularList.cpp
+        ../shared/state/CircularPlayerList.cpp
         ../shared/state/Room.h
         ../shared/state/Room.h
         ../shared/state/Room.cpp
@@ -40,7 +40,7 @@ set(client_target client)
 add_executable(${client_target} main.cpp
         ../shared/state/Location.cpp ../shared/state/Map.cpp
         ../shared/state/UtilityFunctions.cpp
-        ../shared/state/CircularList.cpp
+        ../shared/state/CircularPlayerList.cpp
         ../shared/state/Room.h
         ../shared/state/Room.h
         ../shared/state/Room.cpp

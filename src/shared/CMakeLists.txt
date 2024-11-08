@@ -13,7 +13,7 @@ file(GLOB_RECURSE shared_sources *.cpp)
 add_library(${lib_shared_target} STATIC ${shared_sources} ${jsoncpp_sources}
         state/Location.cpp state/Map.cpp
         state/UtilityFunctions.cpp
-        state/CircularList.cpp
+        state/CircularPlayerList.cpp
         state/Cell.cpp
         state/Room.h
         state/Room.h

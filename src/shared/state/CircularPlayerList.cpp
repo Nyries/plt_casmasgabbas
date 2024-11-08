@@ -1,12 +1,12 @@
 //
 // Created by louismmassin on 11/4/24.
 //
-#include "CircularList.h"
+#include "CircularPlayerList.h"
 
 #include <vector>
 
 namespace state {
-    CircularList::CircularList(State& currentGame, int playerCount): it(list.begin()), currentPlayer(list.front()) {
+    CircularPlayerList::CircularPlayerList(State& currentGame, int playerCount): it(list.begin()), currentPlayer(list.front()) {
         list.reserve(playerCount);
         Location defaultLocation(INACCESSIBLE);
         for(int i = 0; i < playerCount; i++) {
@@ -15,11 +15,11 @@ namespace state {
         }
     }
 
-    Player& CircularList::getCurrent () {
+    Player& CircularPlayerList::getCurrent () {
         return *it;
     };
 
-    void CircularList::next() {
+    void CircularPlayerList::next() {
         it++;
         if(it == list.end()) {
             it = list.begin();

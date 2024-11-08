@@ -5,6 +5,6 @@
 
 namespace state {
     Player::Player(State& currentGame, Location &startingLocation, std::string name, Suspect identity): currentGame(currentGame),
-        location(startingLocation), name(std::move(name)), identity(identity) {
+        location(startingLocation), name(std::move(name)), identity(identity), canWin(true) {
     }
 }

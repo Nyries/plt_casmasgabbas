@@ -254,7 +254,7 @@
             <dia:string>#players#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#CircularList#</dia:string>
+            <dia:string>#CircularPlayerList#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -674,7 +674,7 @@
             <dia:string>#location#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#Location#</dia:string>
+            <dia:string>#Location&amp;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -4869,19 +4869,19 @@
     </dia:object>
     <dia:object type="UML - Class" version="0" id="O32">
       <dia:attribute name="obj_pos">
-        <dia:point val="7.97859,39.7504"/>
+        <dia:point val="9.9415,48.3654"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="7.92859,39.7004;21.2336,42.6004"/>
+        <dia:rectangle val="9.8915,48.3154;29.7415,52.0154"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="7.97859,39.7504"/>
+        <dia:point val="9.9415,48.3654"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="13.205"/>
+        <dia:real val="19.75"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="2.7999999999999998"/>
+        <dia:real val="3.5999999999999996"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#UtilityFunctions#</dia:string>
@@ -5023,6 +5023,54 @@
             </dia:composite>
           </dia:attribute>
         </dia:composite>
+        <dia:composite type="umloperation">
+          <dia:attribute name="name">
+            <dia:string>#jsonConversion#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="stereotype">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>#Json::Value#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="visibility">
+            <dia:enum val="0"/>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="abstract">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="inheritance_type">
+            <dia:enum val="2"/>
+          </dia:attribute>
+          <dia:attribute name="query">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="class_scope">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="parameters">
+            <dia:composite type="umlparameter">
+              <dia:attribute name="name">
+                <dia:string>#jsonPath#</dia:string>
+              </dia:attribute>
+              <dia:attribute name="type">
+                <dia:string>#std::string#</dia:string>
+              </dia:attribute>
+              <dia:attribute name="value">
+                <dia:string>##</dia:string>
+              </dia:attribute>
+              <dia:attribute name="comment">
+                <dia:string>##</dia:string>
+              </dia:attribute>
+              <dia:attribute name="kind">
+                <dia:enum val="0"/>
+              </dia:attribute>
+            </dia:composite>
+          </dia:attribute>
+        </dia:composite>
       </dia:attribute>
       <dia:attribute name="template">
         <dia:boolean val="false"/>
@@ -5032,22 +5080,22 @@
     </dia:object>
     <dia:object type="UML - Class" version="0" id="O33">
       <dia:attribute name="obj_pos">
-        <dia:point val="60.8079,35.3898"/>
+        <dia:point val="66.4016,36.7653"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="60.7579,35.3398;80.2229,42.0398"/>
+        <dia:rectangle val="66.3516,36.7153;88.1266,43.4153"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="60.8079,35.3898"/>
+        <dia:point val="66.4016,36.7653"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="19.365000000000002"/>
+        <dia:real val="21.675000000000001"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="6.5999999999999996"/>
       </dia:attribute>
       <dia:attribute name="name">
-        <dia:string>#CircularList#</dia:string>
+        <dia:string>#CircularPlayerList#</dia:string>
       </dia:attribute>
       <dia:attribute name="stereotype">
         <dia:string>##</dia:string>
@@ -5210,7 +5258,7 @@
       <dia:attribute name="operations">
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#CircularList#</dia:string>
+            <dia:string>#CircularPlayerList#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -5345,22 +5393,18 @@
         <dia:point val="63.9196,47.72"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="59.3079,35.6398;65.0196,47.77"/>
+        <dia:rectangle val="63.8696,37.0153;66.8516,47.77"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="63.9196,47.72"/>
-        <dia:point val="64.9696,47.72"/>
-        <dia:point val="64.9696,41.9049"/>
-        <dia:point val="59.3579,41.9049"/>
-        <dia:point val="59.3579,36.0898"/>
-        <dia:point val="60.8079,36.0898"/>
+        <dia:point val="64.9606,47.72"/>
+        <dia:point val="64.9606,37.4653"/>
+        <dia:point val="66.4016,37.4653"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
-        <dia:enum val="0"/>
-        <dia:enum val="1"/>
         <dia:enum val="0"/>
         <dia:enum val="1"/>
         <dia:enum val="0"/>
@@ -5561,10 +5605,10 @@
           <dia:attribute name="parameters">
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#data#</dia:string>
+                <dia:string>#jsonPath#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#Json.Value#</dia:string>
+                <dia:string>#std::string#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
