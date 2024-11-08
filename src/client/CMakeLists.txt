@@ -10,7 +10,18 @@ file(GLOB_RECURSE client_sources *.cpp)
 list(REMOVE_ITEM client_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 
 # Build the "client" library, add required include and link against dependencies
-add_library(${lib_client_target} STATIC ${client_sources} ${jsoncpp_sources})
+add_library(${lib_client_target} STATIC ${client_sources} ${jsoncpp_sources}
+        ../shared/state/Location.cpp ../shared/state/Map.cpp
+        ../shared/state/UtilityFunctions.cpp
+        ../shared/state/CircularLinkedList.cpp
+        ../shared/state/Room.h
+        ../shared/state/Room.h
+        ../shared/state/Room.cpp
+        ../shared/state/Room.h
+        ../shared/state/Card.cpp
+        ../shared/state/WeaponCard.cpp
+        ../shared/state/SuspectCard.cpp
+        ../shared/state/RoomCard.cpp)
 add_dependencies(${lib_client_target} generate-headers)
 target_include_directories(${lib_client_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -24,7 +35,18 @@ target_link_libraries(${lib_client_target} PUBLIC
 
 # Compile "client" executable
 set(client_target client)
-add_executable(${client_target} main.cpp)
+add_executable(${client_target} main.cpp
+        ../shared/state/Location.cpp ../shared/state/Map.cpp
+        ../shared/state/UtilityFunctions.cpp
+        ../shared/state/CircularLinkedList.cpp
+        ../shared/state/Room.h
+        ../shared/state/Room.h
+        ../shared/state/Room.cpp
+        ../shared/state/Room.h
+        ../shared/state/Card.cpp
+        ../shared/state/WeaponCard.cpp
+        ../shared/state/SuspectCard.cpp
+        ../shared/state/RoomCard.cpp)
 target_link_libraries(${client_target} ${lib_client_target})
 if(BUILD_CODE_COVERAGE)
   add_dependencies(code-coverage ${client_target})
