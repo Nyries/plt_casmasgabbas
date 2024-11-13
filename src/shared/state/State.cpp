@@ -48,59 +48,59 @@ namespace state {
 
     void State::dealCards() {
 
-        std::vector<SuspectCard> suspectsVector;
-        std::vector<WeaponCard> weaponsVector;
-        std::vector<RoomCard> roomsVector;
+        std::vector<SuspectCard> suspectCardsVector;
+        std::vector<WeaponCard> weaponCardsVector;
+        std::vector<RoomCard> roomCardsVector;
 
         // VECTOR OF SUSPECTS
-        suspectsVector.emplace_back(ROSE);
-        suspectsVector.emplace_back(PERVENCHE);
-        suspectsVector.emplace_back(LEBLANC);
-        suspectsVector.emplace_back(OLIVE);
-        suspectsVector.emplace_back(MOUTARDE);
-        suspectsVector.emplace_back(VIOLET);
+        suspectCardsVector.emplace_back(ROSE);
+        suspectCardsVector.emplace_back(PERVENCHE);
+        suspectCardsVector.emplace_back(LEBLANC);
+        suspectCardsVector.emplace_back(OLIVE);
+        suspectCardsVector.emplace_back(MOUTARDE);
+        suspectCardsVector.emplace_back(VIOLET);
 
         // VECTOR OF WEAPONS
-        weaponsVector.emplace_back(CANDLESTICK);
-        weaponsVector.emplace_back(PISTOL);
-        weaponsVector.emplace_back(ROPE);
-        weaponsVector.emplace_back(LEAD_PIPE);
-        weaponsVector.emplace_back(KNIFE);
-        weaponsVector.emplace_back(WRENCH);
+        weaponCardsVector.emplace_back(CANDLESTICK);
+        weaponCardsVector.emplace_back(PISTOL);
+        weaponCardsVector.emplace_back(ROPE);
+        weaponCardsVector.emplace_back(LEAD_PIPE);
+        weaponCardsVector.emplace_back(KNIFE);
+        weaponCardsVector.emplace_back(WRENCH);
 
         // VECTOR OF ROOMS
 
-        roomsVector.emplace_back(STUDY);
-        roomsVector.emplace_back(HALL);
-        roomsVector.emplace_back(LIVING_ROOM);
-        roomsVector.emplace_back(DINING_ROOM);
-        roomsVector.emplace_back(KITCHEN);
-        roomsVector.emplace_back(BATHROOM);
-        roomsVector.emplace_back(GARAGE);
-        roomsVector.emplace_back(GAME_ROOM);
-        roomsVector.emplace_back(BEDROOM);
+        roomCardsVector.emplace_back(STUDY);
+        roomCardsVector.emplace_back(HALL);
+        roomCardsVector.emplace_back(LIVING_ROOM);
+        roomCardsVector.emplace_back(DINING_ROOM);
+        roomCardsVector.emplace_back(KITCHEN);
+        roomCardsVector.emplace_back(BATHROOM);
+        roomCardsVector.emplace_back(GARAGE);
+        roomCardsVector.emplace_back(GAME_ROOM);
+        roomCardsVector.emplace_back(BEDROOM);
 
 
         int randomSuspect = UtilityFunctions::randomInt(5);
         int randomWeapon = UtilityFunctions::randomInt(5);
         int randomRoom = UtilityFunctions::randomInt(8);
 
-        envelope.push_back(std::move(suspectsVector[randomSuspect]));
-        suspectsVector.erase(suspectsVector.begin()+randomSuspect);
+        envelope.push_back(std::move(suspectCardsVector[randomSuspect]));
+        suspectCardsVector.erase(suspectCardsVector.begin()+randomSuspect);
 
-        envelope.push_back(std::move(weaponsVector[randomWeapon]));
-        weaponsVector.erase(weaponsVector.begin()+randomWeapon);
+        envelope.push_back(std::move(weaponCardsVector[randomWeapon]));
+        weaponCardsVector.erase(weaponCardsVector.begin()+randomWeapon);
 
-        envelope.push_back(std::move(roomsVector[randomRoom]));
-        roomsVector.erase(roomsVector.begin()+randomSuspect);
+        envelope.push_back(std::move(roomCardsVector[randomRoom]));
+        roomCardsVector.erase(roomCardsVector.begin()+randomSuspect);
 
 
         std::vector<Card> allCards;
-        allCards.reserve(suspectsVector.size()+weaponsVector.size()+roomsVector.size());
+        allCards.reserve(suspectCardsVector.size()+weaponCardsVector.size()+roomCardsVector.size());
 
-        allCards.insert(allCards.end(), suspectsVector.begin(), suspectsVector.end());
-        allCards.insert(allCards.end(), weaponsVector.begin(), weaponsVector.end());
-        allCards.insert(allCards.end(), roomsVector.begin(), roomsVector.end());
+        allCards.insert(allCards.end(), suspectCardsVector.begin(), suspectCardsVector.end());
+        allCards.insert(allCards.end(), weaponCardsVector.begin(), weaponCardsVector.end());
+        allCards.insert(allCards.end(), roomCardsVector.begin(), roomCardsVector.end());
 
         while (!allCards.empty()) {
             int randomIndex = UtilityFunctions::randomInt(allCards.size());
