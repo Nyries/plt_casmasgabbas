@@ -4,8 +4,8 @@
 #include "Player.h"
 
 namespace state {
-    Player::Player(State& currentGame, std::string name, Suspect identity): currentGame(currentGame),
-        location(nullptr), name(std::move(name)), identity(identity), canWin(true) {
+    Player::Player(State& currentGame, const std::string& name, Suspect identity): currentGame(currentGame),
+        location(nullptr), name(name), identity(identity), canWin(true) {
     }
 
     void Player::setLocation(Location &newLocation) {
