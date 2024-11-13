@@ -12,8 +12,9 @@ namespace state {
         return name;
     }
 
-    std::vector<std::shared_ptr<Door> >& Room::getDoorList() {
+    std::vector<Door *> &Room::getDoorList() {
         return doorList;
     }
+
 
 }

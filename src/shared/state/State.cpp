@@ -13,9 +13,18 @@
 namespace state {
     State::State(int playerCount, std::string dataFilePath): players(*this, playerCount), accusationSuccess(false),
                                                              map(std::move(dataFilePath)) {
-        //TODO: Initialization of the Rooms
+      
+        roomList.emplace_back(STUDY);
+        roomList.emplace_back(HALL);
+        roomList.emplace_back(LIVING_ROOM);
+        roomList.emplace_back(DINING_ROOM);
+        roomList.emplace_back(KITCHEN);
+        roomList.emplace_back(BATHROOM);
+        roomList.emplace_back(STUDY);
+        roomList.emplace_back(GARAGE);
+        roomList.emplace_back(GAME_ROOM);
+        roomList.emplace_back(BEDROOM);
     }
-
 
     void State::determineFirstPlayer() {
         int dices=0;
@@ -38,7 +47,6 @@ namespace state {
 
         if (firstPlayer != nullptr) {
             std::cout << "Le joueur " << joueur << " commence" << std::endl;
-
             for (int i=1; i<=joueur; i++ ){
                 players.next();
             }
