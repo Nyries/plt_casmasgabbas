@@ -16,5 +16,10 @@ namespace state {
         return doorList;
     }
 
+    void Room::addSecretPassage(Room &targetRoom) {
+        secretpassageList.push_back(&targetRoom);
+    }
+
+
 
 }
