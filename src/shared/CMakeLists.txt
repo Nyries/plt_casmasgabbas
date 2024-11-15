@@ -26,9 +26,7 @@ add_library(${lib_shared_target} STATIC ${shared_sources} ${jsoncpp_sources}
         state/RoomCard.cpp
         state/PlayerInfo.cpp
         state/State.cpp
-        state/Test.cpp
-        state/Test.h
-        state/Test.h)
+        state/Test.cpp)
 add_dependencies(${lib_shared_target} generate-headers)
 target_include_directories(${lib_shared_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
