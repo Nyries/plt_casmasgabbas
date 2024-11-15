@@ -35,8 +35,8 @@ namespace state {
     void State::determineFirstPlayer() {
         int dices=0;
         int joueur=0;
-        Player* firstPlayer = nullptr;
-        Player* currentPlayer = &players.getCurrent();
+        PlayerInfo* firstPlayer = nullptr;
+        PlayerInfo* currentPlayer = &players.getCurrent();
         for (int i=0; i<players.size();i++){
             int dice1 = UtilityFunctions::randomInt(5)+1;
             int dice2 = UtilityFunctions::randomInt(5)+1;
