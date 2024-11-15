@@ -22,10 +22,14 @@ namespace state {
         roomList.emplace_back(DINING_ROOM);
         roomList.emplace_back(KITCHEN);
         roomList.emplace_back(BATHROOM);
-        roomList.emplace_back(STUDY);
         roomList.emplace_back(GARAGE);
         roomList.emplace_back(GAME_ROOM);
         roomList.emplace_back(BEDROOM);
+
+        roomList.at(2).addSecretPassage(roomList.at(8));
+        roomList.at(8).addSecretPassage(roomList.at(2));
+        roomList.at(4).addSecretPassage(roomList.at(6));
+        roomList.at(6).addSecretPassage(roomList.at(4));
     }
 
     void State::determineFirstPlayer() {
