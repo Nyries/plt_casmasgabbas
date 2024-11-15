@@ -24,8 +24,9 @@ add_library(${lib_shared_target} STATIC ${shared_sources} ${jsoncpp_sources}
         state/WeaponCard.cpp
         state/SuspectCard.cpp
         state/RoomCard.cpp
-        state/Player.cpp
-        state/State.cpp)
+        state/PlayerInfo.cpp
+        state/State.cpp
+        state/JsonTest.cpp)
 add_dependencies(${lib_shared_target} generate-headers)
 target_include_directories(${lib_shared_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
