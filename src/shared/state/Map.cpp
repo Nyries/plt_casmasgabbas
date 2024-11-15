@@ -8,5 +8,8 @@ namespace state {
     LocationType Map::getType(int coordX, int coordY) {
         return array.at(coordY).at(coordX).getType();
     }
-}
 
+    Cell& Map::getCell(int coordX, int coordY) {
+        return array.at(coordY).at(coordX);
+    }
+}

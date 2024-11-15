@@ -23,7 +23,7 @@ namespace state {
         // Movement from a Cell
         Cell* currentCell = dynamic_cast<Cell*>(location);
         for (int i=0; i<movementValue; i++) {
-            std::vector<Cell*> adjacentCells = currentCell->getAdjacentCells();  /// to be implemented
+            std::vector<Cell*> adjacentCells = currentCell->getAccessibleCells();  /// to be implemented
             std::vector<Cell*> accessibleCells;
 
             for (Cell* cell : adjacentCells) {  // Accessible cells
@@ -39,8 +39,9 @@ namespace state {
             location = nextCell;
 
             if (Door* door = dynamic_cast<Door*>(nextCell)) {
-                location = door->room;
+
                 break;
+            }
         }
     }
 }
