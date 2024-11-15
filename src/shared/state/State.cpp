@@ -14,7 +14,7 @@
 
 namespace state {
     State::State(int playerCount, std::string dataFilePath): players(*this, playerCount), accusationSuccess(false),
-                                                             map(std::move(dataFilePath)) {
+                                                             map(std::move(dataFilePath), roomList) {
       
         roomList.emplace_back(STUDY);
         roomList.emplace_back(HALL);

@@ -5,6 +5,10 @@
 #include "LocationType.h"
 
 namespace state {
+    Map::Map(std::string jsonPath, std::vector<Room> &roomList) {
+        
+    }
+
     LocationType Map::getType(int coordX, int coordY) {
         return array.at(coordY).at(coordX).getType();
     }

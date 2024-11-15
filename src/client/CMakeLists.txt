@@ -38,6 +38,7 @@ target_link_libraries(${lib_client_target} PUBLIC
 # Compile "client" executable
 set(client_target client)
 add_executable(${client_target} main.cpp
+        #[[
         ../shared/state/Location.cpp ../shared/state/Map.cpp
         ../shared/state/UtilityFunctions.cpp
         ../shared/state/CircularPlayerList.cpp
@@ -50,7 +51,8 @@ add_executable(${client_target} main.cpp
         ../shared/state/SuspectCard.cpp
         ../shared/state/RoomCard.cpp
         ../shared/state/PlayerInfo.cpp
-        ../shared/state/State.cpp)
+        ../shared/state/State.cpp]]
+        )
 target_link_libraries(${client_target} ${lib_client_target})
 if(BUILD_CODE_COVERAGE)
   add_dependencies(code-coverage ${client_target})
