@@ -11,11 +11,11 @@ namespace state {
         Location defaultLocation(INACCESSIBLE);
         for(int i = 0; i < playerCount; i++) {
             std::string tempName = "player " + std::to_string(i);
-            list.emplace_back(currentGame, defaultLocation, tempName, ROSE);
+            list.emplace_back(currentGame, tempName, ROSE);
         }
     }
 
-    Player& CircularPlayerList::getCurrent () {
+    PlayerInfo& CircularPlayerList::getCurrent () {
         return *it;
     };
 
