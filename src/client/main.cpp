@@ -3,8 +3,6 @@
 // The following lines are here to check that SFML is installed and working
 #include <SFML/Graphics.hpp>
 
-#include "state/Test.h"
-
 void testSFML() {
     sf::Texture texture;
 }
@@ -17,7 +15,6 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
-    state::test();
     cout << "It runs !" << endl;
 
     return 0;
