@@ -17,7 +17,7 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
-    state::test();
+    Map map("../ressources/map.json");
     cout << "It works !" << endl;
 
     return 0;

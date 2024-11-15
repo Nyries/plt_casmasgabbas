@@ -5,12 +5,27 @@
 #include "LocationType.h"
 
 namespace state {
-    Map::Map(std::string jsonPath, std::vector<Room> &roomList) {
+    Map::Map(std::string jsonPath) {
+        std::ifstream file(jsonPath);
+        Json::Value jsonData;
+        file >> jsonData;
+        file.close();
+        Json::Value mapData = jsonData["map"]; // Store the map data into a specific variable
+        for (Json::Value cellData : mapData) {
+            int x = cellData["x"].asInt();
+            int y = cellData["y"].asInt();
+            std::string locationType = cellData["LocationType"].asString();
+            if (locationType == "UNATTEIGNABLE")
+                Map::mapArray[x][y] = Cell(INACCESSIBLE, x, y);
+            else if (locationType == "PORTE")
+                Map::mapArray[x][y] = Cell(DOOR, x, y);
+            else if (locationType == "COULOIR")
+                Map::mapArray[x][y] = Cell(CORRIDOR, x, y);
+            else if (locationType == "SALLE")
+                Map::mapArray[x][y] = Cell(ROOM, x, y);
+        }
         
-    }
 
-    LocationType Map::getType(int coordX, int coordY) {
-        return array.at(coordY).at(coordX).getType();
     }
 }
 
