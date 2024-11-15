@@ -18,7 +18,7 @@ using namespace state;
 int main(int argc,char* argv[])
 {
     state::test();
-    cout << "It works !" << endl;
+    cout << "It runs !" << endl;
 
     return 0;
 }
