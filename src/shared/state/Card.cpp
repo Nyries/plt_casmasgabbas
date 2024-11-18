@@ -7,7 +7,7 @@ namespace state {
     Card::Card(CardType type): type(type) {
     }
 
-    CardType Card::getType() {
+    CardType Card::getType() const {
         return type;
     }
 
