@@ -3,7 +3,11 @@
 //
 #include "Cell.h"
 namespace state {
-    Cell::Cell(LocationType type, int coordX, int coordY): Location(type), coordX(coordX), coordY(coordY) {
+    Cell::Cell(int coordX, int coordY, LocationType type): Location(type), coordX(coordX), coordY(coordY), occupied(false) {
+    }
+
+    Cell::~Cell()
+    {
     }
 
     int Cell::getX() {
@@ -12,6 +16,13 @@ namespace state {
 
     int Cell::getY() {
         return coordY;
+    }
+
+    void Cell::setCell(int coordX, int coordY, LocationType type)
+    {
+        this->coordX = coordX;
+        this->coordY = coordY;
+        this->type = type;
     }
 
     bool Cell::getOccupied() const {

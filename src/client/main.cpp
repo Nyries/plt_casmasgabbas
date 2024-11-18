@@ -15,7 +15,12 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
+    //test();
     cout << "It runs !" << endl;
+    state::SuspectCard totoCard(PERVENCHE);
+    if (totoCard.getValue() == PERVENCHE) {
+        cout << "yay!" << endl;
+    }
 
     return 0;
 }
