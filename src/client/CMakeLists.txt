@@ -41,6 +41,9 @@ add_executable(${client_target} main.cpp
         Test.cpp
         Test.cpp
         Test.h
+        client/client.cpp
+        client/client.cpp
+        client/client.cpp
         #[[
         ../shared/state/Location.cpp ../shared/state/Map.cpp
         ../shared/state/UtilityFunctions.cpp
