@@ -38,7 +38,7 @@ namespace state {
             int newY = coordY + dy;
 
             // Vérifier les limites via Map::getCell
-            Cell neighbor = array.getCell(newX, newY);
+            Cell neighbor = Map::getCell(newX, newY);
             if (neighbor != nullptr && (neighbor.getType() == CORRIDOR || neighbor.getType() == DOOR)) {
                 neighbors.push_back(neighbor);
             }
