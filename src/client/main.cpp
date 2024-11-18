@@ -9,15 +9,14 @@ void testSFML() {
 // end of test SFML
 
 #include <state.h>
-#include "Test.h"
 
 using namespace std;
 using namespace state;
 
 int main(int argc,char* argv[])
 {
-    test();
-    cout << "It runs !" << endl;
+    Map map("../ressources/map.json");
+    cout << "It works !" << endl;
 
     return 0;
 }
