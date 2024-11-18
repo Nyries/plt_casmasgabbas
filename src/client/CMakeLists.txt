@@ -38,6 +38,9 @@ target_link_libraries(${lib_client_target} PUBLIC
 # Compile "client" executable
 set(client_target client)
 add_executable(${client_target} main.cpp
+        Test.cpp
+        Test.cpp
+        Test.h
         #[[
         ../shared/state/Location.cpp ../shared/state/Map.cpp
         ../shared/state/UtilityFunctions.cpp

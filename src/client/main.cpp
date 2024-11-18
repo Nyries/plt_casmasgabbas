@@ -3,8 +3,6 @@
 // The following lines are here to check that SFML is installed and working
 #include <SFML/Graphics.hpp>
 
-#include "state/Test.h"
-
 void testSFML() {
     sf::Texture texture;
 }
@@ -17,8 +15,12 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
+<<<<<<< HEAD
     Map map("../ressources/map.json");
     cout << "It works !" << endl;
+=======
+    cout << "It runs !" << endl;
+>>>>>>> master
 
     return 0;
 }
