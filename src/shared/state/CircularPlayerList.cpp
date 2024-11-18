@@ -19,7 +19,7 @@ namespace state {
     };
 
     void CircularPlayerList::next() {
-        it++;
+        ++it;
         if(it == list.end()) {
             it = list.begin();
         }
