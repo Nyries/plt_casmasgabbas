@@ -5188,13 +5188,13 @@
         <dia:point val="68.9952,34.7552"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="68.9452,34.7052;90.7202,42.2052"/>
+        <dia:rectangle val="68.9452,34.7052;93.0302,42.2052"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="68.9952,34.7552"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="21.675000000000001"/>
+        <dia:real val="23.984999999999999"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="7.4000000000000004"/>
@@ -5412,7 +5412,7 @@
                 <dia:string>#playerCount#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#int#</dia:string>
+                <dia:string>#const int#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -5932,7 +5932,7 @@
         <dia:point val="46.1937,38.8263"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="46.1437,32.5452;80.2827,38.8763"/>
+        <dia:rectangle val="46.1437,32.5452;81.4377,38.8763"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -5941,8 +5941,8 @@
         <dia:point val="46.1937,38.8263"/>
         <dia:point val="47.2437,38.8263"/>
         <dia:point val="47.2437,33.3052"/>
-        <dia:point val="79.8327,33.3052"/>
-        <dia:point val="79.8327,34.7552"/>
+        <dia:point val="80.9877,33.3052"/>
+        <dia:point val="80.9877,34.7552"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="0"/>
