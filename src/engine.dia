@@ -701,10 +701,10 @@
           <dia:attribute name="parameters">
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#range:int#</dia:string>
+                <dia:string>#range#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>##</dia:string>
+                <dia:string>#int#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -749,10 +749,10 @@
           <dia:attribute name="parameters">
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#jsonPath:std::string#</dia:string>
+                <dia:string>#jsonPath#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>##</dia:string>
+                <dia:string>#std::string#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
