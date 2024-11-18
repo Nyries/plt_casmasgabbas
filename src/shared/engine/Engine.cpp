@@ -6,13 +6,16 @@
 #include "engine.h"
 
 namespace engine {
+    Engine::Engine(state::State &state): state(state), playerList(state.getplayerList()), map(state.getMap()), currentPlayer(playerList.getCurrent()), envelope(state.getEnvelope()) {
+    }
+
     void Engine::determineFirstPlayer() {
         int dices=0;
         int joueur=0;
         state::PlayerInfo* firstPlayer = nullptr;
         state::PlayerInfo* currentPlayer = &playerList.getCurrent();
         for (int i=0; i<playerList.size();i++){
-            int dice1 = state::UtilityFunctions::randomInt(5)+1;
+            int dice1 = UtilityFunctions::randomInt(5)+1;
             int dice2 = UtilityFunctions::randomInt(5)+1;
             std::cout << "Joueur " << i+1 << ": " <<"dice1: " << dice1 << "; dice2: " << dice2 << std::endl;
             if (dices < dice1 + dice2) {
