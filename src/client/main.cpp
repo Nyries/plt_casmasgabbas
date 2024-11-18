@@ -15,12 +15,8 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
-<<<<<<< HEAD
     Map map("../ressources/map.json");
     cout << "It works !" << endl;
-=======
-    cout << "It runs !" << endl;
->>>>>>> master
 
     return 0;
 }
