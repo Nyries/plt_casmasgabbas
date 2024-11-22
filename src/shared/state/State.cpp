@@ -2,8 +2,6 @@
 // Created by louismmassin on 11/8/24.
 //
 #include "State.h"
-#include "UtilityFunctions.cpp"
-#include "CircularPlayerList.cpp"
 
 #include <iostream>
 
