@@ -5,10 +5,9 @@
 #include "Client.h"
 #include "state.h"
 #include <iostream>
-#include <json/json.h>
-#include <fstream>
 
 namespace client{
+
 	Client::Client(std::string clientJsonPath)
 {
 	    std::ifstream file(clientJsonPath);
@@ -29,9 +28,9 @@ int introductionToTheGame(void){
 }
 
 
-std::vector<state::Card> hypothesis(){
+std::vector<int> Client::hypothesis(){
 
-    /*std::vector<state::Card> hypothesisChoice;
+    std::vector<int> hypothesisChoice;
     std::cout << "You want to make an hypothesis ! " << std::endl;
     int choice;
     std::string stringNumber;
@@ -43,41 +42,45 @@ std::vector<state::Card> hypothesis(){
 	std::cout << "If you are suspecting VIOLET: press 6 " << std::endl;
 
 
-	std::cin >> stringNumber;
+    bool validChoice = true;
+
+    std::cin >> stringNumber;
 	choice = convertToInteger(stringNumber);
 
+    while (validChoice) {
+      	switch (choice) {
+	    	case 1: // ROSE
+	        	std::cout << "You chose ROSE ! \n";
+	        	hypothesisChoice.push_back(state::ROSE);
+	       	 	break;
 
-	switch (choice) {
-	    case 1: // ROSE
-	        std::cout << "You chose ROSE ! \n";
-	        hypothesisChoice.push_back(state::ROSE);
-	        break;
-	    case 2: // PERVENCHE
-	        std::cout << "You chose PERVENCHE ! \n";
-	        hypothesisChoice.push_back(state::PERVENCHE);
-	        break;
-	    case 3: // LEBLANC
-	        std::cout << "You chose LEBLANC ! \n";
-	        hypothesisChoice.push_back(state::LEBLANC);
-	        break;
-	    case 4: // OLIVE
-	        std::cout << "You chose OLIVE ! \n";
-	        hypothesisChoice.push_back(state::OLIVE);
-	        break;
-	    case 5: // MOUTARDE
-	        std::cout << "You chose MOUTARDE ! \n";
-	        hypothesisChoice.push_back(state::MOUTARDE);
-	        break;
-	    case 6: // VIOLET
-	        std::cout << "You chose VIOLET ! \n";
-	        hypothesisChoice.push_back(state::VIOLET);
-	        break;
+	    	case 2: // PERVENCHE
+	        	std::cout << "You chose PERVENCHE ! \n";
+	        	hypothesisChoice.push_back(state::PERVENCHE);
+	        	break;
+	    	case 3: // LEBLANC
+	        	std::cout << "You chose LEBLANC ! \n";
+	        	hypothesisChoice.push_back(state::LEBLANC);
+	        	break;
+	    	case 4: // OLIVE
+	        	std::cout << "You chose OLIVE ! \n";
+	        	hypothesisChoice.push_back(state::OLIVE);
+	        	break;
+	    	case 5: // MOUTARDE
+	        	std::cout << "You chose MOUTARDE ! \n";
+	        	hypothesisChoice.push_back(state::MOUTARDE);
+	        	break;
+	    	case 6: // VIOLET
+	        	std::cout << "You chose VIOLET ! \n";
+	        	hypothesisChoice.push_back(state::VIOLET);
+	        	break;
 
-	    default: // OTHER ONE
-	        std::cout << "Invalide choice ! Try again \n";
-	        continue;
+	    	default: // OTHER ONE
+	        	std::cout << "Invalide choice ! Try again \n";
+                validChoice = false;
+    	}
     }
-    break;
+
 
     std::cout << "With which weapon ? " << std::endl;
     int choice2;
@@ -89,55 +92,60 @@ std::vector<state::Card> hypothesis(){
 	std::cout << "If you think it is KNIFE: press 5 " << std::endl;
 	std::cout << "If you think it is WRENCH: press 6 " << std::endl;
 
-	std::cin >> stringNumber2;
-	choice2 = convertToInteger(stringNumber2);
+    bool validChoice2 = true;
 
-	switch (choice2) {
-	    case 1: // CANDLESTICK
-	        std::cout << "You chose CANDLESTICK ! \n";
-	        hypothesisChoice.push_back(state::CANDLESTICK);
-	        break;
-	    case 2: // PISTOL
-	        std::cout << "You chose PISTOL ! \n";
-	        hypothesisChoice.push_back(state::PISTOL);
-	        break;
-	    case 3: // ROPE
-	        std::cout << "You chose ROPE ! \n";
-	        hypothesisChoice.push_back(state::ROPE);
-	        break;
-	    case 4: // LEAD_PIPE
-	        std::cout << "You chose LEAD_PIPE ! \n";
-	        hypothesisChoice.push_back(state::LEAD_PIPE);
-	        break;
-	    case 5: // KNIFE
-	        std::cout << "You chose KNIFE ! \n";
-	        hypothesisChoice.push_back(state::KNIFE);
-	        break;
-	    case 6: // WRENCH
-	        std::cout << "You chose WRENCH ! \n";
-	        hypothesisChoice.push_back(state::WRENCH);
-	        break;
+    while (validChoice2){
 
-	    default: // OTHER ONE
-	        std::cout << "Invalide choice ! Try again \n";
-	        continue;
+		std::cin >> stringNumber2;
+		choice2 = convertToInteger(stringNumber2);
+
+		switch (choice2) {
+	    	case 1: // CANDLESTICK
+	        	std::cout << "You chose CANDLESTICK ! \n";
+	        	hypothesisChoice.push_back(state::CANDLESTICK);
+	        	break;
+	   		 case 2: // PISTOL
+	        	std::cout << "You chose PISTOL ! \n";
+	        	hypothesisChoice.push_back(state::PISTOL);
+	        	break;
+	    	case 3: // ROPE
+	        	std::cout << "You chose ROPE ! \n";
+	       	 	hypothesisChoice.push_back(state::ROPE);
+	        	break;
+	    	case 4: // LEAD_PIPE
+	        	std::cout << "You chose LEAD_PIPE ! \n";
+	        	hypothesisChoice.push_back(state::LEAD_PIPE);
+	       	 	break;
+	    	case 5: // KNIFE
+	        	std::cout << "You chose KNIFE ! \n";
+	        	hypothesisChoice.push_back(state::KNIFE);
+	        	break;
+	    	case 6: // WRENCH
+	        	std::cout << "You chose WRENCH ! \n";
+	        	hypothesisChoice.push_back(state::WRENCH);
+	        	break;
+
+	    	default: // OTHER ONE
+	        	std::cout << "Invalide choice ! Try again \n";
+	        	validChoice2 = false;
+    	}
+
     }
     break;
 
-    hypothesisChoice.push_back(player.getCurrent().getLocation()); // a revoir
+    hypothesisChoice.push_back(currentPlayer.getLocation().getValue()); // a revoir
 
-    std::cout << player.getCurrent().getIdentity() << " suggests the Crime was committed by "
+    std::cout << currentPlayer.getIdentity() << " suggests the Crime was committed by "
     << hypothesisChoice.at(0) << " in the " << hypothesisChoice.at(2)
-    << " with the " hypothesisChoice.at(1) << std::endl;
+    << " with the " << hypothesisChoice.at(1) << std::endl;
 
-*/
-	return std::vector<state::Card>();
+    return hypothesisChoice;
  }
 
 
-std::vector<state::Card> accusation(void){
+std::vector<int> Client::accusation(void){
 
-   /* std::vector<Card> accusationChoice;
+    std::vector<int> accusationChoice;
     std::cout << "You want to make an accusation ! " << std::endl;
     int choice;
     std::string stringNumber;
@@ -148,40 +156,45 @@ std::vector<state::Card> accusation(void){
 	std::cout << "If you are accusating MOUTARDE: press 5 " << std::endl;
 	std::cout << "If you are accusating VIOLET: press 6 " << std::endl;
 
+
+	bool validChoice = true;
+
 	std::cin >> stringNumber;
 	choice = convertToInteger(stringNumber);
 
-	switch (choice) {
-	    case 1: // ROSE
-	        std::cout << "You chose ROSE ! \n";
-	        accusationChoice.push_back(state::ROSE);
-	        break;
-	    case 2: // PERVENCHE
-	        std::cout << "You chose PERVENCHE ! \n";
-	        accusationChoice.push_back(state::PERVENCHE);
-	        break;
-	    case 3: // LEBLANC
-	        std::cout << "You chose LEBLANC ! \n";
-	        accusationChoice.push_back(state::LEBLANC);
-	        break;
-	    case 4: // OLIVE
-	        std::cout << "You chose OLIVE ! \n";
-	        accusationChoice.push_back(state::OLIVE);
-	        break;
-	    case 5: // MOUTARDE
-	        std::cout << "You chose MOUTARDE ! \n";
-	        accusationChoice.push_back(state::MOUTARDE);
-	        break;
-	    case 6: // VIOLET
-	        std::cout << "You chose VIOLET ! \n";
-	        accusationChoice.push_back(state::VIOLET);
-	        break;
+	while (validChoice) {
+		switch (choice) {
+			case 1: // ROSE
+				std::cout << "You chose ROSE ! \n";
+			accusationChoice.push_back(state::ROSE);
+			break;
+			case 2: // PERVENCHE
+				std::cout << "You chose PERVENCHE ! \n";
+			accusationChoice.push_back(state::PERVENCHE);
+			break;
+			case 3: // LEBLANC
+				std::cout << "You chose LEBLANC ! \n";
+			accusationChoice.push_back(state::LEBLANC);
+			break;
+			case 4: // OLIVE
+				std::cout << "You chose OLIVE ! \n";
+			accusationChoice.push_back(state::OLIVE);
+			break;
+			case 5: // MOUTARDE
+				std::cout << "You chose MOUTARDE ! \n";
+			accusationChoice.push_back(state::MOUTARDE);
+			break;
+			case 6: // VIOLET
+				std::cout << "You chose VIOLET ! \n";
+			accusationChoice.push_back(state::VIOLET);
+			break;
 
-	    default: // OTHER ONE
-	        std::cout << "Invalide choice ! Try again \n";
-	        continue;
-    }
-    break;
+			default: // OTHER ONE
+				std::cout << "Invalide choice ! Try again \n";
+				validChoice = false;
+		}
+
+	}
 
     std::cout << "With which weapon ? " << std::endl;
     int choice2;
@@ -193,48 +206,55 @@ std::vector<state::Card> accusation(void){
 	std::cout << "If you think it is KNIFE: press 5 " << std::endl;
 	std::cout << "If you think it is WRENCH: press 6 " << std::endl;
 
-	std::cin >> stringNumber2;
-	choice2 = convertToInteger(stringNumber2);
 
-	switch (choice2) {
-	    case 1: // CANDLESTICK
-	        std::cout << "You chose CANDLESTICK ! \n";
-	        accusationChoice.push_back(state::CANDLESTICK);
-	        break;
-	    case 2: // PISTOL
-	        std::cout << "You chose PISTOL ! \n";
-	        accusationChoice.push_back(state::PISTOL);
-	        break;
-	    case 3: // ROPE
-	        std::cout << "You chose ROPE ! \n";
-	        accusationChoice.push_back(state::ROPE);
-	        break;
-	    case 4: // LEAD_PIPE
-	        std::cout << "You chose LEAD_PIPE ! \n";
-	        accusationChoice.push_back(state::LEAD_PIPE);
-	        break;
-	    case 5: // KNIFE
-	        std::cout << "You chose KNIFE ! \n";
-	        accusationChoice.push_back(state::KNIFE);
-	        break;
-	    case 6: // WRENCH
-	        std::cout << "You chose WRENCH ! \n";
-	        accusationChoice.push_back(state::WRENCH);
-	        break;
 
-	    default: // OTHER ONE
-	        std::cout << "Invalide choice ! Try again \n";
-	        continue;
-    }
-    break;
+	bool validChoice2 = true;
 
-    accusationChoice.push_back(player.getCurrent().getLocation()); // a revoir
+	while (validChoice2) {
 
-    std::cout << player.getCurrent().getIdentity() << " accuses "
+		std::cin >> stringNumber2;
+		choice2 = convertToInteger(stringNumber2);
+
+		switch (choice2) {
+			case 1: // CANDLESTICK
+				std::cout << "You chose CANDLESTICK ! \n";
+				accusationChoice.push_back(state::CANDLESTICK);
+				break;
+			case 2: // PISTOL
+				std::cout << "You chose PISTOL ! \n";
+				accusationChoice.push_back(state::PISTOL);
+				break;
+			case 3: // ROPE
+				std::cout << "You chose ROPE ! \n";
+				accusationChoice.push_back(state::ROPE);
+				break;
+			case 4: // LEAD_PIPE
+				std::cout << "You chose LEAD_PIPE ! \n";
+				accusationChoice.push_back(state::LEAD_PIPE);
+				break;
+			case 5: // KNIFE
+				std::cout << "You chose KNIFE ! \n";
+				accusationChoice.push_back(state::KNIFE);
+				break;
+			case 6: // WRENCH
+				std::cout << "You chose WRENCH ! \n";
+				accusationChoice.push_back(state::WRENCH);
+				break;
+
+			default: // OTHER ONE
+				std::cout << "Invalide choice ! Try again \n";
+				validChoice2 = false;
+		}
+
+	}
+
+    accusationChoice.push_back(currentPlayer.getLocation().getValue()); // a revoir
+
+    std::cout << currentPlayer.getIdentity() << " accuses "
     << accusationChoice.at(0) << " of committing the crime in the " << accusationChoice.at(2)
-    << " with the " accusationChoice.at(1) << std::endl;
-*/
-	return std::vector<state::Card>();
+    << " with the " << accusationChoice.at(1) << std::endl;
+
+   return accusationChoice;
  }
 
 int moveDisplay(std::vector<state::Cell*> accessibleCells){
@@ -323,13 +343,16 @@ bool isANumber(const std::string& command){
 	return true;
 }
 
+
 /// convertit un string en entier (si on peut)
 
 int convertToInteger(std::string command){
-	/*
+
 	if (isANumber(command)){
 		return std::stoi(command);
-	}*/
+	}
 	return int();
 }
+
+
 }

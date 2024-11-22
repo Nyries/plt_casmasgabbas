@@ -22,4 +22,12 @@ namespace state {
     Map* State::getMap() {
         return map;
     }
+
+    CircularPlayerList* State::getPlayerList() {
+        return players;
+    }
+
+    std::vector<Card>& State::getEnvelope() {
+        return envelope;
+    }
 }
