@@ -11,18 +11,7 @@ list(REMOVE_ITEM client_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 
 # Build the "client" library, add required include and link against dependencies
 add_library(${lib_client_target} STATIC ${client_sources} ${jsoncpp_sources}
-        ../shared/state/Location.cpp ../shared/state/Map.cpp
-        ../shared/state/CircularPlayerList.cpp
-        ../shared/state/Room.h
-        ../shared/state/Room.h
-        ../shared/state/Room.cpp
-        ../shared/state/Room.h
-        ../shared/state/Card.cpp
-        ../shared/state/WeaponCard.cpp
-        ../shared/state/SuspectCard.cpp
-        ../shared/state/RoomCard.cpp
-        ../shared/state/PlayerInfo.cpp
-        ../shared/state/State.cpp)
+        main.cpp)
 add_dependencies(${lib_client_target} generate-headers)
 target_include_directories(${lib_client_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
