@@ -8,8 +8,7 @@ namespace state {
     }
 
     Cell::~Cell()
-    {
-    }
+    = default;
 
     int Cell::getX() {
         return coordX;
