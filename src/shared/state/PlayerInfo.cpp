@@ -6,7 +6,7 @@
 #include <utility>
 
 namespace state {
-    PlayerInfo::PlayerInfo(State& currentGame, std::string  name, Suspect identity): currentGame(currentGame),
+    PlayerInfo::PlayerInfo(std::string  name, Suspect identity): currentGame(currentGame),
         location(nullptr), name(std::move(name)), identity(identity), canWin(true) {
     }
 

@@ -5,11 +5,18 @@
 #include "Client.h"
 #include "state.h"
 #include <iostream>
+#include <json/json.h>
+#include <fstream>
 
 namespace client{
-	Client::Client()
+	Client::Client(std::string clientJsonPath)
 {
+	    std::ifstream file(clientJsonPath);
+        Json::Value clientJsonData;
+        file >> clientJsonData;
+        file.close();
 }
+
 int introductionToTheGame(void){
 	int numberPlayer;
 	std::cout << "You're playing to the cluedo." << std::endl;
