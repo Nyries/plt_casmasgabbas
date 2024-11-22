@@ -178,19 +178,19 @@
         <dia:point val="14.9,-6.375"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="14.85,-6.425;18.2875,-4.125"/>
+        <dia:rectangle val="14.85,-6.425;20.0525,-4.125"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="14.9,-6.375"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="3.3374999999999999"/>
+        <dia:real val="5.1025"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="2.1999999999999997"/>
       </dia:attribute>
       <dia:attribute name="name">
-        <dia:string>#Player#</dia:string>
+        <dia:string>#PlayerInfo#</dia:string>
       </dia:attribute>
       <dia:attribute name="stereotype">
         <dia:string>##</dia:string>
@@ -406,13 +406,13 @@
         <dia:point val="5.5,0.3125"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="5.45,0.2625;24.53,11.7625"/>
+        <dia:rectangle val="5.45,0.2625;29.15,11.7625"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="5.5,0.3125"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="18.98"/>
+        <dia:real val="23.600000000000001"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="11.399999999999999"/>
@@ -513,7 +513,7 @@
             <dia:string>#state#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#State#</dia:string>
+            <dia:string>#state::State#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -536,7 +536,7 @@
             <dia:string>#players#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::vector&lt;Player&gt;#</dia:string>
+            <dia:string>#std::vector&lt;state::PlayerInfo&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -642,7 +642,7 @@
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#vector&lt;Card&gt;#</dia:string>
+            <dia:string>#std::vector&lt;state::Card&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -690,7 +690,7 @@
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#vector&lt;Card&gt;#</dia:string>
+            <dia:string>#std::vector&lt;state::Card&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -956,7 +956,7 @@
                 <dia:string>#accessibleCells#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#vector&lt;cell*&gt;#</dia:string>
+                <dia:string>#std::vector&lt;state::Cell*&gt;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -1012,7 +1012,7 @@
         <dia:point val="21.6612,-4.07472"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="14.94,-4.82472;22.4112,1.06215"/>
+        <dia:rectangle val="17.25,-4.82472;22.4112,1.06215"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -1020,8 +1020,8 @@
       <dia:attribute name="orth_points">
         <dia:point val="21.6612,-4.07472"/>
         <dia:point val="21.6612,-1.55629"/>
-        <dia:point val="14.99,-1.55629"/>
-        <dia:point val="14.99,0.262149"/>
+        <dia:point val="17.3,-1.55629"/>
+        <dia:point val="17.3,0.262149"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
