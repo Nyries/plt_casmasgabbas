@@ -16,5 +16,17 @@ namespace state {
     State::State(int playerCount, std::string dataFilePath): players(*this, playerCount), accusationSuccess(false), map(dataFilePath) {
     }
 
+    Map &State::getMap() {
+        return map;
+    }
+
+    CircularPlayerList &State::getplayerList() {
+        return players;
+    }
+
+    std::vector<Card> &State::getEnvelope() {
+        return envelope;
+    }
+
 }
 
