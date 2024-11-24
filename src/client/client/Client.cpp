@@ -5,18 +5,18 @@
 #include "Client.h"
 #include "state.h"
 #include <iostream>
+#include <fstream>
+#include <json/json.h>
 
 namespace client{
+	Client::Client(std::string clientJsonPath, state::State &state): state(&state), currentPlayer() {
+		std::ifstream file(clientJsonPath);
+		Json::Value clientJsonData;
+		file >> clientJsonData;
+		file.close();
+	}
 
-	Client::Client(std::string clientJsonPath)
-{
-	    std::ifstream file(clientJsonPath);
-        Json::Value clientJsonData;
-        file >> clientJsonData;
-        file.close();
-}
-
-int introductionToTheGame(void){
+	int introductionToTheGame(void){
 	int numberPlayer;
 	std::cout << "You're playing to the cluedo." << std::endl;
 	std::cout << "Mr LENOIR died in is house this night." << std::endl;
@@ -131,9 +131,8 @@ std::vector<int> Client::hypothesis(){
     	}
 
     }
-    break;
 
-    hypothesisChoice.push_back(currentPlayer.getLocation().getValue()); // a revoir
+    hypothesisChoice.push_back(currentPlayer.getLocation().getType().getValue()); // a revoir
 
     std::cout << currentPlayer.getIdentity() << " suggests the Crime was committed by "
     << hypothesisChoice.at(0) << " in the " << hypothesisChoice.at(2)
@@ -248,7 +247,7 @@ std::vector<int> Client::accusation(void){
 
 	}
 
-    accusationChoice.push_back(currentPlayer.getLocation().getValue()); // a revoir
+    accusationChoice.push_back(currentPlayer.getLocation().getType().getValue()); // a revoir
 
     std::cout << currentPlayer.getIdentity() << " accuses "
     << accusationChoice.at(0) << " of committing the crime in the " << accusationChoice.at(2)
