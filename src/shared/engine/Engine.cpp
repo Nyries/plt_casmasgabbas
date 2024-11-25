@@ -111,23 +111,19 @@ namespace engine {
 
     void Engine::distributionCharacters () {
         int numberOfPlayer = playerList->size();
-
         std::vector<state::Suspect> SuspectsVector = {state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE, state::VIOLET} ;
-
         state::PlayerInfo* currentPlayer = &playerList->getCurrent();
         int players = 1;
         while (players!=numberOfPlayer+1) {
-            currentPlayer.setIdentity(SuspectsVector.at(players));
+            currentPlayer->setIdentity(SuspectsVector.at(players));
             playerList->next();
             currentPlayer = &playerList->getCurrent();
         }
-        
-
-
-
-
-
     }
+
+
+
+
 
 
 }
