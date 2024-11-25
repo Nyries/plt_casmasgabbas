@@ -53,14 +53,17 @@ Le Cluedo se joue de 4 à 6 joueurs.
 **2. A votre tour, lancez les dés et déplacez-vous sur le plateau :**
 - Lancez les dés et déplacez votre pion personnage sur le plateau, en fonction du nombre de cases indiqué par les dés. Si votre pion a été déplacé par un autre joueur depuis votre dernier tour, vous pouvez choisir de ne pas bouger et d’émettre une hypothèse directement.
 - Vous pouvez déplacer votre pion verticalement ou horizontalement, avancer ou reculer dans le couloir maiss jamais en diagonale.
+- Vous ne pouvez pas déplacer votre pion deux fois sur la même case pendant un tour.
 - Essayez toujours d’entrer dans une pièce (au début, n’importe laquelle). Vous n’êtes pas obligé d’utiliser la totalité du score indiqué par les dés pour votre déplacement. Dès que vous entrez dans une pièce, vous pouvez arrêter votre déplacement.
 
 **3. Emettez ensuite une hypothèse pour obtenir des réponses :**
-- Si vous entrez dans une pièce, vous devez vous arrêter et émettre une hypothèse avec **un suspect, une arme et la pièce où vous venez d’entrer.**
+- Si vous entrez dans une pièce, vous **devez** vous arrêter et émettre une hypothèse avec **un suspect, une arme et la pièce où vous venez d’entrer.**
 Exemple : vous entrez dans le Garage, vous pouvez demander : « Est-ce Rose avec une Corde dans le Garage ? »
 - Déplacez le pion personnage et le pion arme que vous citez dans la pièce où vous vous trouvez.
 - Le joueur placé à votre gauche est le premier à répondre à votre hypothèse. S’il possède une des cartes des éléments que vous avez cités, il doit vous en montrer une en cachette des autres joueurs. **Il ne doit pas vous montrer plus d’une carte !**
 - S’il ne possède aucune des cartes que vous citez dans votre hypothèse, il doit juste vous dire « Je ne peux pas répondre. » et c’est au joueur situé à sa gauche de répondre. Ainsi de suite jusqu’à ce qu’un joueur vous montre **une carte.**
+
+**-Vous ne pouvez pas effectuer une hypothèse dans la même pièce 2 fois de suite. Vous devez d'abord changer de pièce et revenir ensuite.**
 
 **Et si aucun joueur ne vous montre une carte ?**
 
@@ -73,7 +76,7 @@ Commencez par ne rien faire paraître ! Du moment que vous ne bluffiez pas en �
 
 **5. Portez une accusation :**
 
-Une fois que vous avez émis assez d’hypothèses pour éliminer les éléments de votre feuille de détective un par un, il vous en restera 3 (un suspect, une arme et un pièce). Vous détenez la solution du mystère ! Avant de porter accusation, vous devez déplacer votre pion dans la pièce où le meurtre a eu lieu. Une fois sur cette case, portez votre accusation à haute voix : ** « J’accuse Olive avec la Barre de Fer dans la Salle à Manger !» ** . Puis, à l’abri du regard des autres joueurs, vérifiez le contenu de l’étui confidentiel jaune.
+Une fois que vous avez émis assez d’hypothèses pour éliminer les éléments de votre feuille de détective un par un, il vous en restera 3 (un suspect, une arme et un pièce). Vous détenez la solution du mystère ! Portez votre accusation à haute voix : ** « J’accuse Olive avec la Barre de Fer dans la Salle à Manger !» ** . Puis, à l’abri du regard des autres joueurs, vérifiez le contenu de l’étui confidentiel.
 
 **Avez-vous résolu le mystère ?**
 

@@ -26,4 +26,20 @@ namespace state {
         return identity;
     }
 
+    void PlayerInfo::setIdentity(Suspect identity) {
+        this->identity = identity;
+    }
+
+
+    const std::string& PlayerInfo::getName() {
+        return name;
+    }
+
+    bool PlayerInfo::getCanWin() {
+        return canWin;
+    }
+
+    void PlayerInfo::setCanWin(bool canWin) {
+        this->canWin = canWin;
+    }
 }
