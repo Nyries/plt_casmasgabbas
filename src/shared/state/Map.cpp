@@ -7,7 +7,7 @@
 #include <iostream>
 
 namespace state {
-    Map::Map(std::string mapJsonPath){
+    Map::Map(const std::string& mapJsonPath){
         std::ifstream file(mapJsonPath);
         Json::Value jsonData;
         file >> jsonData;

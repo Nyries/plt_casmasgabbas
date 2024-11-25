@@ -59,10 +59,17 @@
       <dia:color val="#d8e5e5ff"/>
     </dia:attribute>
     <dia:attribute name="guides">
-      <dia:composite type="guides">
-        <dia:attribute name="hguides"/>
-        <dia:attribute name="vguides"/>
+      <dia:composite type="guide">
+        <dia:attribute name="position">
+          <dia:real val="0"/>
+        </dia:attribute>
+        <dia:attribute name="orientation">
+          <dia:int val="0"/>
+        </dia:attribute>
       </dia:composite>
+    </dia:attribute>
+    <dia:attribute name="guide_color">
+      <dia:color val="#00ff00ff"/>
     </dia:attribute>
     <dia:attribute name="display">
       <dia:composite type="display">
@@ -72,10 +79,16 @@
         <dia:attribute name="snap-to-grid">
           <dia:boolean val="false"/>
         </dia:attribute>
+        <dia:attribute name="snap-to-guides">
+          <dia:boolean val="true"/>
+        </dia:attribute>
         <dia:attribute name="snap-to-object">
           <dia:boolean val="true"/>
         </dia:attribute>
         <dia:attribute name="show-grid">
+          <dia:boolean val="true"/>
+        </dia:attribute>
+        <dia:attribute name="show-guides">
           <dia:boolean val="true"/>
         </dia:attribute>
         <dia:attribute name="show-connection-points">
@@ -134,13 +147,13 @@
         <dia:point val="26.8637,35.1763"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="26.8137,35.1263;41.6587,45.0263"/>
+        <dia:rectangle val="26.8137,35.1263;42.8137,45.0263"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="26.8637,35.1763"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="14.744999999999999"/>
+        <dia:real val="15.9"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="9.8000000000000007"/>
@@ -364,7 +377,7 @@
                 <dia:string>#stateJsonPath#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#std::string#</dia:string>
+                <dia:string>#const std::string&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -3066,7 +3079,7 @@
         <dia:point val="17.9292,65.6329"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="11.2249,64.8879;17.9792,67.847"/>
+        <dia:rectangle val="11.2249,64.8729;17.9792,67.847"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -3118,7 +3131,7 @@
         <dia:point val="37.2316,67.3219"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="27.433,66.5769;37.2816,70.0725"/>
+        <dia:rectangle val="27.433,66.5619;37.2816,70.0725"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -4966,7 +4979,7 @@
         <dia:point val="75.1173,73.8138"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="71.0007,69.9796;75.1673,74.6688"/>
+        <dia:rectangle val="71.0007,69.9796;75.1673,74.6538"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -5018,7 +5031,7 @@
         <dia:point val="59.9941,31.2685"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="59.5441,29.2735;61.0941,31.7185"/>
+        <dia:rectangle val="59.5441,29.2585;61.0941,31.7185"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -5791,7 +5804,7 @@
                 <dia:string>#mapJsonPath#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#std::string#</dia:string>
+                <dia:string>#const std::string&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -5967,7 +5980,7 @@
         <dia:point val="81.491,52.4782"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="81.441,36.0068;105.253,52.5282"/>
+        <dia:rectangle val="81.441,35.9918;105.253,52.5282"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -6023,7 +6036,7 @@
         <dia:point val="68.9952,36.6552"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="56.148,35.9102;69.0452,46.7442"/>
+        <dia:rectangle val="56.148,35.8952;69.0452,46.7442"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -6128,18 +6141,18 @@
     </dia:object>
     <dia:object type="UML - Dependency" version="1" id="O34">
       <dia:attribute name="obj_pos">
-        <dia:point val="41.6087,37.0763"/>
+        <dia:point val="42.7637,37.0763"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="41.5587,32.5602;77.0102,37.1263"/>
+        <dia:rectangle val="42.7137,32.5452;77.0102,37.1263"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="41.6087,37.0763"/>
-        <dia:point val="42.6587,37.0763"/>
-        <dia:point val="42.6587,33.3052"/>
+        <dia:point val="42.7637,37.0763"/>
+        <dia:point val="43.8137,37.0763"/>
+        <dia:point val="43.8137,33.3052"/>
         <dia:point val="76.5602,33.3052"/>
         <dia:point val="76.5602,34.7552"/>
       </dia:attribute>
@@ -6187,7 +6200,7 @@
         <dia:point val="82.4136,54.5597"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="74.8235,48.3329;82.4636,54.6097"/>
+        <dia:rectangle val="74.8235,48.3179;82.4636,54.6097"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -6348,17 +6361,17 @@
     </dia:object>
     <dia:object type="UML - Dependency" version="1" id="O38">
       <dia:attribute name="obj_pos">
-        <dia:point val="34.2362,45.0266"/>
+        <dia:point val="34.8137,45.0266"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="34.1862,44.9766;96.4465,49.6594"/>
+        <dia:rectangle val="34.7637,44.9766;96.4465,49.6594"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="34.2362,45.0266"/>
-        <dia:point val="34.2362,46.918"/>
+        <dia:point val="34.8137,45.0266"/>
+        <dia:point val="34.8137,46.918"/>
         <dia:point val="95.9965,46.918"/>
         <dia:point val="95.9965,49.2094"/>
       </dia:attribute>
