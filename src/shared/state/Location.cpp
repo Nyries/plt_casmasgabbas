@@ -10,4 +10,23 @@ namespace state{
 	LocationType Location::getType(){
           return type;
     }
+
+    std::string Location::getTypeAsString()
+    {
+		if (type == LocationType::INACCESSIBLE){
+			return "INACCESSIBLE";
+		}
+		else if (type == LocationType::CORRIDOR){
+			return "CORRIDOR";
+		}
+		else if (type == LocationType::DOOR){
+			return "DOOR";
+		}
+		else if (type == LocationType::ROOM){
+			return "ROOM";
+		}
+		else{
+        	return "Mouais";
+		}
+    }
 }

@@ -1,4 +1,4 @@
 {
-    "stateJsonPath":"configurations/state.json",
-    "renderJsonPath":"configurations/render.json"
+    "stateJsonPath":"../configurations/state.json",
+    "renderJsonPath":"../configurations/render.json"
 }

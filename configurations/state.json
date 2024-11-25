@@ -1,4 +1,4 @@
 {
     "playerCount": 1,
-    "mapJsonPath":"configurations/map.json"
+    "mapJsonPath":"../configurations/map.json"
 }
