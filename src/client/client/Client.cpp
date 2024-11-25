@@ -141,10 +141,10 @@ std::vector<int> Client::hypothesis(){
 
     }
 
-	auto& currentRoom = static_cast<state::Room&>(currentPlayer.getLocation());
+	auto& currentRoom = static_cast<state::Room&>(currentPlayer->getLocation());
     hypothesisChoice.push_back(currentRoom.getName());
 
-    std::cout << currentPlayer.getIdentity() << " suggests the Crime was committed by "
+    std::cout << currentPlayer->getIdentity() << " suggests the Crime was committed by "
     << hypothesisChoice.at(0) << " in the " << hypothesisChoice.at(2)
     << " with the " << hypothesisChoice.at(1) << std::endl;
 
@@ -257,11 +257,11 @@ std::vector<int> Client::accusation(void){
 
 	}
 
-	auto& currentRoom = static_cast<state::Room&>(currentPlayer.getLocation());
+	auto& currentRoom = static_cast<state::Room&>(currentPlayer->getLocation());
 	accusationChoice.push_back(currentRoom.getName());
 
 
-    std::cout << currentPlayer.getIdentity() << " accuses "
+    std::cout << currentPlayer->getIdentity() << " accuses "
     << accusationChoice.at(0) << " of committing the crime in the " << accusationChoice.at(2)
     << " with the " << accusationChoice.at(1) << std::endl;
 
