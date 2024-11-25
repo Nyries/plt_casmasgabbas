@@ -16,7 +16,7 @@ namespace client{
 		file.close();
 	}
 
-	int introductionToTheGame(void){
+	int Client::introductionToTheGame(void){
 	int numberPlayer;
 	std::cout << "You're playing to the cluedo." << std::endl;
 	std::cout << "Mr LENOIR died in is house this night." << std::endl;
@@ -132,7 +132,8 @@ std::vector<int> Client::hypothesis(){
 
     }
 
-    hypothesisChoice.push_back(currentPlayer.getLocation().getType().getValue()); // a revoir
+	auto& currentRoom = static_cast<state::Room&>(currentPlayer.getLocation());
+    hypothesisChoice.push_back(currentRoom.getName());
 
     std::cout << currentPlayer.getIdentity() << " suggests the Crime was committed by "
     << hypothesisChoice.at(0) << " in the " << hypothesisChoice.at(2)
@@ -247,7 +248,9 @@ std::vector<int> Client::accusation(void){
 
 	}
 
-    accusationChoice.push_back(currentPlayer.getLocation().getType().getValue()); // a revoir
+	auto& currentRoom = static_cast<state::Room&>(currentPlayer.getLocation());
+	accusationChoice.push_back(currentRoom.getName());
+
 
     std::cout << currentPlayer.getIdentity() << " accuses "
     << accusationChoice.at(0) << " of committing the crime in the " << accusationChoice.at(2)
@@ -256,9 +259,11 @@ std::vector<int> Client::accusation(void){
    return accusationChoice;
  }
 
-int moveDisplay(std::vector<state::Cell*> accessibleCells){
+int Client::moveDisplay(std::vector<state::Cell*> accessibleCells){
+
 /*
 	std::cout << "Where do you want to go ?" << std::endl;
+
 
 	int choice;
 	std::string moveDirection;
@@ -306,51 +311,37 @@ int moveDisplay(std::vector<state::Cell*> accessibleCells){
 
 	    default: // OTHER ONE
 	        std::cout << "Invalide choice ! Try again \n";
-            continue;
    	}
-   	break;
 */
+
 	return int();
 }
 
 
-void pressKey(std::string key){
-	/*
-	std::cout << " press " << key << " " << std::endl;*/
+void Client::pressKey(std::string key){
+
+	std::cout << " press " << key << " " << std::endl;
 }
 
-char goodKey(std::string key){
-	/*
+char Client::goodKey(std::string key){
+
   	std::string playerKey;
 	std::cin >> playerKey;
 	if (playerKey!=key){
 		goodKey(key);
-	}*/
+	}
 	return char();
-}
-
-/// dis si un nombre est constitué de chiffres
-
-bool isANumber(const std::string& command){
-	/*if (command.empty()) return false;
-
-	for (char c: command){
-		if (!std::isdigit(command)){
-			return false;
-		}
-	}*/
-	return true;
 }
 
 
 /// convertit un string en entier (si on peut)
 
-int convertToInteger(std::string command){
-
-	if (isANumber(command)){
-		return std::stoi(command);
+int Client::convertToInteger(std::string command){
+	int number = std::stoi(command);
+	if (std::isdigit(number)){
+		return number;
 	}
-	return int();
+		return -1;
 }
 
 
