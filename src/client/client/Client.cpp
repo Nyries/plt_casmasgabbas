@@ -12,9 +12,17 @@ namespace client{
 	Client::Client(std::string clientJsonPath)
 {
 	    std::ifstream file(clientJsonPath);
+
+		if (!file.is_open()) {
+			std::cerr << "Error: could not open file " << clientJsonPath << std::endl;
+			return;
+		}
         Json::Value clientJsonData;
         file >> clientJsonData;
         file.close();
+		state = new state::State(clientJsonData["stateJsonPath"].asString());
+		playerList = state->getPlayerList();
+		currentPlayer = &playerList->getCurrent();
 }
 
 int introductionToTheGame(void){
@@ -237,7 +245,7 @@ std::vector<state::Card> accusation(void){
 	return std::vector<state::Card>();
  }
 
-int moveDisplay(std::vector<state::Cell*> accessibleCells){
+//int moveDisplay(std::vector<state::Cell*> accessibleCells){
 /*
 	std::cout << "Where do you want to go ?" << std::endl;
 
@@ -291,8 +299,8 @@ int moveDisplay(std::vector<state::Cell*> accessibleCells){
    	}
    	break;
 */
-	return int();
-}
+//return int();
+//}
 
 
 void pressKey(std::string key){
@@ -331,5 +339,15 @@ int convertToInteger(std::string command){
 		return std::stoi(command);
 	}*/
 	return int();
+}
+void Client::displayMap()
+{
+	std::vector<std::vector<std::string>> mapGrid = state->getMap()->getDisplayMap();
+	for (std::vector<std::string> row : mapGrid) {
+		for (std::string cell : row) {
+			std::cout << cell;
+		}
+		std::cout << std::endl;
+	}
 }
 }
