@@ -18,7 +18,7 @@ int main(int argc,char* argv[])
     //test();
     cout << "It runs !" << endl;
     state::SuspectCard totoCard(PERVENCHE);
-    if (totoCard.getValue() == PERVENCHE) {
+    if (totoCard.getSuspectName() == PERVENCHE) {
         cout << "yay!" << endl;
     }
 

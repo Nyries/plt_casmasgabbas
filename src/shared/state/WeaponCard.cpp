@@ -7,7 +7,7 @@ namespace state {
     WeaponCard::WeaponCard(Weapon value): Card(WEAPON_CARD), weapon(value) {
     }
 
-    Weapon WeaponCard::getValue(){
+    Weapon WeaponCard::getWeaponName(){
         return weapon;
     }
 

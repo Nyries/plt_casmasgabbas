@@ -18,4 +18,12 @@ namespace state {
         cards.push_back(std::move(card));
     }
 
+    Location& PlayerInfo::getLocation () {
+        return *location;
+    }
+
+    Suspect PlayerInfo::getIdentity () {
+        return identity;
+    }
+
 }
