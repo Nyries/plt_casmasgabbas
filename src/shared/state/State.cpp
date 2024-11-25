@@ -3,12 +3,11 @@
 //
 #include "State.h"
 
-#include <iostream>
 #include <fstream>
 #include <json/json.h>
 
 namespace state {
-    State::State(std::string stateJsonPath): accusationSuccess(false), envelope()
+    State::State(const std::string& stateJsonPath): accusationSuccess(false), envelope()
     {
         std::ifstream file(stateJsonPath);
         Json::Value stateJsonData;
