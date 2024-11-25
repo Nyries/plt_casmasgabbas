@@ -9,12 +9,21 @@
 #include <json/json.h>
 
 namespace client{
-	Client::Client(std::string clientJsonPath, state::State &state): state(&state), currentPlayer() {
-		std::ifstream file(clientJsonPath);
-		Json::Value clientJsonData;
-		file >> clientJsonData;
-		file.close();
-	}
+	Client::Client(std::string clientJsonPath)
+{
+	    std::ifstream file(clientJsonPath);
+
+		if (!file.is_open()) {
+			std::cerr << "Error: could not open file " << clientJsonPath << std::endl;
+			return;
+		}
+        Json::Value clientJsonData;
+        file >> clientJsonData;
+        file.close();
+		state = new state::State(clientJsonData["stateJsonPath"].asString());
+		playerList = state->getPlayerList();
+		currentPlayer = &playerList->getCurrent();
+}
 
 	int Client::introductionToTheGame(void){
 	int numberPlayer;
@@ -132,10 +141,10 @@ std::vector<int> Client::hypothesis(){
 
     }
 
-	auto& currentRoom = static_cast<state::Room&>(currentPlayer.getLocation());
+	auto& currentRoom = static_cast<state::Room&>(currentPlayer->getLocation());
     hypothesisChoice.push_back(currentRoom.getName());
 
-    std::cout << currentPlayer.getIdentity() << " suggests the Crime was committed by "
+    std::cout << currentPlayer->getIdentity() << " suggests the Crime was committed by "
     << hypothesisChoice.at(0) << " in the " << hypothesisChoice.at(2)
     << " with the " << hypothesisChoice.at(1) << std::endl;
 
@@ -248,11 +257,11 @@ std::vector<int> Client::accusation(void){
 
 	}
 
-	auto& currentRoom = static_cast<state::Room&>(currentPlayer.getLocation());
+	auto& currentRoom = static_cast<state::Room&>(currentPlayer->getLocation());
 	accusationChoice.push_back(currentRoom.getName());
 
 
-    std::cout << currentPlayer.getIdentity() << " accuses "
+    std::cout << currentPlayer->getIdentity() << " accuses "
     << accusationChoice.at(0) << " of committing the crime in the " << accusationChoice.at(2)
     << " with the " << accusationChoice.at(1) << std::endl;
 
@@ -260,7 +269,6 @@ std::vector<int> Client::accusation(void){
  }
 
 int Client::moveDisplay(std::vector<state::Cell*> accessibleCells){
-
 /*
 	std::cout << "Where do you want to go ?" << std::endl;
 
@@ -343,6 +351,15 @@ int Client::convertToInteger(std::string command){
 	}
 		return -1;
 }
-
-
+  
+void Client::displayMap()
+{
+	std::vector<std::vector<std::string>> mapGrid = state->getMap()->getDisplayMap();
+	for (std::vector<std::string> row : mapGrid) {
+		for (std::string cell : row) {
+			std::cout << cell;
+		}
+		std::cout << std::endl;
+	}
+}
 }
