@@ -17,7 +17,7 @@ namespace engine {
         for (int i=0; i<playerList->size();i++){
             int dice1 = UtilityFunctions::randomInt(5)+1;
             int dice2 = UtilityFunctions::randomInt(5)+1;
-            std::cout << "Joueur " << i+1 << ": " <<"dice1: " << dice1 << "; dice2: " << dice2 << std::endl;
+            std::cout << "Player " << i+1 << ": " <<"dice1: " << dice1 << "; dice2: " << dice2 << std::endl;
             if (dices < dice1 + dice2) {
                 dices = dice1 + dice2;
                 firstPlayer = currentPlayer;
@@ -100,4 +100,34 @@ namespace engine {
             playerList->next();
         }
     }
+
+    int Engine::movementDice () {
+        int die1 = UtilityFunctions::randomInt(5)+1;
+        int die2 = UtilityFunctions::randomInt(5)+1;
+        int sumOfDice = die1 + die2;
+        client.displayDieValue(sumOfDice);  // rajouter un pointeur
+        return sumOfDice;
+    }
+
+    void Engine::distributionCharacters () {
+        int numberOfPlayer = playerList->size();
+
+        std::vector<state::Suspect> SuspectsVector = {state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE, state::VIOLET} ;
+
+        state::PlayerInfo* currentPlayer = &playerList->getCurrent();
+        int players = 1;
+        while (players!=numberOfPlayer+1) {
+            currentPlayer.setIdentity(SuspectsVector.at(players));
+            playerList->next();
+            currentPlayer = &playerList->getCurrent();
+        }
+        
+
+
+
+
+
+    }
+
+
 }
