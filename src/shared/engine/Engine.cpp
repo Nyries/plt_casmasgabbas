@@ -101,7 +101,7 @@ namespace engine {
         }
     }
 
-    int Engine::movementDice () {
+    int Engine::movementDices () {
         int die1 = UtilityFunctions::randomInt(5)+1;
         int die2 = UtilityFunctions::randomInt(5)+1;
         int sumOfDice = die1 + die2;
