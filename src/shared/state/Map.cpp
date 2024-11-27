@@ -46,7 +46,6 @@ namespace state {
             else if (locationType == "DOOR"){
                 for (Room room: roomList) {
                     if (room.getNameAsString() == cellData["RoomLink"].asString()) {
-                        std::cout << "Room found :" << room.getNameAsString() << std::endl;
                         mapGrid[x][y] = Door(x, y, &room);
                     }
                 }

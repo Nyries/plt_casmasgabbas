@@ -17,7 +17,7 @@ namespace state {
 
     PlayerInfo& CircularPlayerList::getCurrent () {
         return *it;
-    };
+    }
 
     void CircularPlayerList::next() {
         ++it;
