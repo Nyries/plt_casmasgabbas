@@ -133,26 +133,34 @@ namespace engine {
             if (askedPlayers == playerList->size()) {
                 return possessedCards;
             }
-
+/*
             else {
-                for (int i=0; i<cards.size();i++) {
-                    for (int j=0; j<playerList->getCurrent().getCards().size();j++) {
+                for (int i=0; i<playerList->getCurrent().getCards().size();i++) {
+                     for (int j=0; j<cards.size();j++){
 
-                        if (cards.at(i).getType() == state::ROOM_CARD) {
-                            if (cards.at(i).getRoomName() == ) {
-
+                        if (cards.at(i).getType() == state::SUSPECT_CARD and
+                            playerList->getCurrent().getCards().at(j).getType() == state::SUSPECT_CARD) {
+                            if (cards.at(i).getSuspectName() == playerList->getCurrent().getCards().at(j).getSuspectName()) {
+                                possessedCards.push_back(cards.at(i));
                             }
                         }
 
+                        else if (cards.at(i).getType() == state::WEAPON_CARD and
+                            playerList->getCurrent().getCards().at(j).getType() == state::WEAPON_CARD) {
+                            if (cards.at(i).getWeaponName() == playerList->getCurrent().getCards().at(j).getWeaponName()) {
+                                possessedCards.push_back(cards.at(i));
+                            }
+                        }
 
-
-                        if (cards.at(i).getType() == playerList->getCurrent().getCards().at(j).getType() and cards.at(i).getType() == state::ROOM_CARD) {
-                            if (cards.at(i).getType().getRoomName()==playerList->getCurrent().getCards().at(j).getType().getRoomName()) {
-
+                        else if (cards.at(i).getType() == state::ROOM_CARD and
+                            playerList->getCurrent().getCards().at(j).getType() == state::ROOM_CARD) {
+                            if (cards.at(i).getRoomName() == playerList->getCurrent().getCards().at(j).getRoomName()) {
+                                possessedCards.push_back(cards.at(i));
                             }
                         }
                     }
                 }
+                return possessedCards;
             }
 
 
@@ -166,6 +174,7 @@ namespace engine {
 
 
         return possessedCards;
+        */
     }
 
     state::Card Engine::showCard (std::vector<state::Card> cards) {
