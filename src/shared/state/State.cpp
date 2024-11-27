@@ -2,19 +2,31 @@
 // Created by louismmassin on 11/8/24.
 //
 #include "State.h"
-#include "UtilityFunctions.cpp"
-#include "CircularPlayerList.cpp"
 
-#include <iostream>
-
-#include "RoomCard.h"
-#include "SuspectCard.h"
-#include "UtilityFunctions.h"
-#include "WeaponCard.h"
+#include <fstream>
+#include <json/json.h>
 
 namespace state {
-    State::State(int playerCount, std::string dataFilePath): players(*this, playerCount), accusationSuccess(false), map(dataFilePath) {
+    State::State(const std::string& stateJsonPath): accusationSuccess(false), envelope()
+    {
+        std::ifstream file(stateJsonPath);
+        Json::Value stateJsonData;
+        file >> stateJsonData;
+        file.close();
+
+        players = new CircularPlayerList(stateJsonData["playersCount"].asInt());
+        map = new Map(stateJsonData["mapJsonPath"].asString());
     }
 
+    Map* State::getMap() {
+        return map;
+    }
+    CircularPlayerList *State::getPlayerList()
+    {
+        return this->players;
+    }
+    std::vector<Card> &State::getEnvelope()
+    {
+        return this->envelope;
+    }
 }
-

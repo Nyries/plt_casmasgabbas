@@ -6,13 +6,16 @@
 #include "engine.h"
 
 namespace engine {
+    Engine::Engine(state::State &state): state(state), playerList(state.getPlayerList()), map(state.getMap()), currentPlayer(playerList->getCurrent()), envelope(state.getEnvelope()) {
+    }
+
     void Engine::determineFirstPlayer() {
         int dices=0;
         int joueur=0;
         state::PlayerInfo* firstPlayer = nullptr;
-        state::PlayerInfo* currentPlayer = &playerList.getCurrent();
-        for (int i=0; i<playerList.size();i++){
-            int dice1 = state::UtilityFunctions::randomInt(5)+1;
+        state::PlayerInfo* currentPlayer = &playerList->getCurrent();
+        for (int i=0; i<playerList->size();i++){
+            int dice1 = UtilityFunctions::randomInt(5)+1;
             int dice2 = UtilityFunctions::randomInt(5)+1;
             std::cout << "Joueur " << i+1 << ": " <<"dice1: " << dice1 << "; dice2: " << dice2 << std::endl;
             if (dices < dice1 + dice2) {
@@ -20,15 +23,15 @@ namespace engine {
                 firstPlayer = currentPlayer;
                 joueur = i+1;
             }
-            playerList.next();
-            currentPlayer = &playerList.getCurrent();
+            playerList->next();
+            currentPlayer = &playerList->getCurrent();
         }
 
 
         if (firstPlayer != nullptr) {
             std::cout << "Le joueur " << joueur << " commence" << std::endl;
             for (int i=1; i<=joueur; i++ ){
-                playerList.next();
+                playerList->next();
             }
         }
     }
@@ -92,9 +95,9 @@ namespace engine {
 
         while (!allCards.empty()) {
             int randomIndex = UtilityFunctions::randomInt(allCards.size());
-            playerList.getCurrent().giveCard(allCards.at(randomIndex));
+            playerList->getCurrent().giveCard(allCards.at(randomIndex));
             allCards.erase(allCards.begin()+randomIndex);
-            playerList.next();
+            playerList->next();
         }
     }
 }

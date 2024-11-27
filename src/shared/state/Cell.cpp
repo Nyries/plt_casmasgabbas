@@ -8,8 +8,7 @@ namespace state {
     }
 
     Cell::~Cell()
-    {
-    }
+    = default;
 
     int Cell::getX() {
         return coordX;
@@ -34,7 +33,7 @@ namespace state {
         this->occupied = occupied;
     }
 
-    std::vector<Cell *> Cell::getAccessibleCells() {
+    /*std::vector<Cell *> Cell::getAccessibleCells() {
         std::vector<Cell*> accessibleCells;
 
         std::vector<std::pair<int, int>> directions = {
@@ -56,7 +55,7 @@ namespace state {
         }
 
         return accessibleCells;
-    }
+    }*/
 
 
 }

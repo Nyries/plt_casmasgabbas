@@ -6,11 +6,12 @@
 #include <vector>
 
 namespace state {
-    CircularPlayerList::CircularPlayerList(State& currentGame, int playerCount): it(list.begin()), currentPlayer(list.front()) {
+    CircularPlayerList::CircularPlayerList(const int playerCount): currentPlayer(list.front()) {
         list.reserve(playerCount);
+        it = list.begin();
         for(int i = 0; i < playerCount; i++) {
             std::string tempName = "player " + std::to_string(i);
-            list.emplace_back(currentGame, tempName, ROSE);
+            list.emplace_back(tempName, ROSE);
         }
     }
 

@@ -6,7 +6,7 @@
 #include <utility>
 
 namespace state {
-    PlayerInfo::PlayerInfo(State& currentGame, std::string  name, Suspect identity): currentGame(currentGame),
+    PlayerInfo::PlayerInfo(std::string  name, Suspect identity): currentGame(currentGame),
         location(nullptr), name(std::move(name)), identity(identity), canWin(true) {
     }
 
@@ -18,4 +18,28 @@ namespace state {
         cards.push_back(std::move(card));
     }
 
+    Location& PlayerInfo::getLocation () {
+        return *location;
+    }
+
+    Suspect PlayerInfo::getIdentity () {
+        return identity;
+    }
+
+    void PlayerInfo::setIdentity(Suspect identity) {
+        this->identity = identity;
+    }
+
+
+    const std::string& PlayerInfo::getName() {
+        return name;
+    }
+
+    bool PlayerInfo::getCanWin() {
+        return canWin;
+    }
+
+    void PlayerInfo::setCanWin(bool canWin) {
+        this->canWin = canWin;
+    }
 }

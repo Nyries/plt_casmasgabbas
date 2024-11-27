@@ -7,7 +7,7 @@
 #include <iostream>
 
 namespace state {
-    Map::Map(std::string mapJsonPath){
+    Map::Map(const std::string& mapJsonPath){
         std::ifstream file(mapJsonPath);
         Json::Value jsonData;
         file >> jsonData;
@@ -31,7 +31,9 @@ namespace state {
         roomList.at(6).addSecretPassage(roomList.at(4));
 
         //Creating the map grid from the json file
-        mapGrid = std::vector<std::vector<Cell>>(jsonData["mapWidth"].asInt(), std::vector<Cell>(jsonData["mapHeight"].asInt(), Cell(0, 0, LocationType::INACCESSIBLE)));
+        height = jsonData["mapHeight"].asInt();
+        width = jsonData["mapWidth"].asInt();
+        mapGrid = std::vector<std::vector<Cell>>(width, std::vector<Cell>(height, Cell(0, 0, LocationType::INACCESSIBLE)));
         for (Json::Value cellData : mapData) {
             int x = cellData["x"].asInt();
             int y = cellData["y"].asInt();
@@ -52,5 +54,45 @@ namespace state {
             else if (locationType == "ROOM")
                 mapGrid[x][y] = Cell(x, y, LocationType::ROOM);
         }
+    }
+    std::vector<std::vector<std::string>> Map::getDisplayMap()
+    {
+        std::vector<std::vector<std::string>> displayMap(2*height+1, std::vector<std::string>(2*width+1, ""));  
+        
+        for (int i=0; i< 2*height+1; i++){
+            for (int j=0; j<2*width+1; j++){
+                if (i%2==0){
+                    displayMap[i][j] ='-';
+                }
+                else if (j%2==0){
+                    displayMap[i][j] = '|';
+                }
+                else if (mapGrid[j/2][i/2].getType() == LocationType::CORRIDOR){
+                    displayMap[i][j] = ' ';
+                }
+                else if (mapGrid[j/2][i/2].getType() == LocationType::ROOM){
+                    displayMap[i][j] = 'R';
+                }                
+                else if (mapGrid[j/2][i/2].getType() == LocationType::INACCESSIBLE){
+                    displayMap[i][j] = 'X';
+                }
+                else if (mapGrid[j/2][i/2].getType() == LocationType::DOOR){
+                    displayMap[i][j] = 'D';
+                }
+            }
+        }
+        return displayMap;
+    }
+    std::vector<std::vector<Cell>> Map::getMapGrid()
+    {
+        return this->mapGrid;
+    }
+    int Map::getHeight()
+    {
+        return this->height;
+    }
+    int Map::getWidth()
+    {
+        return this->width;
     }
 }
