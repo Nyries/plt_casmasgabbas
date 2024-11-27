@@ -90,7 +90,7 @@
         <dia:point val="1.11386,-31.8302"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="1.06386,-32.8802;62.9598,-4.91318"/>
+        <dia:rectangle val="1.06386,-32.8802;68,-4.91318"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -99,7 +99,7 @@
         <dia:point val="1.11386,-31.8302"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="61.795899999999989"/>
+        <dia:real val="66.836139999999986"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
         <dia:real val="26.867019827619071"/>
@@ -134,16 +134,16 @@
         <dia:point val="34.7086,-28.8948"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="34.6586,-28.9448;65.2886,-15.0448"/>
+        <dia:rectangle val="34.6586,-28.9448;65.6736,-14.2448"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="34.7086,-28.8948"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="30.530000000000001"/>
+        <dia:real val="30.914999999999999"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="13.799999999999999"/>
+        <dia:real val="14.6"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#Engine#</dia:string>
@@ -409,7 +409,7 @@
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::vector&lt;std::pair&lt;std::string,int&gt;&gt;#</dia:string>
+            <dia:string>#std::vector&lt;std::tuple&lt;std::string, int, state::Suspect&gt;&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -432,10 +432,10 @@
           <dia:attribute name="parameters">
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#playerNames#</dia:string>
+                <dia:string>#players#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#std::vector&lt;std::string&gt;#</dia:string>
+                <dia:string>#std::vector&lt;std::tuple&lt;std::string, int, state::Suspect&gt;&gt;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
