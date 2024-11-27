@@ -7,7 +7,7 @@
 
 namespace state {
     PlayerInfo::PlayerInfo(std::string  name, Suspect identity): currentGame(currentGame),
-        location(nullptr), name(std::move(name)), identity(identity), canWin(true) {
+       name(std::move(name)), cards(cards), location(nullptr),  identity(identity), canWin(true) {
     }
 
     void PlayerInfo::setLocation(Location &newLocation) {
@@ -16,6 +16,10 @@ namespace state {
 
     void PlayerInfo::giveCard(Card &card) {
         cards.push_back(std::move(card));
+    }
+
+    std::vector<Card>& PlayerInfo::getCards () {
+        return cards;
     }
 
     Location& PlayerInfo::getLocation () {
@@ -29,7 +33,6 @@ namespace state {
     void PlayerInfo::setIdentity(Suspect identity) {
         this->identity = identity;
     }
-
 
     const std::string& PlayerInfo::getName() {
         return name;

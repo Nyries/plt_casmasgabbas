@@ -6,7 +6,7 @@
 #include "engine.h"
 
 namespace engine {
-    Engine::Engine(state::State &state): state(state), playerList(state.getPlayerList()), map(state.getMap()), currentPlayer(playerList->getCurrent()), envelope(state.getEnvelope()) {
+    Engine::Engine(state::State &state): state(state), playerList(state.getPlayerList()),  currentPlayer(playerList->getCurrent()),map(state.getMap()), envelope(state.getEnvelope()) {
     }
 
     void Engine::determineFirstPlayer() {
@@ -18,7 +18,7 @@ namespace engine {
             std::vector<int> randomDice = dice();
             int dice1 = randomDice.at(0);
             int dice2 = randomDice.at(1);
-            //std::cout << "Player " << i+1 << ": " <<"dice1: " << dice1 << "; dice2: " << dice2 << std::endl;
+            std::cout << "Player " << i+1 << ": " <<"dice1: " << dice1 << "; dice2: " << dice2 << std::endl;
             if (dices < dice1 + dice2) {
                 dices = dice1 + dice2;
                 firstPlayer = currentPlayer;
@@ -122,7 +122,59 @@ namespace engine {
         return dice;
     }
 
+    std::vector<state::Card> Engine::gotTheCard (std::vector<state::Card> cards) {
+        playerList->getCurrent();
+        int askedPlayers = 0;
+        std::vector<state::Card> possessedCards = {};
 
+        while (possessedCards.empty()){
+            askedPlayers++;
+
+            if (askedPlayers == playerList->size()) {
+                return possessedCards;
+            }
+
+            else {
+                for (int i=0; i<cards.size();i++) {
+                    for (int j=0; j<playerList->getCurrent().getCards().size();j++) {
+
+                        if (cards.at(i).getType() == state::ROOM_CARD) {
+                            if (cards.at(i).getRoomName() == ) {
+
+                            }
+                        }
+
+
+
+                        if (cards.at(i).getType() == playerList->getCurrent().getCards().at(j).getType() and cards.at(i).getType() == state::ROOM_CARD) {
+                            if (cards.at(i).getType().getRoomName()==playerList->getCurrent().getCards().at(j).getType().getRoomName()) {
+
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            playerList->next();
+        }
+
+
+
+
+
+
+
+        return possessedCards;
+    }
+
+    state::Card Engine::showCard (std::vector<state::Card> cards) {
+        state::Card& shownCard = cards.at(0);
+
+
+        return shownCard;
+
+    }
 
 
 
