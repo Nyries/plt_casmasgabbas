@@ -4,40 +4,89 @@
 
 #include "Client.h"
 #include "state.h"
+#include "engine.h"
+
+#include <algorithm>
+#include <cstdlib>
+#include <utility>
 #include <iostream>
 #include <fstream>
 #include <json/json.h>
 
+using namespace std;
+
 namespace client{
 	Client::Client(std::string clientJsonPath)
 {
-	    std::ifstream file(clientJsonPath);
+		this->clientJsonPath = clientJsonPath;
+	    std::ifstream clientJsonFile(clientJsonPath);
 
-		if (!file.is_open()) {
+		if (!clientJsonFile.is_open()) {
 			std::cerr << "Error: could not open file " << clientJsonPath << std::endl;
 			return;
 		}
         Json::Value clientJsonData;
-        file >> clientJsonData;
-        file.close();
+        clientJsonFile >> clientJsonData;
+        clientJsonFile.close();
 		state = new state::State(clientJsonData["stateJsonPath"].asString());
+		engine = new engine::Engine(*state);
+		int numberOfPlayers = introductionToTheGame();
+		this->createParty(numberOfPlayers);
 		playerList = state->getPlayerList();
 		currentPlayer = &playerList->getCurrent();
-}
+	}
 
-	int Client::introductionToTheGame(void){
-	int numberPlayer;
-	std::cout << "You're playing to the cluedo." << std::endl;
-	std::cout << "Mr LENOIR died in is house this night." << std::endl;
-	std::cout << "You will have to find the murderer." << std::endl;
-	std::cout << "How many detectives are you ?" << std::endl;
-	std::cin >> numberPlayer;
-	std::cout << "Good Luck for your investigation! " << std::endl;
-	return int();
-}
+	int Client::introductionToTheGame(){
+		int numberOfPlayers;
+		std::cout << "You're playing to the cluedo." << std::endl;
+		std::cout << "Mr LENOIR died in is house this night." << std::endl;
+		std::cout << "You will have to find the murderer." << std::endl;
+		std::cout << "How many detectives are you ?" << std::endl;
+		std::cin >> numberOfPlayers;
+		while (numberOfPlayers < 3 or numberOfPlayers > 6){
+			std::cout << "You have to be between 3 and 6 players to play CLUEDO." <<  endl << "How many detectives are you ?" << std::endl;
+			std::cin >> numberOfPlayers;
+		}
+		std::cout << "Good Luck for your investigation! " << std::endl;
+		return numberOfPlayers;
+	}
 
+	void Client::createParty(int numberOfPlayers){
+		vector<string> playerNames(numberOfPlayers, "name");
+		for (int i=0; i < numberOfPlayers; i++){
+			std::cout << "What is the name of player " + std::to_string(i+1) << std::endl;
+			cin >> playerNames.at(i);
+		}
+		//test for the player name well initialized
+		/*for (int i=0; i < numberOfPlayers; i++){
+			cout << "name : " << playerNames.at(i) << endl;
+		}*/
+		//Draw for suspect attribution as well as determining first player
+		vector<pair<string, int>> playerOrder = determinePlayerOrder(playerNames, numberOfPlayers);
+		//choosingSuspect(playerNames, numberOfPlayers);
+	}
 
-std::vector<int> Client::hypothesis(){
+	vector<pair<string,int>> determinePlayerOrder (std::vector<std::string> playerNames, int numberOfPlayers){
+		vector<pair<string, int>> order(numberOfPlayers, make_pair("name", 0));
+		//Draw for suspect attribution as well as determining first player
+		cout << "We are now going to draw the dices to determine the player order" << endl << "Drawing dices..." << endl;
+		// A mettre dans engine
+		/*for (int i=0; i<numberOfPlayers; i++){
+			int dice = rand() % 6 + 1 + rand() % 6 + 1;
+			order.at(i).first = playerNames.at(i);
+			order.at(i).second = dice;
+		}
+		//Sort the vector
+		std::sort(order.begin(), order.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
+			return b.second < a.second;
+		});*/
+		//test for the order well 
+
+		
+		
+	}
+
+	std::vector<int> Client::hypothesis(){
 
     std::vector<int> hypothesisChoice;
     std::cout << "You want to make an hypothesis ! " << std::endl;

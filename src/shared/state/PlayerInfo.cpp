@@ -6,8 +6,7 @@
 #include <utility>
 
 namespace state {
-    PlayerInfo::PlayerInfo(std::string  name, Suspect identity): currentGame(currentGame),
-        location(nullptr), name(std::move(name)), identity(identity), canWin(true) {
+    PlayerInfo::PlayerInfo(std::string  name, Suspect identity): location(nullptr), name(std::move(name)), identity(identity), accusationFailed(true) {
     }
 
     void PlayerInfo::setLocation(Location &newLocation) {
@@ -35,11 +34,11 @@ namespace state {
         return name;
     }
 
-    bool PlayerInfo::getCanWin() {
-        return canWin;
+    bool PlayerInfo::getAccusationFailed() {
+        return accusationFailed;
     }
 
-    void PlayerInfo::setCanWin(bool canWin) {
-        this->canWin = canWin;
+    void PlayerInfo::setAccusationFailed(bool accusationFailed) {
+        this->accusationFailed = accusationFailed;
     }
 }

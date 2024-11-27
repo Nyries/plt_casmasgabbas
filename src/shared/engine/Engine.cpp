@@ -11,26 +11,26 @@ namespace engine {
 
     void Engine::determineFirstPlayer() {
         int dices=0;
-        int joueur=0;
+        int player=0;
         state::PlayerInfo* firstPlayer = nullptr;
         state::PlayerInfo* currentPlayer = &playerList->getCurrent();
         for (int i=0; i<playerList->size();i++){
-            int dice1 = UtilityFunctions::randomInt(5)+1;
-            int dice2 = UtilityFunctions::randomInt(5)+1;
-            std::cout << "Joueur " << i+1 << ": " <<"dice1: " << dice1 << "; dice2: " << dice2 << std::endl;
+            std::vector<int> randomDice = dice();
+            int dice1 = randomDice.at(0);
+            int dice2 = randomDice.at(1);
+            //std::cout << "Player " << i+1 << ": " <<"dice1: " << dice1 << "; dice2: " << dice2 << std::endl;
             if (dices < dice1 + dice2) {
                 dices = dice1 + dice2;
                 firstPlayer = currentPlayer;
-                joueur = i+1;
+                player = i+1;
             }
             playerList->next();
             currentPlayer = &playerList->getCurrent();
         }
 
-
         if (firstPlayer != nullptr) {
-            std::cout << "Le joueur " << joueur << " commence" << std::endl;
-            for (int i=1; i<=joueur; i++ ){
+            //std::cout << "Player " << player << " beggins" << std::endl;
+            for (int i=1; i<=player; i++ ){
                 playerList->next();
             }
         }
@@ -100,4 +100,32 @@ namespace engine {
             playerList->next();
         }
     }
+
+    void Engine::distributionCharacters () {
+        int numberOfPlayer = playerList->size();
+        std::vector<state::Suspect> SuspectsVector = {state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE, state::VIOLET} ;
+        state::PlayerInfo* currentPlayer = &playerList->getCurrent();
+        int players = 1;
+        while (players!=numberOfPlayer+1) {
+            currentPlayer->setIdentity(SuspectsVector.at(players));
+            playerList->next();
+            currentPlayer = &playerList->getCurrent();
+        }
+    }
+
+    std::vector<int> Engine::dice () {
+        int die1 = UtilityFunctions::randomInt(5)+1;
+        int die2 = UtilityFunctions::randomInt(5)+1;
+        std::vector<int> dice;
+        dice.push_back(die1);
+        dice.push_back(die2);
+        return dice;
+    }
+
+
+
+
+
 }
+
+
