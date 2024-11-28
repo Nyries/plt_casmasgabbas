@@ -134,16 +134,16 @@
         <dia:point val="34.7086,-28.8948"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="34.6586,-28.9448;65.6736,-14.2448"/>
+        <dia:rectangle val="34.6586,-28.9448;70.2936,-15.0448"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="34.7086,-28.8948"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="30.914999999999999"/>
+        <dia:real val="35.535000000000004"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="14.6"/>
+        <dia:real val="13.799999999999999"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#Engine#</dia:string>
@@ -409,7 +409,7 @@
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::vector&lt;std::tuple&lt;std::string, int, state::Suspect&gt;&gt;#</dia:string>
+            <dia:string>#std::vector&lt;std::tuple&lt;std::string, int, int&gt;&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -435,7 +435,7 @@
                 <dia:string>#players#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#std::vector&lt;std::tuple&lt;std::string, int, state::Suspect&gt;&gt;#</dia:string>
+                <dia:string>#std::vector&lt;std::tuple&lt;std::string, int, int&gt;&gt;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>

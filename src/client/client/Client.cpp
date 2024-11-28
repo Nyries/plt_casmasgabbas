@@ -31,7 +31,9 @@ namespace client{
 		state = new state::State(clientJsonData["stateJsonPath"].asString());
 		engine = new engine::Engine(*state);
 		int numberOfPlayers = introductionToTheGame();
-		this->createParty(numberOfPlayers);
+		players = vector<tuple<string, int, int>>(numberOfPlayers, make_tuple("name", 0, 0));
+		createParty(numberOfPlayers);
+		
 		playerList = state->getPlayerList();
 		currentPlayer = &playerList->getCurrent();
 	}
@@ -52,34 +54,37 @@ namespace client{
 	}
 
 	void Client::createParty(int numberOfPlayers){
-		vector<string> playerNames(numberOfPlayers, "name");
+		string name;
 		for (int i=0; i < numberOfPlayers; i++){
 			std::cout << "What is the name of player " + std::to_string(i+1) << std::endl;
-			cin >> playerNames.at(i);
+			cin >> name;
+			get<0>(players.at(i)) = name;
 		}
 		//test for the player name well initialized
 		/*for (int i=0; i < numberOfPlayers; i++){
-			cout << "name : " << playerNames.at(i) << endl;
+			cout << "name : " << get<0>(players.at(i)) << endl;
 		}*/
 		//Draw for suspect attribution as well as determining first player
-		vector<pair<string, int>> playerOrder = determinePlayerOrder(playerNames, numberOfPlayers);
+		cout << "We are now going to draw the dices to determine the player order" << endl << "Drawing dices..." << endl;
+		players = engine->determinePlayerOrder(players, numberOfPlayers);
+		//test for the order well
+		/*for (int i=0; i < numberOfPlayers; i++){
+			cout << "name : " << get<0>(players.at(i)) << " dice : " << get<1>(players.at(i)) << endl;
+		}*/
+		//Choosing the suspect
+
 		//choosingSuspect(playerNames, numberOfPlayers);
 	}
 
 	vector<pair<string,int>> determinePlayerOrder (std::vector<std::string> playerNames, int numberOfPlayers){
-		vector<pair<string, int>> order(numberOfPlayers, make_pair("name", 0));
 		//Draw for suspect attribution as well as determining first player
-		cout << "We are now going to draw the dices to determine the player order" << endl << "Drawing dices..." << endl;
+		
 		// A mettre dans engine
 		/*for (int i=0; i<numberOfPlayers; i++){
 			int dice = rand() % 6 + 1 + rand() % 6 + 1;
 			order.at(i).first = playerNames.at(i);
 			order.at(i).second = dice;
-		}
-		//Sort the vector
-		std::sort(order.begin(), order.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
-			return b.second < a.second;
-		});*/
+		}*/
 		//test for the order well 
 
 		
