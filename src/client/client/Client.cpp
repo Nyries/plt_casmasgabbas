@@ -150,7 +150,7 @@ namespace client{
         return std::string();
     }
 
-    std::vector<int> Client::hypothesis(){
+    std::vector<int> Client::chooseHypothesis(){
     std::vector<int> hypothesisChoice;
     std::cout << "You want to make an hypothesis ! " << std::endl;
     int choice;
