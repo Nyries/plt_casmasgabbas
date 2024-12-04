@@ -31,7 +31,9 @@ namespace client{
 		state = new state::State(clientJsonData["stateJsonPath"].asString());
 		engine = new engine::Engine(*state);
 		int numberOfPlayers = introductionToTheGame();
-		this->createParty(numberOfPlayers);
+		players = vector<tuple<string, int, int>>(numberOfPlayers, make_tuple("name", 0, 0));
+		createParty(numberOfPlayers);
+		
 		playerList = state->getPlayerList();
 		currentPlayer = &playerList->getCurrent();
 	}
@@ -52,42 +54,103 @@ namespace client{
 	}
 
 	void Client::createParty(int numberOfPlayers){
-		vector<string> playerNames(numberOfPlayers, "name");
+		string name;
 		for (int i=0; i < numberOfPlayers; i++){
 			std::cout << "What is the name of player " + std::to_string(i+1) << std::endl;
-			cin >> playerNames.at(i);
+			cin >> name;
+			get<0>(players.at(i)) = name;
 		}
 		//test for the player name well initialized
 		/*for (int i=0; i < numberOfPlayers; i++){
-			cout << "name : " << playerNames.at(i) << endl;
+			cout << "name : " << get<0>(players.at(i)) << endl;
 		}*/
 		//Draw for suspect attribution as well as determining first player
-		vector<pair<string, int>> playerOrder = determinePlayerOrder(playerNames, numberOfPlayers);
+		cout << "We are now going to draw the dices to determine the player order" << endl << "Drawing dices..." << endl;
+		players = engine->determinePlayerOrder(players, numberOfPlayers);
+		//test for the order well
+		/*for (int i=0; i < numberOfPlayers; i++){
+			cout << "name : " << get<0>(players.at(i)) << ", dice : " << get<1>(players.at(i)) << endl;
+		}*/
+		determinePlayerSuspect();
+		cout << "The suspects have been attributed to each player" << endl;
+		cout << "Summary of the game creation" << endl;
+		for (int i=0; i < numberOfPlayers; i++){
+			cout << "Player " << get<0>(players.at(i)) << " is number " << i << " and has suspect " << intToSuspect(get<2>(players.at(i))) << endl;
+		}
+		//Choosing the suspect
+
 		//choosingSuspect(playerNames, numberOfPlayers);
 	}
 
-	vector<pair<string,int>> determinePlayerOrder (std::vector<std::string> playerNames, int numberOfPlayers){
-		vector<pair<string, int>> order(numberOfPlayers, make_pair("name", 0));
-		//Draw for suspect attribution as well as determining first player
-		cout << "We are now going to draw the dices to determine the player order" << endl << "Drawing dices..." << endl;
-		// A mettre dans engine
-		/*for (int i=0; i<numberOfPlayers; i++){
-			int dice = rand() % 6 + 1 + rand() % 6 + 1;
-			order.at(i).first = playerNames.at(i);
-			order.at(i).second = dice;
+    void Client::determinePlayerSuspect()
+    {
+		vector<int> suspectInt;
+		for (int i=1; i<=6; i++){
+			suspectInt.push_back(i);
 		}
-		//Sort the vector
-		std::sort(order.begin(), order.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
-			return b.second < a.second;
-		});*/
-		//test for the order well 
+		for (int i = 0; i < (int)players.size(); i++)
+		{
+			std::cout << get<0>(players.at(i)) << ", which suspect do you want to be ?" << std::endl;
+			if (find(suspectInt.begin(), suspectInt.end(), 1) != suspectInt.end())
+			{
+				std::cout << "If you want to be ROSE: press 1 " << std::endl;
+			}
+			if (find(suspectInt.begin(), suspectInt.end(), 2) != suspectInt.end())
+			{
+				std::cout << "If you want to be PERVENCHE: press 2 " << std::endl;
+			}
+			if (find(suspectInt.begin(), suspectInt.end(), 3) != suspectInt.end())
+			{
+				std::cout << "If you want to be LEBLANC: press 3 " << std::endl;
+			}
+			if (find(suspectInt.begin(), suspectInt.end(), 4) != suspectInt.end())
+			{
+				std::cout << "If you want to be OLIVE: press 4 " << std::endl;
+			}
+			if (find(suspectInt.begin(), suspectInt.end(), 5) != suspectInt.end())
+			{
+				std::cout << "If you want to be MOUTARDE: press 5 " << std::endl;
+			}
+			if (find(suspectInt.begin(), suspectInt.end(), 6) != suspectInt.end())
+			{
+				std::cout << "If you want to be VIOLET: press 6 " << std::endl;
+			}
 
-		
-		
+			int choice;
+			std::string stringNumber;
+			std::cin >> stringNumber;
+			choice = stoi(stringNumber);
+			while (choice < 1 or choice > 6 or find(suspectInt.begin(), suspectInt.end(), choice) == suspectInt.end())
+			{
+				std::cout << "Invalid choice, try again" << std::endl;
+				std::cin >> stringNumber;
+				choice = stoi(stringNumber);
+			}
+			suspectInt.erase(remove(suspectInt.begin(), suspectInt.end(), choice), suspectInt.end());
+			get<2>(players.at(i)) = choice;
+		}
 	}
 
-	std::vector<int> Client::hypothesis(){
+    std::string Client::intToSuspect(int input)
+    {
+		switch (input){
+			case 1:
+				return "ROSE";
+			case 2:
+				return "PERVENCHE";
+			case 3:
+				return "LEBLANC";
+			case 4:
+				return "OLIVE";
+			case 5:
+				return "MOUTARDE";
+			case 6:
+				return "VIOLET";
+		}
+        return std::string();
+    }
 
+    std::vector<int> Client::hypothesis(){
     std::vector<int> hypothesisChoice;
     std::cout << "You want to make an hypothesis ! " << std::endl;
     int choice;
@@ -201,7 +264,7 @@ namespace client{
  }
 
 
-std::vector<int> Client::accusation(void){
+std::vector<int> Client::chooseAccusation(void){
 
     std::vector<int> accusationChoice;
     std::cout << "You want to make an accusation ! " << std::endl;
