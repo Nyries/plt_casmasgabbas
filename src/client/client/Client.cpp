@@ -69,29 +69,88 @@ namespace client{
 		players = engine->determinePlayerOrder(players, numberOfPlayers);
 		//test for the order well
 		/*for (int i=0; i < numberOfPlayers; i++){
-			cout << "name : " << get<0>(players.at(i)) << " dice : " << get<1>(players.at(i)) << endl;
+			cout << "name : " << get<0>(players.at(i)) << ", dice : " << get<1>(players.at(i)) << endl;
 		}*/
+		determinePlayerSuspect();
+		cout << "The suspects have been attributed to each player" << endl;
+		cout << "Summary of the game creation" << endl;
+		for (int i=0; i < numberOfPlayers; i++){
+			cout << "Player " << get<0>(players.at(i)) << " is number " << i << " and has suspect " << intToSuspect(get<2>(players.at(i))) << endl;
+		}
 		//Choosing the suspect
 
 		//choosingSuspect(playerNames, numberOfPlayers);
 	}
 
-	vector<pair<string,int>> determinePlayerOrder (std::vector<std::string> playerNames, int numberOfPlayers){
-		//Draw for suspect attribution as well as determining first player
-		
-		// A mettre dans engine
-		/*for (int i=0; i<numberOfPlayers; i++){
-			int dice = rand() % 6 + 1 + rand() % 6 + 1;
-			order.at(i).first = playerNames.at(i);
-			order.at(i).second = dice;
-		}*/
-		//test for the order well 
+    void Client::determinePlayerSuspect()
+    {
+		vector<int> suspectInt;
+		for (int i=1; i<=6; i++){
+			suspectInt.push_back(i);
+		}
+		for (int i = 0; i < (int)players.size(); i++)
+		{
+			std::cout << get<0>(players.at(i)) << ", which suspect do you want to be ?" << std::endl;
+			if (find(suspectInt.begin(), suspectInt.end(), 1) != suspectInt.end())
+			{
+				std::cout << "If you want to be ROSE: press 1 " << std::endl;
+			}
+			if (find(suspectInt.begin(), suspectInt.end(), 2) != suspectInt.end())
+			{
+				std::cout << "If you want to be PERVENCHE: press 2 " << std::endl;
+			}
+			if (find(suspectInt.begin(), suspectInt.end(), 3) != suspectInt.end())
+			{
+				std::cout << "If you want to be LEBLANC: press 3 " << std::endl;
+			}
+			if (find(suspectInt.begin(), suspectInt.end(), 4) != suspectInt.end())
+			{
+				std::cout << "If you want to be OLIVE: press 4 " << std::endl;
+			}
+			if (find(suspectInt.begin(), suspectInt.end(), 5) != suspectInt.end())
+			{
+				std::cout << "If you want to be MOUTARDE: press 5 " << std::endl;
+			}
+			if (find(suspectInt.begin(), suspectInt.end(), 6) != suspectInt.end())
+			{
+				std::cout << "If you want to be VIOLET: press 6 " << std::endl;
+			}
 
-		
-		
+			int choice;
+			std::string stringNumber;
+			std::cin >> stringNumber;
+			choice = stoi(stringNumber);
+			while (choice < 1 or choice > 6 or find(suspectInt.begin(), suspectInt.end(), choice) == suspectInt.end())
+			{
+				std::cout << "Invalid choice, try again" << std::endl;
+				std::cin >> stringNumber;
+				choice = stoi(stringNumber);
+			}
+			suspectInt.erase(remove(suspectInt.begin(), suspectInt.end(), choice), suspectInt.end());
+			get<2>(players.at(i)) = choice;
+		}
 	}
 
-	std::vector<int> Client::hypothesis(){
+    std::string Client::intToSuspect(int input)
+    {
+		switch (input){
+			case 1:
+				return "ROSE";
+			case 2:
+				return "PERVENCHE";
+			case 3:
+				return "LEBLANC";
+			case 4:
+				return "OLIVE";
+			case 5:
+				return "MOUTARDE";
+			case 6:
+				return "VIOLET";
+		}
+        return std::string();
+    }
+
+    std::vector<int> Client::hypothesis(){
 
     std::vector<int> hypothesisChoice;
     std::cout << "You want to make an hypothesis ! " << std::endl;
