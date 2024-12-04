@@ -1,41 +1,30 @@
 //
 // Created by louismmassin on 11/18/24.
 //
-#include <iostream>
+
 #include "state.h"
 #include "engine.h"
+#include "Engine.h"
+
+#include <iostream>
+#include <algorithm>
+
 
 namespace engine {
     Engine::Engine(state::State &state): state(state), playerList(state.getPlayerList()), map(state.getMap()), currentPlayer(playerList->getCurrent()), envelope(state.getEnvelope()) {
     }
 
-    void Engine::determineFirstPlayer() {
-        int dices=0;
-        int player=0;
-        state::PlayerInfo* firstPlayer = nullptr;
-        state::PlayerInfo* currentPlayer = &playerList->getCurrent();
-        for (int i=0; i<playerList->size();i++){
-            std::vector<int> randomDice = dice();
-            int dice1 = randomDice.at(0);
-            int dice2 = randomDice.at(1);
-            //std::cout << "Player " << i+1 << ": " <<"dice1: " << dice1 << "; dice2: " << dice2 << std::endl;
-            if (dices < dice1 + dice2) {
-                dices = dice1 + dice2;
-                firstPlayer = currentPlayer;
-                player = i+1;
-            }
-            playerList->next();
-            currentPlayer = &playerList->getCurrent();
+    std::vector<std::tuple<std::string, int, int>> Engine::determinePlayerOrder(std::vector<std::tuple<std::string, int, int>> players, int numberOfPlayers)
+    {
+        for (int i=0; i<numberOfPlayers; i++){
+            int dice = UtilityFunctions::randomInt(6) + 1 + UtilityFunctions::randomInt(6) + 1;
+            players.at(i) = std::make_tuple(std::get<0>(players.at(i)), dice, 0);
         }
-
-        if (firstPlayer != nullptr) {
-            //std::cout << "Player " << player << " beggins" << std::endl;
-            for (int i=1; i<=player; i++ ){
-                playerList->next();
-            }
-        }
+        std::sort(players.begin(), players.end(), [](const std::tuple<std::string, int, int>& a, const std::tuple<std::string, int, int>& b) {
+            return std::get<1>(b) < std::get<1>(a);
+        });
+        return players;
     }
-
 
     void Engine::dealCards() {
 
