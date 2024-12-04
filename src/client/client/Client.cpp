@@ -151,7 +151,6 @@ namespace client{
     }
 
     std::vector<int> Client::hypothesis(){
-
     std::vector<int> hypothesisChoice;
     std::cout << "You want to make an hypothesis ! " << std::endl;
     int choice;
@@ -265,7 +264,7 @@ namespace client{
  }
 
 
-std::vector<int> Client::accusation(void){
+std::vector<int> Client::chooseAccusation(void){
 
     std::vector<int> accusationChoice;
     std::cout << "You want to make an accusation ! " << std::endl;
