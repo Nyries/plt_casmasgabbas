@@ -46,7 +46,6 @@ namespace state {
             else if (locationType == "DOOR"){
                 for (Room room: roomList) {
                     if (room.getNameAsString() == cellData["RoomLink"].asString()) {
-                        std::cout << "Room found :" << room.getNameAsString() << std::endl;
                         mapGrid[x][y] = Door(x, y, &room);
                     }
                 }
@@ -94,5 +93,56 @@ namespace state {
     int Map::getWidth()
     {
         return this->width;
+    }
+    std::vector<Cell*> Map::getNeighborsAsCell(int coordX, int coordY)
+    {
+        /**The order of the list is as follow: up, down, left, right*/
+        std::vector<Cell*> neighbors(4, new Cell(0, 0, LocationType::INACCESSIBLE));
+        // Case where coordX or coordY are not in the bounds of the map
+        if (coordX < 0 or coordX > width or coordY < 0 or coordY > height){
+            return neighbors;
+        }
+        // Cases where coordX or coordY are on the edge of the map
+        else if (coordX == 0){
+            neighbors.at(0) = &mapGrid[coordX][coordY-1];
+            neighbors.at(1) = &mapGrid[coordX][coordY+1];
+            neighbors.at(2) = new Cell(coordX-1, coordY, LocationType::INACCESSIBLE);
+            neighbors.at(3) = &mapGrid[coordX+1][coordY];
+        }
+        else if (coordY == 0){
+            neighbors.at(0) = new Cell(coordX, coordY-1, LocationType::INACCESSIBLE);
+            neighbors.at(1) = &mapGrid[coordX][coordY+1];
+            neighbors.at(2) = &mapGrid[coordX-1][coordY];
+            neighbors.at(3) = &mapGrid[coordX+1][coordY];
+        }
+        else if (coordX == width){
+            neighbors.at(0) = &mapGrid[coordX][coordY-1];
+            neighbors.at(1) = &mapGrid[coordX][coordY+1];
+            neighbors.at(2) = &mapGrid[coordX-1][coordY];
+            neighbors.at(3) = new Cell(coordX+1, coordY, LocationType::INACCESSIBLE);
+        }
+        else if (coordY == height){
+            neighbors.at(0) = &mapGrid[coordX][coordY-1];
+            neighbors.at(1) = new Cell(coordX, coordY+1, LocationType::INACCESSIBLE);
+            neighbors.at(2) = &mapGrid[coordX+1][coordY];
+            neighbors.at(3) = &mapGrid[coordX-1][coordY];
+        }
+        // General Case in the middle of the map
+        else {
+            neighbors.at(0) = &mapGrid[coordX][coordY-1];
+            neighbors.at(1) = &mapGrid[coordX][coordY+1];
+            neighbors.at(2) = &mapGrid[coordX-1][coordY];
+            neighbors.at(3) = &mapGrid[coordX+1][coordY];
+        }
+    }
+    std::vector<LocationType> Map::getNeighborsAsLocationType(int coordX, int coordY)
+    {
+        /**The order of the list is as follow: up, down, left, right*/
+        std::vector<LocationType> neighbors(4, LocationType::INACCESSIBLE);
+        std::vector<Cell*> neighboringCells = this->getNeighborsAsCell(coordX ,coordY);
+        for (int i=0; i<4; i++){
+            neighbors.at(i) = neighboringCells.at(i)->getType();
+        }
+        return neighbors;
     }
 }

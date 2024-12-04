@@ -20,7 +20,7 @@ int main(int argc,char* argv[])
 {
     //test();
     client::Client client("../configurations/client.json");
-    client.displayMap();
+;
     //Map map("../configurations/map.json");
     //vector<vector<Cell>> mapGrid = map.getMapGrid();
     //state::State state("../configurations/state.json");
