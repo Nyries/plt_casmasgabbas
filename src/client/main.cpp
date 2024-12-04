@@ -11,15 +11,16 @@ void testSFML() {
 
 #include <state.h>
 #include <client.h>
+#include <render.h>
 
 using namespace std;
-using namespace state;
 
 int main(int argc,char* argv[])
 {
     //test();
-    client::Client client("../configurations/client.json");
-;
+    //client::Client client("../configurations/client.json");
+    sf::RenderWindow window(sf::VideoMode(1600, 900), "Cluedo plt");
+    render::Scene scene(window);
     //Map map("../configurations/map.json");
     //vector<vector<Cell>> mapGrid = map.getMapGrid();
     //state::State state("../configurations/state.json");
