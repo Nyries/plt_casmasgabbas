@@ -375,19 +375,28 @@ int Client::moveDisplay(std::vector<state::Cell*> accessibleCells){
 }
 
 
-void Client::pressKey(std::string key){
+void Client::displayPressKey(std::string key){
 
 	std::cout << " press " << key << " " << std::endl;
 }
 
-char Client::goodKey(std::string key){
-
+int Client::getValidKey(int max){
   	std::string playerKey;
-	std::cin >> playerKey;
-	if (playerKey!=key){
-		goodKey(key);
-	}
-	return char();
+    try{
+    	std::cin >> playerKey;
+    	int keyVal = stoi(playerKey);
+        if(keyVal >= 0 && keyVal <= max){
+        	return keyVal;
+        }
+        else{
+        	std::cout << "Invalid key" << std::endl;
+            return getValidKey(max);
+        }
+    }
+	catch(const exception& e){
+		std::cout << "Invalid key" << std::endl;
+    	return getValidKey(max);
+    }
 }
 
 
