@@ -9,7 +9,7 @@ namespace engine {
     Engine::Engine(state::State &state): state(state), playerList(state.getPlayerList()), map(state.getMap()), currentPlayer(playerList->getCurrent()), envelope(state.getEnvelope()) {
     }
 
-    std::vector<std::tuple<std::string, int, int>> Engine::determinePlayerOrder(std::vector<std::tuple<std::string, int, int>> players, int numberOfPlayers)
+    std::vector<std::tuple<std::string, int, state::Suspect>> Engine::determinePlayerOrder(std::vector<std::tuple<std::string, int, state::Suspect>> players, int numberOfPlayers)
     {
         for (int i=0; i<numberOfPlayers; i++){
             int dice = UtilityFunctions::randomInt(6) + 1 + UtilityFunctions::randomInt(6) + 1;
@@ -107,71 +107,69 @@ namespace engine {
         return dice;
     }
 
-    std::vector<state::Card> Engine::gotTheCard (std::vector<state::Card> cards) {
+    std::vector<state::Card*> Engine::getPossessedCards (std::vector<state::Card> cards) {
         playerList->getCurrent();
         int askedPlayers = 0;
-        std::vector<state::Card> possessedCards = {};
+        std::vector<state::Card*> possessedCards = {};
 
         while (possessedCards.empty()){
-            askedPlayers++;
 
-            if (askedPlayers == playerList->size()) {
-                return possessedCards;
-            }
-/*
-            else {
-                for (int i=0; i<playerList->getCurrent().getCards().size();i++) {
-                     for (int j=0; j<cards.size();j++){
+            playerList->next;
 
-                        if (cards.at(i).getType() == state::SUSPECT_CARD and
-                            playerList->getCurrent().getCards().at(j).getType() == state::SUSPECT_CARD) {
-                            if (cards.at(i).getSuspectName() == playerList->getCurrent().getCards().at(j).getSuspectName()) {
-                                possessedCards.push_back(cards.at(i));
-                            }
-                        }
+            for (int i=0; i<playerList->getCurrent().getCards().size();i++) {
 
-                        else if (cards.at(i).getType() == state::WEAPON_CARD and
-                            playerList->getCurrent().getCards().at(j).getType() == state::WEAPON_CARD) {
-                            if (cards.at(i).getWeaponName() == playerList->getCurrent().getCards().at(j).getWeaponName()) {
-                                possessedCards.push_back(cards.at(i));
-                            }
-                        }
-
-                        else if (cards.at(i).getType() == state::ROOM_CARD and
-                            playerList->getCurrent().getCards().at(j).getType() == state::ROOM_CARD) {
-                            if (cards.at(i).getRoomName() == playerList->getCurrent().getCards().at(j).getRoomName()) {
-                                possessedCards.push_back(cards.at(i));
-                            }
-                        }
+                if (playerList->getCurrent().getCards().at(i).getType() == state::SUSPECT_CARD) {
+                    if(playerList->getCurrent().getCards().at(i).getSuspectName()== cards.at(0).getSuspectName()) {
+                        possessedCards.push_back(&cards.at(0));
                     }
                 }
+
+                else if (playerList->getCurrent().getCards().at(i).getType() == state::WEAPON_CARD) {
+                    if(playerList->getCurrent().getCards().at(i).getSuspectName()== cards.at(1).getWeaponName()) {
+                        possessedCards.push_back(&cards.at(1));
+                    }
+                }
+
+                else if (playerList->getCurrent().getCards().at(i).getType() == state::ROOM_CARD) {
+                    if(playerList->getCurrent().getCards().at(i).getSuspectName()== cards.at(2).getWeaponName()) {
+                        possessedCards.push_back(&cards.at(2));
+                    }
+                }
+
+            }
+
+            if (!possessedCards.empty() and askedPlayers != playerList->size()) {
                 return possessedCards;
             }
 
-
             playerList->next();
+            askedPlayers++;
+
+            if (!possessedCards.empty() and askedPlayers == playerList->size()) {
+                return possessedCards;
+
+            }
+
+            }
+
         }
+    }
 
 
+        /*
+            state::Card Engine::showCard (std::vector<state::Card> cards) {
+                state::Card& shownCard = cards.at(0);
 
 
+                return shownCard;
 
-
-
-        return possessedCards;
+            }
         */
-    }
-
-    state::Card Engine::showCard (std::vector<state::Card> cards) {
-        state::Card& shownCard = cards.at(0);
-
-
-        return shownCard;
-
-    }
-
 
 
 }
+
+
+
 
 
