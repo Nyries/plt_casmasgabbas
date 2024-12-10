@@ -93,28 +93,29 @@ namespace client{
 			std::cout << get<0>(players.at(i)) << ", which suspect do you want to be ?" << std::endl;
 			if (find(suspectInt.begin(), suspectInt.end(), 1) != suspectInt.end())
 			{
-				std::cout << "If you want to be ROSE: press 1 " << std::endl;
+				std::cout << "If you want to be VIOLET: press 1 " << std::endl;
 			}
 			if (find(suspectInt.begin(), suspectInt.end(), 2) != suspectInt.end())
 			{
-				std::cout << "If you want to be PERVENCHE: press 2 " << std::endl;
+				std::cout << "If you want to be ROSE: press 2 " << std::endl;
 			}
 			if (find(suspectInt.begin(), suspectInt.end(), 3) != suspectInt.end())
 			{
-				std::cout << "If you want to be LEBLANC: press 3 " << std::endl;
+				std::cout << "If you want to be PERVENCHE: press 3 " << std::endl;
 			}
 			if (find(suspectInt.begin(), suspectInt.end(), 4) != suspectInt.end())
 			{
-				std::cout << "If you want to be OLIVE: press 4 " << std::endl;
+				std::cout << "If you want to be LEBLANC: press 4 " << std::endl;
 			}
-			if (find(suspectInt.begin(), suspectInt.end(), 5) != suspectInt.end())
+			if (find(suspectInt.begin(), suspectInt.end(), (5)) != suspectInt.end())
 			{
-				std::cout << "If you want to be MOUTARDE: press 5 " << std::endl;
+				std::cout << "If you want to be OLIVE: press 5 " << std::endl;
 			}
 			if (find(suspectInt.begin(), suspectInt.end(), 6) != suspectInt.end())
 			{
-				std::cout << "If you want to be VIOLET: press 6 " << std::endl;
+				std::cout << "If you want to be MOUTARDE: press 6 " << std::endl;
 			}
+
 
 			int choice;
 			std::string stringNumber;

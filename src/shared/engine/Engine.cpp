@@ -11,11 +11,15 @@ namespace engine {
     Engine::Engine(state::State &state): state(state), playerList(state.getPlayerList()), map(state.getMap()), currentPlayer(playerList->getCurrent()), envelope(state.getEnvelope()) {
     }
 
-    std::vector<std::tuple<std::string, int, state::Suspect>> Engine::determinePlayerOrder(std::vector<std::tuple<std::string, int, state::Suspect>> players, int numberOfPlayers)
+    /// refaire cette fonction en changeant: hasard du premier joueur puis jump à lui, liste des joueurs déjà existante
+    /// c'est pas le deuxième qui à le meilleur score qui joue en deuxième
+
+    std::vector<std::tuple<std::string, int,int>> Engine::determinePlayerOrder(std::vector<std::tuple<std::string, int, int>> players, int numberOfPlayers)
     {
         for (int i=0; i<numberOfPlayers; i++){
-            int dice = UtilityFunctions::randomInt(6) + 1 + UtilityFunctions::randomInt(6) + 1;
-            players.at(i) = std::make_tuple(std::get<0>(players.at(i)), dice, 0);
+            std::vector<int> diceValues = dice();
+            int sumDice = diceValues.at(0) + diceValues.at(1);
+            players.at(i) = std::make_tuple(std::get<0>(players.at(i)), sumDice, 0);
         }
         std::sort(players.begin(), players.end(), [](const std::tuple<std::string, int, int>& a, const std::tuple<std::string, int, int>& b) {
             return std::get<1>(b) < std::get<1>(a);
@@ -118,8 +122,9 @@ namespace engine {
         while (possessedCards.empty()){
 
             playerList->next();
+            state::PlayerInfo& askedPlayer = playerList->getCurrent();
 
-            for (auto & i : playerList->getCurrent().getCards()) {
+            for (auto & i : askedPlayer.getCards()) {
 
                 if (i.getType() == state::SUSPECT_CARD) {
                     if(i.getSuspectName()== cards.at(0).getSuspectName()) {
