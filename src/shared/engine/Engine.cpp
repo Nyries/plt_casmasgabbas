@@ -4,6 +4,8 @@
 #include <iostream>
 #include "state.h"
 #include "engine.h"
+#include <tuple>
+#include <algorithm>
 
 namespace engine {
     Engine::Engine(state::State &state): state(state), playerList(state.getPlayerList()), map(state.getMap()), currentPlayer(playerList->getCurrent()), envelope(state.getEnvelope()) {
@@ -115,7 +117,7 @@ namespace engine {
 
         while (possessedCards.empty()){
 
-            playerList->next;
+            playerList->next();
 
             for (auto & i : playerList->getCurrent().getCards()) {
 
@@ -126,13 +128,13 @@ namespace engine {
                 }
 
                 else if (i.getType() == state::WEAPON_CARD) {
-                    if(i.getSuspectName()== cards.at(1).getWeaponName()) {
+                    if(i.getWeaponName()== cards.at(1).getWeaponName()) {
                         possessedCards.push_back(&cards.at(1));
                     }
                 }
 
                 else if (i.getType() == state::ROOM_CARD) {
-                    if(i.getSuspectName()== cards.at(2).getRoomName()) {
+                    if(i.getRoomName()== cards.at(2).getRoomName()) {
                         possessedCards.push_back(&cards.at(2));
                     }
                 }
