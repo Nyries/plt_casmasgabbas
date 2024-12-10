@@ -29,4 +29,6 @@ namespace state{
         	return "Mouais";
 		}
     }
+
+    Location::~Location() = default;
 }

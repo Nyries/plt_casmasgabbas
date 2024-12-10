@@ -3,11 +3,11 @@
 //
 
 #include "state.h"
-#include "engine.h"
+//#include "engine.h"
 #include "MoveCommand.h"
 
 #include <iostream>
-#include <algorithm>
+//#include <algorithm>
 
 namespace engine {
     MoveCommand::MoveCommand(state::PlayerInfo &player, int direction) {
@@ -15,11 +15,10 @@ namespace engine {
         if (currentLocation.getType() != state::CORRIDOR) {
             throw std::invalid_argument("La position du joueur n'est pas de type 'Cell'");
         }
-        state::Cell *currentCell = dynamic_cast<state::Cell*>(&currentLocation);
+        auto *currentCell = dynamic_cast<state::Cell*>(&currentLocation);
         if (!currentCell) {
             throw std::invalid_argument("Current location is not of type 'Cell'.");
         }
-
         int x = currentCell->getCoordX();
         int y = currentCell->getCoordY();
 
@@ -41,11 +40,10 @@ namespace engine {
         }
         currentCell->setCoordX(x);
         currentCell->setCoordY(y);
-        player.setLocation(currentCell);
+        player.setLocation(*currentCell);
     }
 
     void engine::MoveCommand::execute() {
         Command::execute();
     }
-
 }
