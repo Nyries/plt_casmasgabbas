@@ -15,7 +15,11 @@ namespace engine {
         if (currentLocation.getType() != state::CORRIDOR) {
             throw std::invalid_argument("La position du joueur n'est pas de type 'Cell'");
         }
-        state::Cell *currentCell = dynamic_cast<state::Cell&>(currentLocation);
+        state::Cell *currentCell = dynamic_cast<state::Cell*>(&currentLocation);
+        if (!currentCell) {
+            throw std::invalid_argument("Current location is not of type 'Cell'.");
+        }
+
         int x = currentCell->getCoordX();
         int y = currentCell->getCoordY();
 
