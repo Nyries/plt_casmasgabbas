@@ -5737,7 +5737,7 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#CirculatPlayerList#</dia:string>
+            <dia:string>#CircularPlayerList#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>

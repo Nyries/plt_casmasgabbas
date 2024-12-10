@@ -5,8 +5,13 @@
 
 #include <vector>
 #include <iostream>
+#include <string>
+#include <tuple>
+
+
 
 namespace state {
+    using std::get;
     CircularPlayerList::CircularPlayerList(const int playerCount): currentPlayer(list.front()) {
         list.reserve(playerCount);
         it = list.begin();
