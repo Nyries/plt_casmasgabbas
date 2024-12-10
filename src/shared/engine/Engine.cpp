@@ -29,23 +29,24 @@ namespace engine {
         std::vector<state::RoomCard> roomCardsVector;
 
         // VECTOR OF SUSPECTS
+        suspectCardsVector.emplace_back(state::VIOLET);
         suspectCardsVector.emplace_back(state::ROSE);
         suspectCardsVector.emplace_back(state::PERVENCHE);
         suspectCardsVector.emplace_back(state::LEBLANC);
         suspectCardsVector.emplace_back(state::OLIVE);
         suspectCardsVector.emplace_back(state::MOUTARDE);
-        suspectCardsVector.emplace_back(state::VIOLET);
 
         // VECTOR OF WEAPONS
+        weaponCardsVector.emplace_back(state::WRENCH);
         weaponCardsVector.emplace_back(state::CANDLESTICK);
         weaponCardsVector.emplace_back(state::PISTOL);
         weaponCardsVector.emplace_back(state::ROPE);
         weaponCardsVector.emplace_back(state::LEAD_PIPE);
         weaponCardsVector.emplace_back(state::KNIFE);
-        weaponCardsVector.emplace_back(state::WRENCH);
+
 
         // VECTOR OF ROOMS
-
+        roomCardsVector.emplace_back(state::BEDROOM);
         roomCardsVector.emplace_back(state::STUDY);
         roomCardsVector.emplace_back(state::HALL);
         roomCardsVector.emplace_back(state::LIVING_ROOM);
@@ -54,7 +55,6 @@ namespace engine {
         roomCardsVector.emplace_back(state::BATHROOM);
         roomCardsVector.emplace_back(state::GARAGE);
         roomCardsVector.emplace_back(state::GAME_ROOM);
-        roomCardsVector.emplace_back(state::BEDROOM);
 
 
         int randomSuspect = UtilityFunctions::randomInt(5);
@@ -79,7 +79,7 @@ namespace engine {
         allCards.insert(allCards.end(), roomCardsVector.begin(), roomCardsVector.end());
 
         while (!allCards.empty()) {
-            int randomIndex = UtilityFunctions::randomInt(allCards.size());
+            const int randomIndex = UtilityFunctions::randomInt(allCards.size());
             playerList->getCurrent().giveCard(allCards.at(randomIndex));
             allCards.erase(allCards.begin()+randomIndex);
             playerList->next();
@@ -87,20 +87,21 @@ namespace engine {
     }
 
     void Engine::distributionCharacters () {
-        int numberOfPlayer = playerList->size();
-        std::vector<state::Suspect> SuspectsVector = {state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE, state::VIOLET} ;
+        const int numberOfPlayer = playerList->size();
+        const std::vector<state::Suspect> SuspectsVector = {state::VIOLET, state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE} ;
         state::PlayerInfo* currentPlayer = &playerList->getCurrent();
         int players = 1;
         while (players!=numberOfPlayer+1) {
             currentPlayer->setIdentity(SuspectsVector.at(players));
             playerList->next();
             currentPlayer = &playerList->getCurrent();
+            players++;
         }
     }
 
     std::vector<int> Engine::dice () {
-        int die1 = UtilityFunctions::randomInt(5)+1;
-        int die2 = UtilityFunctions::randomInt(5)+1;
+        const int die1 = UtilityFunctions::randomInt(5)+1;
+        const int die2 = UtilityFunctions::randomInt(5)+1;
         std::vector<int> dice;
         dice.push_back(die1);
         dice.push_back(die2);
@@ -116,22 +117,22 @@ namespace engine {
 
             playerList->next;
 
-            for (int i=0; i<playerList->getCurrent().getCards().size();i++) {
+            for (auto & i : playerList->getCurrent().getCards()) {
 
-                if (playerList->getCurrent().getCards().at(i).getType() == state::SUSPECT_CARD) {
-                    if(playerList->getCurrent().getCards().at(i).getSuspectName()== cards.at(0).getSuspectName()) {
+                if (i.getType() == state::SUSPECT_CARD) {
+                    if(i.getSuspectName()== cards.at(0).getSuspectName()) {
                         possessedCards.push_back(&cards.at(0));
                     }
                 }
 
-                else if (playerList->getCurrent().getCards().at(i).getType() == state::WEAPON_CARD) {
-                    if(playerList->getCurrent().getCards().at(i).getSuspectName()== cards.at(1).getWeaponName()) {
+                else if (i.getType() == state::WEAPON_CARD) {
+                    if(i.getSuspectName()== cards.at(1).getWeaponName()) {
                         possessedCards.push_back(&cards.at(1));
                     }
                 }
 
-                else if (playerList->getCurrent().getCards().at(i).getType() == state::ROOM_CARD) {
-                    if(playerList->getCurrent().getCards().at(i).getSuspectName()== cards.at(2).getWeaponName()) {
+                else if (i.getType() == state::ROOM_CARD) {
+                    if(i.getSuspectName()== cards.at(2).getRoomName()) {
                         possessedCards.push_back(&cards.at(2));
                     }
                 }
@@ -153,21 +154,20 @@ namespace engine {
             }
 
         }
+
+    state::Card Engine::showCard (std::vector<state::Card> cards, int index) {
+        return cards.at(index);
+
     }
 
 
-        /*
-            state::Card Engine::showCard (std::vector<state::Card> cards) {
-                state::Card& shownCard = cards.at(0);
+    }
 
 
-                return shownCard;
-
-            }
-        */
 
 
-}
+
+
 
 
 
