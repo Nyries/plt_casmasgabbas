@@ -305,7 +305,7 @@
         <dia:point val="12.65,1.9125"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="12.6,1.8625;36.685,22.1625"/>
+        <dia:rectangle val="12.6,1.8625;36.685,22.9625"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="12.65,1.9125"/>
@@ -314,7 +314,7 @@
         <dia:real val="23.984999999999999"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="20.200000000000003"/>
+        <dia:real val="21.000000000000004"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#Client#</dia:string>
@@ -459,6 +459,29 @@
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>#state::PlayerInfo*#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="value">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="visibility">
+            <dia:enum val="0"/>
+          </dia:attribute>
+          <dia:attribute name="abstract">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="class_scope">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+        </dia:composite>
+        <dia:composite type="umlattribute">
+          <dia:attribute name="name">
+            <dia:string>#clientPlayer#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>#state:: PlayerInfo *#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -2201,7 +2224,7 @@
         <dia:point val="25.758,-12.6122"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="11.55,-13.3622;26.508,7.8525"/>
+        <dia:rectangle val="11.55,-13.3622;26.508,8.6525"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -2210,8 +2233,8 @@
         <dia:point val="25.758,-12.6122"/>
         <dia:point val="25.758,-10.8622"/>
         <dia:point val="11.6,-10.8622"/>
-        <dia:point val="11.6,7.0125"/>
-        <dia:point val="12.65,7.0125"/>
+        <dia:point val="11.6,7.8125"/>
+        <dia:point val="12.65,7.8125"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
@@ -2275,7 +2298,7 @@
       </dia:attribute>
       <dia:connections>
         <dia:connection handle="0" to="O13" connection="8"/>
-        <dia:connection handle="1" to="O3" connection="16"/>
+        <dia:connection handle="1" to="O3" connection="18"/>
       </dia:connections>
     </dia:object>
     <dia:object type="UML - Association" version="2" id="O15">
@@ -2283,16 +2306,16 @@
         <dia:point val="12.8975,-12.3622"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="12.1475,-13.1122;24.8425,2.66219"/>
+        <dia:rectangle val="12.1475,-13.1122;24.8425,2.66218"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="12.8975,-12.3622"/>
-        <dia:point val="12.8975,-4.90001"/>
-        <dia:point val="24.6425,-4.90001"/>
-        <dia:point val="24.6425,1.86219"/>
+        <dia:point val="12.8975,-4.90002"/>
+        <dia:point val="24.6425,-4.90002"/>
+        <dia:point val="24.6425,1.86218"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
@@ -2355,7 +2378,7 @@
       </dia:attribute>
       <dia:connections>
         <dia:connection handle="0" to="O12" connection="8"/>
-        <dia:connection handle="1" to="O3" connection="54"/>
+        <dia:connection handle="1" to="O3" connection="56"/>
       </dia:connections>
     </dia:object>
     <dia:object type="UML - Class" version="0" id="O16">
