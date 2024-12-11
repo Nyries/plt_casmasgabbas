@@ -8,7 +8,7 @@
 #include <algorithm>
 
 namespace engine {
-    Engine::Engine(state::State &state): state(state), playerList(state.getPlayerList()), map(state.getMap()), currentPlayer(playerList->getCurrent()), envelope(state.getEnvelope()) {
+    Engine::Engine(state::State &state): state(state), playerList(state.getPlayerList()),  currentPlayer(playerList->getCurrent()), map(state.getMap()), envelope(state.getEnvelope()) {
     }
 
     /// refaire cette fonction en changeant: hasard du premier joueur puis jump à lui, liste des joueurs déjà existante
@@ -158,7 +158,7 @@ namespace engine {
 
             }
 
-            }
+            } return possessedCards;
 
         }
 

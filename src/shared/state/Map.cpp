@@ -144,6 +144,8 @@ namespace state {
             neighbors.at(3) = &mapGrid[coordX+1][coordY];
         }
     }
+
+
     std::vector<LocationType> Map::getNeighborsAsLocationType(int coordX, int coordY)
     {
         /**The order of the list is as follow: up, down, left, right*/
