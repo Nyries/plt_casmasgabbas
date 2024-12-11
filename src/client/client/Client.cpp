@@ -2,7 +2,7 @@
 // Created by cassandre on 18/11/24.
 //
 
-#include "Client.h"
+#include "client.h"
 #include "state.h"
 #include "engine.h"
 
