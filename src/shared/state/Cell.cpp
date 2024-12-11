@@ -25,7 +25,17 @@ namespace state {
         this->type = type;
     }
 
-    bool Cell::getOccupied() const {
+    void Cell::setX(int x)
+    {
+        this->coordX = x;
+    }
+
+    void Cell::setY(int y)
+    {
+        this->coordY = y;
+    }
+
+    bool Cell::getOccupied() {
         return occupied;
     }
 
