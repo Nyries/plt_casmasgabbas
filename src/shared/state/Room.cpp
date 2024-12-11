@@ -5,7 +5,7 @@
 #include "Room.h"
 
 namespace state {
-    Room::Room(RoomName name): Location(ROOM), name(name) {
+    Room::Room(RoomName name): Location(ROOM), name(name),doorList(), secretPassage(nullptr) {
     }
 
     RoomName Room::getName() {
