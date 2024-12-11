@@ -2386,22 +2386,22 @@
         <dia:point val="16.9,-15.65"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="16.85,-15.7;22.3575,-13.4"/>
+        <dia:rectangle val="16.85,-15.7;23.225,-12.6"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="16.9,-15.65"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="5.4075000000000006"/>
+        <dia:real val="6.2750000000000004"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="2.1999999999999997"/>
+        <dia:real val="3"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#CommandId#</dia:string>
       </dia:attribute>
       <dia:attribute name="stereotype">
-        <dia:string>##</dia:string>
+        <dia:string>#enumeration#</dia:string>
       </dia:attribute>
       <dia:attribute name="comment">
         <dia:string>##</dia:string>
