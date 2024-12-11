@@ -1,6 +1,7 @@
 //
 // Created by louismmassin on 11/18/24.
 //
+#include <fstream>
 #include <random>
 
 #include "engine.h"
@@ -14,7 +15,14 @@ namespace engine {
     }
 
     Json::Value UtilityFunctions::jsonConversion(std::string jsonPath) {
+        Json::Value root;
+        std::ifstream file(jsonPath, std::ifstream::binary);
+        if (!file) {
+            throw std::runtime_error("Failed to open JSON file: " + jsonPath);
+        }
 
+        file >> root; // Parse le fichier JSON
+        return root;
     }
 
 }
