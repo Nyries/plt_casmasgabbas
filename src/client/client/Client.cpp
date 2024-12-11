@@ -33,7 +33,7 @@ namespace client{
 		int numberOfPlayers = introductionToTheGame();
 		players = vector<tuple<string, int, int>>(numberOfPlayers, make_tuple("name", 0, 0));
 		createParty(numberOfPlayers);
-		
+		state->setCircularPlayerList(players);
 		playerList = state->getPlayerList();
 		currentPlayer = &playerList->getCurrent();
 	}
@@ -75,7 +75,7 @@ namespace client{
 		cout << "The suspects have been attributed to each player" << endl;
 		cout << "Summary of the game creation" << endl;
 		for (int i=0; i < numberOfPlayers; i++){
-			cout << "Player " << get<0>(players.at(i)) << " is number " << i << " and has suspect " << intToSuspect(get<2>(players.at(i))) << endl;
+			cout << "Player " << get<0>(players.at(i)) << " is number " << i+1 << " and has suspect " << intToSuspect(get<2>(players.at(i))) << endl;
 		}
 		//Choosing the suspect
 
