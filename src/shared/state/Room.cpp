@@ -40,8 +40,12 @@ namespace state {
         return doorList;
     }
 
-    void Room::addSecretPassage(Room &targetRoom) {
-        secretpassageList.push_back(&targetRoom);
+    Room* Room::getSecretPassage () {
+        return secretPassage;
+    }
+
+    void Room::setSecretPassage(Room &targetRoom) {
+        secretPassage = &targetRoom;
     }
 
 
