@@ -6,8 +6,7 @@
 #include <utility>
 
 namespace state {
-    PlayerInfo::PlayerInfo(std::string  name, Suspect identity):name(std::move(name)), cards(),
-        location(nullptr), identity(identity), accusationFailed(), canWin(true) {
+    PlayerInfo::PlayerInfo(std::string  name, Suspect identity): location(nullptr), name(std::move(name)), identity(identity), canWin(true) {
     }
 
     void PlayerInfo::setLocation(Location &newLocation) {
@@ -17,7 +16,6 @@ namespace state {
     void PlayerInfo::giveCard(Card &card) {
         cards.push_back(std::move(card));
     }
-
 
     Location& PlayerInfo::getLocation () {
         return *location;
@@ -36,16 +34,11 @@ namespace state {
         return name;
     }
 
-    std::vector<Card>& PlayerInfo::getCards () {
-        return cards;
-
-    }
-
     bool PlayerInfo::getCanWin() {
         return canWin;
     }
 
-    void PlayerInfo::setCanWin(bool canWin) {
-        this->canWin = canWin;
+    void PlayerInfo::setCanWin(bool accusationFailed) {
+        this->canWin = accusationFailed;
     }
 }
