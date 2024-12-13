@@ -5,7 +5,7 @@
 #include "Room.h"
 
 namespace state {
-    Room::Room(RoomName name): Location(ROOM), name(name) {
+    Room::Room(RoomName name): Location(ROOM), name(name),doorList(), secretPassage(nullptr) {
     }
 
     RoomName Room::getName() {
@@ -40,8 +40,12 @@ namespace state {
         return doorList;
     }
 
-    void Room::addSecretPassage(Room &targetRoom) {
-        secretpassageList.push_back(&targetRoom);
+    Room* Room::getSecretPassage () {
+        return secretPassage;
+    }
+
+    void Room::setSecretPassage(Room &targetRoom) {
+        secretPassage = &targetRoom;
     }
 
 

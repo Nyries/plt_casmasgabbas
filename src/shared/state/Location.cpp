@@ -7,7 +7,10 @@ namespace state{
 
 	}
 
-	LocationType Location::getType(){
+    Location::~Location()=default;
+
+
+    LocationType Location::getType(){
           return type;
     }
 
@@ -30,5 +33,23 @@ namespace state{
 		}
     }
 
-    Location::~Location() = default;
+    void Location::setType(LocationType type)
+    {
+		this->type = type;
+    }
+
+    void Location::setTypeAsString(std::string type)
+    {
+		if (type == "INACCESSIBLE"){
+			this->type = LocationType::INACCESSIBLE;}
+		else if (type == "CORRIDOR"){
+			this->type = LocationType::CORRIDOR;}
+		else if (type == "DOOR"){
+			this->type = LocationType::DOOR;}
+		else if (type == "ROOM"){
+			this->type = LocationType::ROOM;}
+		else{
+			this->type = LocationType::INACCESSIBLE;}
+
+    }
 }
