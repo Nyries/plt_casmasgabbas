@@ -8,4 +8,8 @@ namespace state {
     Door::Door(int coordX, int coordY, Room *room): Cell(coordX, coordY, LocationType::DOOR), room(room)
     {
     }
+    state::Room *Door::getRoom()
+    {
+        return room;
+    }
 }

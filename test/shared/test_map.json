@@ -1,0 +1,14 @@
+{
+    "mapHeight":3,
+    "mapWidth":3,
+    "map":[
+        {"LocationType":"INACCESSIBLE","x":0,"y":0},
+        {"LocationType":"INACCESSIBLE","x":1,"y":0},
+        {"LocationType":"INACCESSIBLE","x":2,"y":0},
+        {"LocationType":"CORRIDOR","x":0,"y":1},
+        {"LocationType":"CORRIDOR","x":1,"y":1},
+        {"LocationType":"CORRIDOR","x":2,"y":1},
+        {"LocationType":"DOOR","x":0,"y":2, "RoomLink":"LIVING_ROOM"},
+        {"LocationType":"ROOM","x":1,"y":2,"RoomType":"LIVING_ROOM"},
+        {"LocationType":"INACCESSIBLE","x":2,"y":2}]
+    }

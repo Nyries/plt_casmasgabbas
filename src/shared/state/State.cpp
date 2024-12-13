@@ -29,4 +29,8 @@ namespace state {
     {
         return this->envelope;
     }
+    void State::setCircularPlayerList(std::vector<std::tuple<std::string, int, int>> players)
+    {
+        this->players = new CircularPlayerList(players);
+    }
 }
