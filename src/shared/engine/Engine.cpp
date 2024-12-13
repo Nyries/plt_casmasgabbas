@@ -168,7 +168,7 @@ namespace engine {
     }
 
 
-    std::vector<engine::CommandId> Engine::getPossibleActions (state::PlayerInfo& player) {
+   /* std::vector<engine::CommandId> Engine::getPossibleActions (state::PlayerInfo& player) {
         std::vector<engine::CommandId> possibleCommands;
 
         // Si c'est ton tour
@@ -192,7 +192,7 @@ namespace engine {
 
         return possibleCommands;
     }
-
+*/
     }
 
 

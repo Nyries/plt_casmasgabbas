@@ -20,9 +20,10 @@ int main(int argc,char* argv[])
 {
     //test();
     //client::Client client("../configurations/client.json");
-    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    state::Map map("../configurations/map.json");
+    /*sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(sf::VideoMode(desktop.height, desktop.height), "Cluedo plt", sf::Style::Close);
-    render::Scene scene(window);
+    render::Scene scene(window);*/
     /*window.setVerticalSyncEnabled(false);
     window.setFramerateLimit(60); // Réduit la charge sur le processeur.
 
