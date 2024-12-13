@@ -8,7 +8,7 @@ namespace state {
     Room::Room(RoomName name): Location(ROOM), name(name),doorList(), secretPassage(nullptr) {
     }
 
-    RoomName Room::getName() {
+    RoomName Room::getRoomName() {
         return name;
     }
 
@@ -47,7 +47,5 @@ namespace state {
     void Room::setSecretPassage(Room &targetRoom) {
         secretPassage = &targetRoom;
     }
-
-
 
 }

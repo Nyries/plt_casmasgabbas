@@ -176,12 +176,13 @@ namespace engine {
 
             // Si tu es dans une salle
             if (player.getLocation().getType()== state::ROOM) {
+                auto& currentRoom = static_cast<state::Room&>(currentPlayer.getLocation());
                 // Si tu n'as pas encore fait d'hypotèse
-                if (player.getPreviousHypothesisRoom() != player.getLocation().getRoomName()) {
+                if (player.getPreviousHypothesisRoom() != currentRoom.getRoomName()) {
                     possibleCommands.push_back(engine::HYPOTHESIS);
                 }
                 // Si y a un passage secret
-                if (player.getLocation().getSecretPassage()!= nullptr) {
+                if (currentRoom.getSecretPassage()!= nullptr) {
                     possibleCommands.push_back(engine::SECRET_PASSAGE);
                 }
             }

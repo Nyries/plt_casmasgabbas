@@ -40,7 +40,7 @@ namespace client{
 
 	int Client::introductionToTheGame(){
 		int numberOfPlayers;
-		std::cout << "You're playing to the cluedo." << std::endl;
+		std::cout << "You're playing cluedo." << std::endl;
 		std::cout << "Mr LENOIR died in is house this night." << std::endl;
 		std::cout << "You will have to find the murderer." << std::endl;
 		std::cout << "How many detectives are you ?" << std::endl;
@@ -71,6 +71,9 @@ namespace client{
 		/*for (int i=0; i < numberOfPlayers; i++){
 			cout << "name : " << get<0>(players.at(i)) << ", dice : " << get<1>(players.at(i)) << endl;
 		}*/
+		for (int i = 0; i<players.size(); i++) {
+			cout << get<0>(players.at(i)) << " did a score of " << get<1>(players.at(i)) << endl;
+		}
 		determinePlayerSuspect();
 		cout << "The suspects have been attributed to each player" << endl;
 		cout << "Summary of the game creation" << endl;
@@ -89,41 +92,26 @@ namespace client{
 			suspectInt.push_back(i);
 		}
 		for (int i = 0; i < (int)players.size(); i++)
-		{
-			std::cout << get<0>(players.at(i)) << ", which suspect do you want to be ?" << std::endl;
-
-			if (find(suspectInt.begin(), suspectInt.end(), 2) != suspectInt.end())
-			{
-				std::cout << "If you want to be ROSE: press 1 " << std::endl;
-			}
-			if (find(suspectInt.begin(), suspectInt.end(), 3) != suspectInt.end())
-			{
-				std::cout << "If you want to be PERVENCHE: press 2 " << std::endl;
-			}
-			if (find(suspectInt.begin(), suspectInt.end(), 4) != suspectInt.end())
-			{
-				std::cout << "If you want to be LEBLANC: press 3 " << std::endl;
-			}
-			if (find(suspectInt.begin(), suspectInt.end(), (5)) != suspectInt.end())
-			{
-				std::cout << "If you want to be OLIVE: press 4 " << std::endl;
-			}
-			if (find(suspectInt.begin(), suspectInt.end(), 6) != suspectInt.end())
-			{
-				std::cout << "If you want to be MOUTARDE: press 5 " << std::endl;
-			}
+		{	std::cout << get<0>(players.at(i)) << ", which suspect do you want to be ?" << std::endl;
 			if (find(suspectInt.begin(), suspectInt.end(), 1) != suspectInt.end())
-			{
-				std::cout << "If you want to be VIOLET: press 6 " << std::endl;
-			}
+			{std::cout << "If you want to be ROSE: press 1 " << std::endl;}
+			if (find(suspectInt.begin(), suspectInt.end(), 2) != suspectInt.end())
+			{std::cout << "If you want to be PERVENCHE: press 2 " << std::endl;}
+			if (find(suspectInt.begin(), suspectInt.end(), 3) != suspectInt.end())
+			{std::cout << "If you want to be LEBLANC: press 3 " << std::endl;}
+			if (find(suspectInt.begin(), suspectInt.end(), (4)) != suspectInt.end())
+			{std::cout << "If you want to be OLIVE: press 4 " << std::endl;}
+			if (find(suspectInt.begin(), suspectInt.end(), 5) != suspectInt.end())
+			{std::cout << "If you want to be MOUTARDE: press 5 " << std::endl;}
+			if (find(suspectInt.begin(), suspectInt.end(), 6) != suspectInt.end())
+			{std::cout << "If you want to be VIOLET: press 6 " << std::endl;}
 
 			int choice;
 			std::string stringNumber;
 			std::cin >> stringNumber;
 			choice = stoi(stringNumber);
 			while (choice < 1 or choice > 6 or find(suspectInt.begin(), suspectInt.end(), choice) == suspectInt.end())
-			{
-				std::cout << "Invalid choice, try again" << std::endl;
+			{	std::cout << "Invalid choice, try again" << std::endl;
 				std::cin >> stringNumber;
 				choice = stoi(stringNumber);
 			}
@@ -163,8 +151,6 @@ namespace client{
 	std::cout << "If you are suspecting OLIVE: press 4 " << std::endl;
 	std::cout << "If you are suspecting MOUTARDE: press 5 " << std::endl;
 	std::cout << "If you are suspecting VIOLET: press 6 " << std::endl;
-
-
 
     bool validChoice = true;
 
