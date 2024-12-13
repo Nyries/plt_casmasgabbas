@@ -2,6 +2,7 @@
 #include <fstream>
 
 // The following lines are here to check that SFML is installed and working
+#include <engine.h>
 #include <SFML/Graphics.hpp>
 
 void testSFML() {
@@ -44,5 +45,7 @@ int main(int argc,char* argv[])
     //state::State state("../configurations/state.json");
     //cout << mapGrid[25][27].getTypeAsString() << endl;
     //cout << 1/2 << endl;
+
+
     return 0;
 }

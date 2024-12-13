@@ -174,6 +174,8 @@ namespace state {
         }
         return neighbors;
     }
+
+
     std::vector<LocationType> Map::getNeighborsAsLocationType(int coordX, int coordY)
     {
         /**The order of the list is as follow: up, down, left, right*/
