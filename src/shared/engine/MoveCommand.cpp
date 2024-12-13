@@ -2,25 +2,19 @@
 // Created by bastien on 04/12/24.
 //
 
-#include "state.h"
-//#include "engine.h"
-#include "MoveCommand.h"
-
 #include <iostream>
-//#include <algorithm>
+#include "state.h"
+#include "MoveCommand.h"
 
 namespace engine {
     MoveCommand::MoveCommand(state::PlayerInfo &player, int direction) {
         state::Location &currentLocation = player.getLocation();
         if (currentLocation.getType() != state::CORRIDOR) {
-            throw std::invalid_argument("La position du joueur n'est pas de type 'Cell'");
+            throw std::invalid_argument("Invalid player's starting position");
         }
         auto *currentCell = dynamic_cast<state::Cell*>(&currentLocation);
-        if (!currentCell) {
-            throw std::invalid_argument("Current location is not of type 'Cell'.");
-        }
-        int x = currentCell->getCoordX();
-        int y = currentCell->getCoordY();
+        int x = currentCell->getX();
+        int y = currentCell->getY();
 
         switch (direction) {
             case 1: // Haut
@@ -38,8 +32,10 @@ namespace engine {
             default:
                 throw std::invalid_argument("Valeur de direction invalide.");
         }
-        currentCell->setCoordX(x);
-        currentCell->setCoordY(y);
+
+//        currentCell->setX(x);
+//        currentCell->setY(y);
+
         player.setLocation(*currentCell);
     }
 

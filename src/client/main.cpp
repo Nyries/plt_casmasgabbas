@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fstream>
+//#include <fstream>
 
 // The following lines are here to check that SFML is installed and working
 #include <SFML/Graphics.hpp>
@@ -22,53 +22,59 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
-    //test();
-    //client::Client client("../configurations/client.json");
-    //Map map("../configurations/map.json");
-    //vector<vector<Cell>> mapGrid = map.getMapGrid();
-    //state::State state("../configurations/state.json");
-    //cout << mapGrid[25][27].getTypeAsString() << endl;
-    //cout << 1/2 << endl;
     try {
-        // Initialisation du joueur et de la position
-        state::Cell startCell(0, 0, state::CORRIDOR); // Cellule de départ à (0, 0)
-        state::PlayerInfo player("Player1", startCell); // Crée un joueur avec cette position
+        client::Client client("../configurations/client.json");
+        Map map("../configurations/map.json");
+        vector<vector<Cell>> mapGrid = map.getMapGrid();
+        Cell startCell = mapGrid[8][8];
+        PlayerInfo player("Player1", ROSE);
+        player.setLocation(startCell);
 
-        std::cout << "Position initiale : ("
-                  << player.getLocation().getCoordX() << ", "
-                  << player.getLocation().getCoordY() << ")" << std::endl;
 
-        // Déplacement du joueur vers le haut
+        auto *playerCell = dynamic_cast<state::Cell*>(&player.getLocation());
+        std::cout << "Starting position : ("
+                << playerCell->getX() << ", "
+                << playerCell->getY() << ")" << std::endl;
+
+
+        std::cout << "Trying to move up ..." << std::endl;
         engine::MoveCommand moveCommandUp(player, 1);
         moveCommandUp.execute();
 
-        std::cout << "Après déplacement vers le haut : ("
-                  << player.getLocation().getCoordX() << ", "
-                  << player.getLocation().getCoordY() << ")" << std::endl;
+        playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
+        std::cout << "After moving up : ("
+                << playerCell->getX() << ", "
+                << playerCell->getY() << ")" << std::endl;
 
-        // Déplacement du joueur vers la droite
+
+        std::cout << "Trying to move right ..." << std::endl;
         engine::MoveCommand moveCommandRight(player, 2);
         moveCommandRight.execute();
 
-        std::cout << "Après déplacement vers la droite : ("
-                  << player.getLocation().getCoordX() << ", "
-                  << player.getLocation().getCoordY() << ")" << std::endl;
+        playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
+        std::cout << "After moving to the right : ("
+                << playerCell->getX() << ", "
+                << playerCell->getY() << ")" << std::endl;
 
-        // Déplacement du joueur vers le bas
+
+        std::cout << "Trying to move down ..." << std::endl;
         engine::MoveCommand moveCommandDown(player, 3);
         moveCommandDown.execute();
 
-        std::cout << "Après déplacement vers le bas : ("
-                  << player.getLocation().getCoordX() << ", "
-                  << player.getLocation().getCoordY() << ")" << std::endl;
+        playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
+        std::cout << "After moving down : ("
+                << playerCell->getX() << ", "
+                << playerCell->getY() << ")" << std::endl;
 
-        // Déplacement du joueur vers la gauche
+
+        std::cout << "Trying to move left ..." << std::endl;
         engine::MoveCommand moveCommandLeft(player, 4);
         moveCommandLeft.execute();
 
-        std::cout << "Après déplacement vers la gauche : ("
-                  << player.getLocation().getCoordX() << ", "
-                  << player.getLocation().getCoordY() << ")" << std::endl;
+        playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
+        std::cout << "After moving to the left : ("
+                << playerCell->getX() << ", "
+                << playerCell->getY() << ")" << std::endl;
 
     } catch (const std::exception &e) {
         std::cerr << "Erreur : " << e.what() << std::endl;
