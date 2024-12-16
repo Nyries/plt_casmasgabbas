@@ -168,6 +168,31 @@ namespace engine {
     }
 
 
+    std::vector<engine::CommandId> Engine::getPossibleActions (state::PlayerInfo& player) {
+        std::vector<engine::CommandId> possibleCommands;
+
+        // Si c'est ton tour
+        if (&player==&(playerList->getCurrent())) {
+
+            // Si tu es dans une salle
+            if (player.getLocation().getType()== state::ROOM) {
+                // Si tu n'as pas encore fait d'hypotèse
+                if (player.getPreviousHypothesisRoom() != player.getLocation().getRoomName()) {
+                    possibleCommands.push_back(engine::HYPOTHESIS);
+                }
+                // Si y a un passage secret
+                if (player.getLocation().getSecretPassage()!= nullptr) {
+                    possibleCommands.push_back(engine::SECRET_PASSAGE);
+                }
+            }
+            // on peut toujours se déplacer avec les dés ou faire une accusation
+            possibleCommands.push_back(engine::MOVE_FROM_DICE);
+            possibleCommands.push_back(engine::ACCUSATION);
+        }
+
+        return possibleCommands;
+    }
+
     }
 
 

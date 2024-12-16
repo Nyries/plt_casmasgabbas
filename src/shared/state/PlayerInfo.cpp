@@ -6,7 +6,7 @@
 #include <utility>
 
 namespace state {
-    PlayerInfo::PlayerInfo(std::string  name, Suspect identity): location(nullptr), name(std::move(name)), identity(identity), canWin(true) {
+    PlayerInfo::PlayerInfo(std::string  name, Suspect identity): location(nullptr), name(std::move(name)), identity(identity), canWin(true), previousHypothesisRoom(state::NO_ROOM) {
     }
 
     void PlayerInfo::setLocation(Location &newLocation) {
@@ -41,4 +41,13 @@ namespace state {
     void PlayerInfo::setCanWin(bool accusationFailed) {
         this->canWin = accusationFailed;
     }
+
+    RoomName PlayerInfo::getPreviousHypothesisRoom () {
+        return previousHypothesisRoom;
+    }
+    void PlayerInfo::setPreviousHypothesisRoom (RoomName room) {
+        this->previousHypothesisRoom = room;
+    }
+
+
 }
