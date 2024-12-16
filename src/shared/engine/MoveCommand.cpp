@@ -7,7 +7,10 @@
 #include "MoveCommand.h"
 
 namespace engine {
-    MoveCommand::MoveCommand(state::PlayerInfo &player, int direction) {
+    MoveCommand::MoveCommand(state::PlayerInfo &player, int direction):  {
+    }
+
+    void engine::MoveCommand::execute() {
         state::Location &currentLocation = player.getLocation();
         if (currentLocation.getType() != state::CORRIDOR) {
             throw std::invalid_argument("Invalid player's starting position");
@@ -33,13 +36,9 @@ namespace engine {
                 throw std::invalid_argument("Valeur de direction invalide.");
         }
 
-//        currentCell->setX(x);
-//        currentCell->setY(y);
+        currentCell->setX(x);
+        currentCell->setY(y);
 
         player.setLocation(*currentCell);
-    }
-
-    void engine::MoveCommand::execute() {
-        Command::execute();
     }
 }
