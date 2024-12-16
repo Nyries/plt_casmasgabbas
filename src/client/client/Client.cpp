@@ -607,13 +607,9 @@ state::PlayerInfo &Client::getClientPlayerInfo() {
 	return *clientPlayer;
 }
 
-int Client::chooseMoveDirection(const std::vector<int> &possibleMoves) {
+engine::Move Client::chooseMoveDirection(const std::vector<engine::Move> &possibleMoves) {
 
 }
-
-	void Client::moveFromDiceStart(const std::vector<int> &diceResult) {
-
-	}
 
 engine::Engine &Client::getEngine() {
 	return *engine;
