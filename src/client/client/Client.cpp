@@ -67,11 +67,8 @@ namespace client{
 		//Draw for suspect attribution as well as determining first player
 		cout << "We are now going to draw the dices to determine the player order" << endl << "Drawing dices..." << endl;
 		players = engine->determinePlayerOrder(players, numberOfPlayers);
-		//test for the order well
-		/*for (int i=0; i < numberOfPlayers; i++){
-			cout << "name : " << get<0>(players.at(i)) << ", dice : " << get<1>(players.at(i)) << endl;
-		}*/
-		for (int i = 0; i<players.size(); i++) {
+
+		for (int i = 0; i<numberOfPlayers; i++) {
 			cout << get<0>(players.at(i)) << " did a score of " << get<1>(players.at(i)) << endl;
 		}
 		determinePlayerSuspect();
@@ -135,12 +132,11 @@ namespace client{
 				return "MOUTARDE";
 			case 6:
 				return "VIOLET";
-
 		}
         return std::string();
     }
 
-    std::vector<int> Client::chooseHypothesis(){
+	std::vector<int> Client::chooseHypothesis(){
     std::vector<int> hypothesisChoice;
     std::cout << "You want to make an hypothesis ! " << std::endl;
     int choice;
@@ -185,7 +181,7 @@ namespace client{
       			hypothesisChoice.push_back(state::VIOLET);
       			break;
 	    	default: // OTHER ONE
-	        	std::cout << "Invalide choice ! Try again \n";
+	        	std::cout << "Invalid choice ! Try again \n";
                 validChoice = false;
     	}
     }
@@ -236,7 +232,7 @@ namespace client{
 				hypothesisChoice.push_back(state::WRENCH);
 				break;
 	    	default: // OTHER ONE
-	        	std::cout << "Invalide choice ! Try again \n";
+	        	std::cout << "Invalid choice ! Try again \n";
 	        	validChoice2 = false;
     	}
 
@@ -252,8 +248,7 @@ namespace client{
     return hypothesisChoice;
  }
 
-
-std::vector<int> Client::chooseAccusation(void){
+	std::vector<int> Client::chooseAccusation(void){
 
     std::vector<int> accusationChoice;
     std::cout << "You want to make an accusation ! " << std::endl;
@@ -302,7 +297,7 @@ std::vector<int> Client::chooseAccusation(void){
 				break;
 
 			default: // OTHER ONE
-				std::cout << "Invalide choice ! Try again \n";
+				std::cout << "Invalid choice ! Try again \n";
 				validChoice = false;
 		}
 
@@ -352,7 +347,7 @@ std::vector<int> Client::chooseAccusation(void){
 				accusationChoice.push_back(state::WRENCH);
 				break;
 			default: // OTHER ONE
-				std::cout << "Invalide choice ! Try again \n";
+				std::cout << "Invalid choice ! Try again \n";
 				validChoice2 = false;
 
 		}
@@ -419,7 +414,7 @@ std::vector<int> Client::chooseAccusation(void){
 				accusationChoice.push_back(state::BEDROOM);
 				break;
 			default: // OTHER ONE
-				std::cout << "Invalide choice ! Try again \n";
+				std::cout << "Invalid choice ! Try again \n";
 				validChoice3 = false;
 			}
 
@@ -432,61 +427,48 @@ std::vector<int> Client::chooseAccusation(void){
    return accusationChoice;
  }
 
-int Client::moveDisplay(std::vector<state::Cell*> accessibleCells){
-/*
+
+	int Client::moveDisplay(std::vector<state::Cell*> accessibleCells){
+
 	std::cout << "Where do you want to go ?" << std::endl;
 
-
-	int choice;
+	int choice = 0;
 	std::string moveDirection;
 
-	if (accessibleCells.at(0)!=nullptr){
-		std::cout << "If you to go UP: press 1 " << std::endl;
+	if (accessibleCells.at(0)!=nullptr){std::cout << "If you to go UP: press 1 " << std::endl;}
+	if (accessibleCells.at(1)!=nullptr){std::cout << "If you to go LEFT: press 2 " << std::endl;}
+	if (accessibleCells.at(2)!=nullptr){std::cout << "If you to go DOWN: press 3 " << std::endl;}
+	if (accessibleCells.at(3)!=nullptr){std::cout << "If you to go RIGHT: press 4  " << std::endl;}
+
+	std::cout << " Choose your direction ! " << std::endl;
+	state::Cell* direction = nullptr;
+
+	choice = getValidKey(4);
+	direction = accessibleCells.at(choice-1);
+
+	while (direction == nullptr) {
+		std::cout << "You can't go there ! Choose another direction" << std::endl;
+		choice = getValidKey(4);
+		direction = accessibleCells.at(choice-1);
 	}
-
-	if (accessibleCells.at(1)!=nullptr){
-		std::cout << "If you to go DOWN: press 2 " << std::endl;
-	}
-
-	if (accessibleCells.at(2)!=nullptr){
-		std::cout << "If you to go LEFT: press 3 " << std::endl;
-	}
-
-	if (accessibleCells.at(3)!=nullptr){
-		std::cout << "If you to go RIGHT: press 4  " << std::endl;
-	}
-
-	std::cin >> moveDirection;
-	choice = convertToInteger(moveDirection);
-
-
-	///////// ATTENTION CECI EST A CHANGER (NE PAS FAIRE LE SWITCH CASE)
-	//////// DANS TOUTES LES POSSIBILITÉS
 
 	switch (choice) {
 	    case 1: // UP
 	        std::cout << "You moved UP ! \n";
 	        return 1;
-	        break;
-	    case 2: // DOWN
-	        std::cout << "You chose DOWN ! \n";
+	    case 2: // LEFT
+	    	std::cout << "You chose LEFT ! \n";
 	        return 2;
-	        break;
-	    case 3: // LEFT
-	        std::cout << "You chose LEFT ! \n";
+	    case 3: // DOWN
+	    	std::cout << "You chose DOWN ! \n";
 	        return 3;
-	        break;
 	    case 4: // RIGHT
 	        std::cout << "You chose RIGHT ! \n";
 	        return 4;
-	        break;
-
 	    default: // OTHER ONE
-	        std::cout << "Invalide choice ! Try again \n";
+	        std::cout << "Invalid choice ! Try again \n";
    	}
-*/
-
-	return int();
+		return int();
 }
 
 
@@ -496,17 +478,15 @@ void Client::displayPressKey(std::string key){
 }
 
 int Client::getValidKey(int max){
-  	std::string playerKey;
-    try{
-    	std::cin >> playerKey;
+	try{
+		std::string playerKey;
+		std::cin >> playerKey;
     	int keyVal = stoi(playerKey);
-        if(keyVal >= 0 && keyVal <= max){
+        if(keyVal > 0 && keyVal <= max){
         	return keyVal;
         }
-        else{
-        	std::cout << "Invalid key" << std::endl;
-            return getValidKey(max);
-        }
+	    std::cout << "Invalid key" << std::endl;
+	    return getValidKey(max);
     }
 	catch(const exception& e){
 		std::cout << "Invalid key" << std::endl;
@@ -560,7 +540,7 @@ int Client::choseACardToShowClient (std::vector<state::Card*> cards) {   //cette
 	return cardNumber;
 }
 
-
+/// Analyse du type de la carte, puis affichage de la carte selon son type
 void Client::showMeCardClient (state::Card card) {
 		if (card.getType() == state::SUSPECT_CARD) {
 			std::cout <<  " You show " << card.getSuspectName() << std::endl;
@@ -573,15 +553,16 @@ void Client::showMeCardClient (state::Card card) {
 		}
 	}
 
-void throwDiceClient () {
+void Client::throwDiceClient () {
 	std::cout << "Press 1 to throw the dice ! " << std::endl;
 	int keyValue;
 	std::cin >> keyValue;
 	while (keyValue != 1) {
 		std::cout << "Wrong value, press 1 " << std::endl;
 	}
-
+	//std::vector<int> diceValues = getEngine().dice();
 	std::cout << "Dice are thrown" << std::endl;
+
 	// finir avec lancer les dés et afficher la valeur
 
 
