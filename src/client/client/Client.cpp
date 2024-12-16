@@ -261,7 +261,7 @@ namespace client{
     }
 
 	auto& currentRoom = static_cast<state::Room&>(currentPlayer->getLocation());
-    hypothesisChoice.push_back(currentRoom.getName());
+    hypothesisChoice.push_back(currentRoom.getRoomName());
 
     std::cout << currentPlayer->getIdentity() << " suggests the Crime was committed by "
     << hypothesisChoice.at(0) << " in the " << hypothesisChoice.at(2)
@@ -591,7 +591,7 @@ void Client::showMeCardClient (state::Card card) {
 		}
 	}
 
-void throwDiceClient () {
+void Client::throwDiceClient () {
 	std::cout << "Press 1 to throw the dice ! " << std::endl;
 	int keyValue;
 	std::cin >> keyValue;
@@ -606,6 +606,26 @@ void throwDiceClient () {
 
 	}
 
+state::PlayerInfo &Client::getClientPlayerInfo() {
+	return *clientPlayer;
+}
+
+int Client::chooseMoveDirection(const std::vector<int> &possibleMoves) {
+
+}
+
+
+	void Client::moveFromDiceStart(const std::vector<int> &diceResult) {
+
+	}
+
+engine::Engine &Client::getEngine() {
+	return *engine;
+}
+
+	engine::CommandId Client::chooseAction() {
+
+	}
 
 
 
