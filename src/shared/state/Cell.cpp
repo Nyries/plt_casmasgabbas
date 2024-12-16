@@ -35,6 +35,13 @@ namespace state {
         this->Y = y;
     }
 
+    bool Cell::getOccupied() {
+        return occupied;
+    }
+
+    void Cell::setOccupied(bool occupied) {
+        this->occupied = occupied;
+    }
 
     /*std::vector<Cell *> Cell::getAccessibleCells() {
         std::vector<Cell*> accessibleCells;
