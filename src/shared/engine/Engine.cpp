@@ -117,7 +117,7 @@ namespace engine {
     std::vector<state::Card*> Engine::getPossessedCards (std::vector<state::Card> cards) {
         playerList->getCurrent();
         int askedPlayers = 0;
-        std::vector<state::Card*> possessedCards = {};
+        std::vector<state::Card*> possessedCards;
 
         while (possessedCards.empty()){
 
@@ -127,19 +127,25 @@ namespace engine {
             for (auto & i : askedPlayer.getCards()) {
 
                 if (i.getType() == state::SUSPECT_CARD) {
-                    if(i.getSuspectName()== cards.at(0).getSuspectName()) {
+                    auto& castI = static_cast<state::SuspectCard&>(i);
+                    auto& castCard = static_cast<state::SuspectCard&>(cards.at(0));
+                    if(castI.getSuspectName()== castCard.getSuspectName()) {
                         possessedCards.push_back(&cards.at(0));
                     }
                 }
 
                 else if (i.getType() == state::WEAPON_CARD) {
-                    if(i.getWeaponName()== cards.at(1).getWeaponName()) {
+                    auto& castI = static_cast<state::WeaponCard&>(i);
+                    auto& castCard = static_cast<state::WeaponCard&>(cards.at(1));
+                    if(castI.getWeaponName()== castCard.getWeaponName()) {
                         possessedCards.push_back(&cards.at(1));
                     }
                 }
 
                 else if (i.getType() == state::ROOM_CARD) {
-                    if(i.getRoomName()== cards.at(2).getRoomName()) {
+                    auto& castI = static_cast<state::RoomCard&>(i);
+                    auto& castCard = static_cast<state::RoomCard&>(cards.at(2));
+                    if(castI.getRoomName()== castCard.getRoomName()) {
                         possessedCards.push_back(&cards.at(2));
                     }
                 }
