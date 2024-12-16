@@ -16,7 +16,7 @@
 using namespace std;
 
 namespace client{
-	Client::Client(std::string clientJsonPath)
+	Client::Client(const std::string& clientJsonPath)
 {
 		this->clientJsonPath = clientJsonPath;
 	    std::ifstream clientJsonFile(clientJsonPath);
@@ -543,13 +543,16 @@ int Client::choseACardToShowClient (std::vector<state::Card*> cards) {   //cette
 /// Analyse du type de la carte, puis affichage de la carte selon son type
 void Client::showMeCardClient (state::Card card) {
 		if (card.getType() == state::SUSPECT_CARD) {
-			std::cout <<  " You show " << card.getSuspectName() << std::endl;
+			auto& shownCard = static_cast<state::SuspectCard&>(card);
+			std::cout <<  " You show " << shownCard.getSuspectName() << std::endl;
 		}
 		else if (card.getType() == state::WEAPON_CARD) {
-			std::cout <<  " You show " << card.getWeaponName() << std::endl;
+			auto& shownCard = static_cast<state::WeaponCard&>(card);
+			std::cout <<  " You show " << shownCard.getWeaponName() << std::endl;
 		}
 		else {
-			std::cout <<  " You show " << card.getRoomName() << std::endl;
+			auto& shownCard = static_cast<state::RoomCard&>(card);
+			std::cout <<  " You show " << shownCard.getRoomName() << std::endl;
 		}
 	}
 

@@ -7,8 +7,6 @@ namespace state{
 
 	}
 
-    Location::~Location()=default;
-
 
     LocationType Location::getType(){
           return type;
