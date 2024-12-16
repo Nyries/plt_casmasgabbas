@@ -6,5 +6,4 @@ namespace engine {
     MoveCommand::MoveCommand(state::PlayerInfo &player, Move direction): Command(MOVE_FROM_DICE,player), direction(direction) {
 
     }
-
 }

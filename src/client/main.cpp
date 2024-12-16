@@ -29,47 +29,44 @@ int main(int argc,char* argv[])
     engine::Engine& myEngine = myClient.getEngine();
     while (myClient.getClientPlayerInfo().getCanWin()) {
         const engine::CommandId currentAction = myClient.chooseAction();
-            switch (currentAction) {
-                case engine::HYPOTHESIS: {
-                    std::vector<int> hypothesis = myClient.chooseHypothesis();
-                    engine::HypothesisCommand myHypothesisCommand(myClient.getClientPlayerInfo(), hypothesis);
-                    myEngine.addCommand(myHypothesisCommand);
-                }
-                break;
-                case engine::ACCUSATION: {
-                    std::vector<int> accusation = myClient.chooseAccusation();
-                    engine::AccusationCommand myAccusationCommand(myClient.getClientPlayerInfo(), accusation);
-                    myEngine.addCommand(myAccusationCommand);
-                }
-                break;
-                case engine::SECRET_PASSAGE: {
-                    engine::SecretPassageCommand mySecretPassageCommand(myClient.getClientPlayerInfo());
-                    myEngine.addCommand(mySecretPassageCommand);
-                }
-                    break;
-                case engine::MOVE_FROM_DICE: {
-                    std::vector<int> diceResult = myEngine.dice();
-                    myClient.moveFromDiceStart(diceResult);
-                    int remainingMoves = diceResult.at(0) + diceResult.at(1);
-                    while (remainingMoves > 0) {
-                        const auto possibleMoves = myEngine.getPossibleMoves(myClient.getClientPlayerInfo());
-                        if (possibleMoves.empty()) {
-                            break;
-                        }
-                        int moveDirection = myClient.chooseMoveDirection(possibleMoves);
-                        engine::MoveCommand(myClient.getClientPlayerInfo(), moveDirection);
-                        myEngine.executeCommands();
-                        remainingMoves--;
-                    }
-                }
-                    break;
-                default:
-                    throw std::runtime_error("switch case failed!");
+        switch (currentAction) {
+            case engine::HYPOTHESIS: {
+                std::vector<int> hypothesis = myClient.chooseHypothesis();
+                engine::HypothesisCommand myHypothesisCommand(myClient.getClientPlayerInfo(), hypothesis);
+                myEngine.addCommand(myHypothesisCommand);
             }
-
+            break;
+            case engine::ACCUSATION: {
+                std::vector<int> accusation = myClient.chooseAccusation();
+                engine::AccusationCommand myAccusationCommand(myClient.getClientPlayerInfo(), accusation);
+                myEngine.addCommand(myAccusationCommand);
+            }
+            break;
+            case engine::SECRET_PASSAGE: {
+                engine::SecretPassageCommand mySecretPassageCommand(myClient.getClientPlayerInfo());
+                myEngine.addCommand(mySecretPassageCommand);
+            }
+            break;
+            case engine::MOVE_FROM_DICE: {
+                std::vector<int> diceResult = myEngine.dice();
+                myClient.throwDiceClient();
+                int remainingMoves = diceResult.at(0) + diceResult.at(1);
+                while (remainingMoves > 0) {
+                    const auto possibleMoves = myEngine.getPossibleMoves(myClient.getClientPlayerInfo());
+                    if (possibleMoves.empty()) {
+                        break;
+                    }
+                    const engine::Move moveDirection = myClient.chooseMoveDirection(possibleMoves);
+                    engine::MoveCommand(myClient.getClientPlayerInfo(), moveDirection);
+                    myEngine.executeCommands();
+                    remainingMoves--;
+                }
+            }
+            break;
+            default:
+                throw std::runtime_error("switch case failed!");
+        }
         myEngine.executeCommands();
     }
-
-
     return 0;
 }
