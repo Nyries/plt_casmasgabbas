@@ -67,6 +67,7 @@ int main(int argc,char* argv[])
                 throw std::runtime_error("switch case failed!");
         }
         myEngine.executeCommands();
+    }
   /*
     try {
         client::Client client("../configurations/client.json");
@@ -125,7 +126,6 @@ int main(int argc,char* argv[])
     } catch (const std::exception &e) {
         std::cerr << "Erreur : " << e.what() << std::endl;
 */
-    }
     return 0;
 }
 
