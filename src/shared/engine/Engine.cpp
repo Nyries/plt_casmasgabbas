@@ -198,8 +198,8 @@ namespace engine {
         commands.push_back( &newCommand);
     }
 
-    std::vector<int> Engine::getPossibleMoves(state::PlayerInfo &player) {
-        std::vector<int> possibleMoves;
+    std::vector<Move> Engine::getPossibleMoves(state::PlayerInfo &player) {
+        std::vector<Move> possibleMoves;
         state::Location playerLocation = player.getLocation();
         switch (playerLocation.getType()) {
             case state::CORRIDOR: {
@@ -256,7 +256,7 @@ namespace engine {
             }
             break;
             case state::ROOM: {
-                possibleMoves.push_back(ENTER_ROOM);
+                possibleMoves.push_back(EXIT_ROOM);
             }
             break;
             default:

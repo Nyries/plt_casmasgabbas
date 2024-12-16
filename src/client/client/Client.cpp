@@ -16,7 +16,7 @@
 using namespace std;
 
 namespace client{
-	Client::Client(std::string clientJsonPath)
+	Client::Client(const std::string& clientJsonPath)
 {
 		this->clientJsonPath = clientJsonPath;
 	    std::ifstream clientJsonFile(clientJsonPath);

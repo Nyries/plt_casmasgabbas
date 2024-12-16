@@ -9,7 +9,7 @@ namespace engine {
     MoveCommand::MoveCommand(state::PlayerInfo &player, Move direction): Command(MOVE_FROM_DICE,player), direction(direction) {
     }
 
-    void engine::MoveCommand::execute() {
+    void MoveCommand::execute() {
         state::Location &currentLocation = player.getLocation();
         if (currentLocation.getType() != state::CORRIDOR) {
             throw std::invalid_argument("Invalid player's starting position");
