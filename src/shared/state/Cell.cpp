@@ -4,24 +4,24 @@
 #include "Cell.h"
 #include "Map.h"
 namespace state {
-    Cell::Cell(int coordX, int coordY, LocationType type): Location(type), coordX(coordX), coordY(coordY), occupied(false) {
+    Cell::Cell(int X, int Y, LocationType type): Location(type), X(X), Y(Y), occupied(false) {
     }
 
     Cell::~Cell()
     = default;
 
     int Cell::getX() {
-        return coordX;
+        return X;
     }
 
     int Cell::getY() {
-        return coordY;
+        return Y;
     }
 
-    void Cell::setCell(int coordX, int coordY, LocationType type)
+    void Cell::setCell(int X, int Y, LocationType type)
     {
-        this->coordX = coordX;
-        this->coordY = coordY;
+        this->X = X;
+        this->Y = Y;
         this->type = type;
     }
 
