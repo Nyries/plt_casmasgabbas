@@ -14,7 +14,7 @@ namespace engine {
         if (currentLocation.getType() != state::CORRIDOR) {
             throw std::invalid_argument("Invalid player's starting position");
         }
-        auto *currentCell = dynamic_cast<state::Cell*>(&currentLocation);
+        auto *currentCell = static_cast<state::Cell*>(&currentLocation);
         int x = currentCell->getX();
         int y = currentCell->getY();
 

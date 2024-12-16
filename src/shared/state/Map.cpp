@@ -54,9 +54,6 @@ namespace state {
                 mapGrid[x][y] = Cell(x, y, LocationType::ROOM);
         }
     }
-    
-    Map::~Map() =default;
-
     std::vector<std::vector<std::string>> Map::getDisplayMap()
     {
         std::vector<std::vector<std::string>> displayMap(2*height+1, std::vector<std::string>(2*width+1, ""));  
