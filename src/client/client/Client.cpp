@@ -569,6 +569,26 @@ void Client::throwDiceClient () {
 
 	}
 
+state::PlayerInfo &Client::getClientPlayerInfo() {
+	return *clientPlayer;
+}
+
+int Client::chooseMoveDirection(const std::vector<int> &possibleMoves) {
+
+}
+
+
+	void Client::moveFromDiceStart(const std::vector<int> &diceResult) {
+
+	}
+
+engine::Engine &Client::getEngine() {
+	return *engine;
+}
+
+	engine::CommandId Client::chooseAction() {
+
+	}
 
 
 

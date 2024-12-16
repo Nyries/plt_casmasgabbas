@@ -194,7 +194,20 @@ namespace engine {
         return possibleCommands;
     }
 
+    void Engine::addCommand(Command newCommand) {
+        commands.push_back( newCommand);
     }
+
+    std::vector<int> Engine::getPossibleMoves(state::PlayerInfo &player) {
+
+    }
+
+    void Engine::executeCommands() {
+        for (Command c: commands) {
+            c.execute();
+        }
+    }
+}
 
 
 

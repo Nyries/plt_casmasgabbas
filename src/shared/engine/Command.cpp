@@ -1,20 +1,19 @@
 //
-// Created by cassandre on 13/12/24.
+// Created by louismmassin on 12/16/24.
 //
-
-#include "state.h"
-#include "engine.h"
-#include "CommandId.h"
-
+#include "Command.h"
 namespace engine {
-    // TO DO
-    //Command::Command(): id(NO_COMMAND), player(player){}
+    Command::Command(CommandId id, state::PlayerInfo &player): id(id), player(player) {
 
-    CommandId Command::getCommandId () {
+    }
+
+    CommandId Command::getCommandId(){
         return id;
     }
-    //virtual void Command::execute () {}
 
+    void Command::execute() {
+
+    }
 
 
 }
