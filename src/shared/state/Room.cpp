@@ -48,6 +48,4 @@ namespace state {
         secretPassage = &targetRoom;
     }
 
-
-
 }
