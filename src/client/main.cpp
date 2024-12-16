@@ -4,11 +4,6 @@
 // The following lines are here to check that SFML is installed and working
 #include <SFML/Graphics.hpp>
 
-#include "../shared/engine/MoveCommand.h"
-#include "../shared/state/PlayerInfo.h"
-#include "../shared/state/Location.h"
-#include "../shared/state/Cell.h"
-
 void testSFML() {
     sf::Texture texture;
 }
@@ -19,6 +14,10 @@ void testSFML() {
 
 using namespace std;
 using namespace state;
+
+void test() {
+    //put some code you want to run here
+}
 
 int main(int argc,char* argv[])
 {
@@ -79,6 +78,7 @@ int main(int argc,char* argv[])
     } catch (const std::exception &e) {
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
+
 
     return 0;
 }

@@ -1,13 +1,12 @@
 //
-// Created by bastien on 04/12/24.
+// Created by louismmassin on 12/16/24.
 //
 
 #include <iostream>
 #include "state.h"
 #include "MoveCommand.h"
-
 namespace engine {
-    MoveCommand::MoveCommand(state::PlayerInfo &player, int direction):  {
+    MoveCommand::MoveCommand(state::PlayerInfo &player, Move direction): Command(MOVE_FROM_DICE,player), direction(direction) {
     }
 
     void engine::MoveCommand::execute() {
