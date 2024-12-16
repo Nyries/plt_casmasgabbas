@@ -33,8 +33,8 @@ int main(int argc,char* argv[])
 
         auto *playerCell = dynamic_cast<state::Cell*>(&player.getLocation());
         std::cout << "Starting position : ("
-                << playerCell->getX() << ", "
-                << playerCell->getY() << ")" << std::endl;
+                  << playerCell->getX() << ", "
+                  << playerCell->getY() << ")" << std::endl;
 
 
         std::cout << "Trying to move up ..." << std::endl;
@@ -43,8 +43,8 @@ int main(int argc,char* argv[])
 
         playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
         std::cout << "After moving up : ("
-                << playerCell->getX() << ", "
-                << playerCell->getY() << ")" << std::endl;
+                  << playerCell->getX() << ", "
+                  << playerCell->getY() << ")" << std::endl;
 
 
         std::cout << "Trying to move right ..." << std::endl;
@@ -53,8 +53,8 @@ int main(int argc,char* argv[])
 
         playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
         std::cout << "After moving to the right : ("
-                << playerCell->getX() << ", "
-                << playerCell->getY() << ")" << std::endl;
+                  << playerCell->getX() << ", "
+                  << playerCell->getY() << ")" << std::endl;
 
 
         std::cout << "Trying to move down ..." << std::endl;
@@ -63,8 +63,8 @@ int main(int argc,char* argv[])
 
         playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
         std::cout << "After moving down : ("
-                << playerCell->getX() << ", "
-                << playerCell->getY() << ")" << std::endl;
+                  << playerCell->getX() << ", "
+                  << playerCell->getY() << ")" << std::endl;
 
 
         std::cout << "Trying to move left ..." << std::endl;
@@ -73,8 +73,8 @@ int main(int argc,char* argv[])
 
         playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
         std::cout << "After moving to the left : ("
-                << playerCell->getX() << ", "
-                << playerCell->getY() << ")" << std::endl;
+                  << playerCell->getX() << ", "
+                  << playerCell->getY() << ")" << std::endl;
 
     } catch (const std::exception &e) {
         std::cerr << "Erreur : " << e.what() << std::endl;
@@ -82,3 +82,5 @@ int main(int argc,char* argv[])
 
     return 0;
 }
+
+
