@@ -53,6 +53,9 @@ int main(int argc,char* argv[])
                     int remainingMoves = diceResult.at(0) + diceResult.at(1);
                     while (remainingMoves > 0) {
                         const auto possibleMoves = myEngine.getPossibleMoves(myClient.getClientPlayerInfo());
+                        if (possibleMoves.empty()) {
+                            break;
+                        }
                         int moveDirection = myClient.chooseMoveDirection(possibleMoves);
                         engine::MoveCommand(myClient.getClientPlayerInfo(), moveDirection);
                         myEngine.executeCommands();
@@ -62,7 +65,6 @@ int main(int argc,char* argv[])
                     break;
                 default:
                     throw std::runtime_error("switch case failed!");
-                    break;
             }
 
         myEngine.executeCommands();
