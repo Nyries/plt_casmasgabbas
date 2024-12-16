@@ -27,21 +27,14 @@ namespace state {
 
     void Cell::setX(int x)
     {
-        this->coordX = x;
+        this->X = x;
     }
 
     void Cell::setY(int y)
     {
-        this->coordY = y;
+        this->Y = y;
     }
 
-    bool Cell::getOccupied() {
-        return occupied;
-    }
-
-    void Cell::setOccupied(bool occupied) {
-        this->occupied = occupied;
-    }
 
     /*std::vector<Cell *> Cell::getAccessibleCells() {
         std::vector<Cell*> accessibleCells;

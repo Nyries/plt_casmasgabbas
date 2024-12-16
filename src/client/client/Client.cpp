@@ -155,6 +155,7 @@ namespace client{
 
     while (validChoice) {
       	switch (choice) {
+
 	    	case 1: // ROSE
 	        	std::cout << "You chose ROSE ! \n";
 	        	hypothesisChoice.push_back(state::ROSE);
@@ -451,13 +452,6 @@ namespace client{
 		direction = accessibleCells.at(choice-1);
 	}
 
-	std::cin >> moveDirection;
-	choice = convertToInteger(moveDirection);
-
-
-	///////// ATTENTION CECI EST A CHANGER (NE PAS FAIRE LE SWITCH CASE)
-	//////// DANS TOUTES LES POSSIBILITÉS
-
 	switch (choice) {
 	    case 1: // UP
 	        std::cout << "You moved UP ! \n";
@@ -468,12 +462,9 @@ namespace client{
 	    case 3: // DOWN
 	    	std::cout << "You chose DOWN ! \n";
 	        return 3;
-	        break;
 	    case 4: // RIGHT
 	        std::cout << "You chose RIGHT ! \n";
 	        return 4;
-	        break;
-
 	    default: // OTHER ONE
 	        std::cout << "Invalid choice ! Try again \n";
    	}
@@ -582,9 +573,14 @@ state::PlayerInfo &Client::getClientPlayerInfo() {
 	return *clientPlayer;
 }
 
-engine::Move Client::chooseMoveDirection(const std::vector<engine::Move> &possibleMoves) {
+int Client::chooseMoveDirection(const std::vector<int> &possibleMoves) {
 
 }
+
+
+	void Client::moveFromDiceStart(const std::vector<int> &diceResult) {
+
+	}
 
 engine::Engine &Client::getEngine() {
 	return *engine;

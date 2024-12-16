@@ -11,17 +11,6 @@ namespace state {
         return type;
     }
 
-    Suspect Card::getSuspectName() {
-        return Suspect::VIOLET;
-    }
-
-    Weapon Card::getWeaponName() {
-        return Weapon::WRENCH;
-    }
-
-    RoomName Card::getRoomName() {
-        return RoomName::BEDROOM;
-    }
 
 
 

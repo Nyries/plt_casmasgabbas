@@ -53,8 +53,5 @@ namespace state {
         this->previousHypothesisRoom = room;
     }
 
-std::vector<Card> &PlayerInfo::getCards() {
-    return cards;
-}
 
 }
