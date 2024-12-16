@@ -270,7 +270,6 @@ namespace client{
     return hypothesisChoice;
  }
 
-
 std::vector<int> Client::chooseAccusation(void){
 
     std::vector<int> accusationChoice;
@@ -533,8 +532,6 @@ int Client::getValidKey(int max){
 }
 
 
-/// convertit un string en entier (si on peut)
-
 int Client::convertToInteger(std::string command){
 	int number = std::stoi(command);
 	if (std::isdigit(number)){
@@ -614,7 +611,6 @@ int Client::chooseMoveDirection(const std::vector<int> &possibleMoves) {
 
 }
 
-
 	void Client::moveFromDiceStart(const std::vector<int> &diceResult) {
 
 	}
@@ -626,7 +622,4 @@ engine::Engine &Client::getEngine() {
 	engine::CommandId Client::chooseAction() {
 
 	}
-
-
-
 }
