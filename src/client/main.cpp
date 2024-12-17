@@ -32,18 +32,18 @@ int main(int argc,char* argv[])
         switch (currentAction) {
             case engine::HYPOTHESIS: {
                 std::vector<int> hypothesis = myClient.chooseHypothesis();
-                engine::HypothesisCommand myHypothesisCommand(myClient.getClientPlayerInfo(), hypothesis);
+                engine::HypothesisCommand myHypothesisCommand(myEngine, myClient.getClientPlayerInfo(), hypothesis);
                 myEngine.addCommand(&myHypothesisCommand);
             }
             break;
             case engine::ACCUSATION: {
                 std::vector<int> accusation = myClient.chooseAccusation();
-                engine::AccusationCommand myAccusationCommand(myClient.getClientPlayerInfo(), accusation);
+                engine::AccusationCommand myAccusationCommand(myEngine, myClient.getClientPlayerInfo(), accusation);
                 myEngine.addCommand(&myAccusationCommand);
             }
             break;
             case engine::SECRET_PASSAGE: {
-                engine::SecretPassageCommand mySecretPassageCommand(myClient.getClientPlayerInfo());
+                engine::SecretPassageCommand mySecretPassageCommand(myEngine, myClient.getClientPlayerInfo());
                 myEngine.addCommand(&mySecretPassageCommand);
             }
             break;
@@ -57,7 +57,7 @@ int main(int argc,char* argv[])
                         break;
                     }
                     const engine::Move moveDirection = myClient.chooseMoveDirection(possibleMoves);
-                    engine::MoveCommand myMoveCommand(myClient.getClientPlayerInfo(), moveDirection);
+                    engine::MoveCommand myMoveCommand(myEngine, myClient.getClientPlayerInfo(), moveDirection);
                     myEngine.addCommand(&myMoveCommand);
                     myEngine.executeCommands();
                     remainingMoves--;

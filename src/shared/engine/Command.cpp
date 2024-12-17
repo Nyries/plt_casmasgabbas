@@ -3,7 +3,7 @@
 //
 #include "Command.h"
 namespace engine {
-    Command::Command(CommandId id, state::PlayerInfo &player): id(id), player(player) {
+    Command::Command(Engine& engine, CommandId id, state::PlayerInfo &player): engine(engine), id(id), player(player) {
 
     }
 

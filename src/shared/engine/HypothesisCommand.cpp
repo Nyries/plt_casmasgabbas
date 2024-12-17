@@ -3,9 +3,10 @@
 //
 #include "HypothesisCommand.h"
 namespace engine {
-    HypothesisCommand::HypothesisCommand(state::PlayerInfo &player, std::vector<int> &hypothesis): Command(HYPOTHESIS,player), hypothesis(move(hypothesis)) {
+    HypothesisCommand::HypothesisCommand(Engine &engine, state::PlayerInfo &player, std::vector<int> &hypothesis): Command(engine, HYPOTHESIS, player) {
 
     }
+
 
     void HypothesisCommand::execute() {
 
