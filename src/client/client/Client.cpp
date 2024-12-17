@@ -578,6 +578,61 @@ state::PlayerInfo &Client::getClientPlayerInfo() {
 
 engine::Move Client::chooseMoveDirection(const std::vector<engine::Move> &possibleMoves) {
 
+	const int size = static_cast<int>(possibleMoves.size());
+
+		for (int i=0; i<size; i++) {
+
+			switch(possibleMoves.at(i)) {
+				case engine::MOVE_UP:
+					std::cout << "If you want to move up, press " << i+1 << std::endl;
+					break;
+				case engine::MOVE_DOWN:
+					std::cout << "If you want to move down, press " << i+1 << std::endl;
+					break;
+				case engine::MOVE_LEFT:
+					std::cout << "If you want to move left, press " << i+1 << std::endl;
+					break;
+				case engine::MOVE_RIGHT:
+					std::cout << "If you want to move right, press " << i+1 << std::endl;
+					break;
+				case engine::ENTER_ROOM:
+					std::cout << "If you want to enter in the room, press " << i+1 << std::endl;
+					break;
+				case engine::EXIT_ROOM:
+					std::cout << "If you want to exit the room, press " << i+1 << std::endl;
+					break;
+				default:
+					throw std::runtime_error("Switch failed");
+			}
+		}
+
+		std::cout << "What do you want to do ?" << std::endl;
+
+		int choice = getValidKey(size);
+
+		switch(possibleMoves.at(choice)) {
+			case engine::MOVE_UP:
+				std::cout << "You chose to move up " << std::endl;
+				break;
+			case engine::MOVE_DOWN:
+				std::cout << "You chose to move down " << std::endl;
+				break;
+			case engine::MOVE_LEFT:
+				std::cout << "You chose to move left " << std::endl;
+				break;
+			case engine::MOVE_RIGHT:
+				std::cout << "You chose to move right " << std::endl;
+				break;
+			case engine::ENTER_ROOM:
+				std::cout << "You chose to enter in the room " << std::endl;
+				break;
+			case engine::EXIT_ROOM:
+				std::cout << "You chose to exit the room " << std::endl;
+				break;
+			default:
+				throw std::runtime_error("Switch failed");
+		}
+		return possibleMoves.at(choice - 1);
 }
 
 
@@ -587,8 +642,52 @@ engine::Engine &Client::getEngine() {
 }
 
 	engine::CommandId Client::chooseAction() {
+		const std::vector<engine::CommandId> actions = engine->getPossibleActions (*currentPlayer);
+		const int size = static_cast<int>(actions.size());
 
-	}
+		for (int i=0; i<size; i++) {
+
+			switch(actions.at(i)) {
+				case 1: // MOVE_FROM_DICE
+					std::cout << "If you want to move from the dice, press " << i+1 << std::endl;
+					break;
+				case 2: // HYPOTHESIS
+					std::cout << "If you want to make a hypothesis, press " << i+1 << std::endl;
+					break;
+				case 3: // ACCUSATION
+					std::cout << "If you want to make an accusation, press " << i+1 << std::endl;
+					break;
+				case 4: // SECRET_PASSAGE
+					std::cout << "If you want to use the secret passage, press " << i+1 << std::endl;
+					break;
+				default:
+					throw std::runtime_error("Switch failed");
+			}
+		}
+
+		std::cout << "What do you want to do ?" << std::endl;
+
+		int choice = getValidKey(size);
+
+		switch(choice) {
+			case engine::MOVE_FROM_DICE:
+				std::cout << "You chose to move from the dice " << std::endl;
+				break;
+			case engine::HYPOTHESIS:
+				std::cout << "You chose to do a hypothesis " << std::endl;
+				break;
+			case engine::ACCUSATION:
+				std::cout << "You chose to do an accusation " << std::endl;
+				break;
+			case engine::SECRET_PASSAGE:
+				std::cout << "You chose to use the secret passage " << std::endl;
+				break;
+			default:
+				throw std::runtime_error("Switch failed");
+		}
+		return actions.at(choice - 1);
+
+	}   // bonne (normalement)
 
 
 
