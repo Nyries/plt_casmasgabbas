@@ -92,6 +92,10 @@ namespace engine {
         }
     }
 
+    void Engine::movement () {
+        //TODO
+    }
+
     void Engine::distributionCharacters () {
         const int numberOfPlayer = playerList->size();
         const std::vector<state::Suspect> SuspectsVector = {state::VIOLET, state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE} ;
@@ -173,35 +177,14 @@ namespace engine {
 
     }
 
-
-    std::vector<engine::CommandId> Engine::getPossibleActions (state::PlayerInfo& player) {
-        std::vector<engine::CommandId> possibleCommands;
-
-        // Si c'est ton tour
-        if (&player==&(playerList->getCurrent())) {
-
-            // Si tu es dans une salle
-            if (player.getLocation().getType()== state::ROOM) {
-                auto& currentRoom = static_cast<state::Room&>(currentPlayer.getLocation());
-                // Si tu n'as pas encore fait d'hypotèse
-                if (player.getPreviousHypothesisRoom() != currentRoom.getRoomName()) {
-                    possibleCommands.push_back(engine::HYPOTHESIS);
-                }
-                // Si y a un passage secret
-                if (currentRoom.getSecretPassage()!= nullptr) {
-                    possibleCommands.push_back(engine::SECRET_PASSAGE);
-                }
-            }
-            // on peut toujours se déplacer avec les dés ou faire une accusation
-            possibleCommands.push_back(engine::MOVE_FROM_DICE);
-            possibleCommands.push_back(engine::ACCUSATION);
-        }
-
-        return possibleCommands;
-    }
-
     void Engine::addCommand(Command* newCommand) {
         commands.push_back( newCommand);
+    }
+
+    void Engine::executeCommands() {
+        for (Command* c: commands) {
+            c->execute();
+        }
     }
 
     std::vector<Move> Engine::getPossibleMoves(state::PlayerInfo &player) {
@@ -271,11 +254,32 @@ namespace engine {
         return possibleMoves;
     }
 
-    void Engine::executeCommands() {
-        for (Command* c: commands) {
-            c->execute();
+    std::vector<engine::CommandId> Engine::getPossibleActions (state::PlayerInfo& player) {
+        std::vector<engine::CommandId> possibleCommands;
+
+        // Si c'est ton tour
+        if (&player==&(playerList->getCurrent())) {
+
+            // Si tu es dans une salle
+            if (player.getLocation().getType()== state::ROOM) {
+                auto& currentRoom = static_cast<state::Room&>(currentPlayer.getLocation());
+                // Si tu n'as pas encore fait d'hypotèse
+                if (player.getPreviousHypothesisRoom() != currentRoom.getRoomName()) {
+                    possibleCommands.push_back(engine::HYPOTHESIS);
+                }
+                // Si y a un passage secret
+                if (currentRoom.getSecretPassage()!= nullptr) {
+                    possibleCommands.push_back(engine::SECRET_PASSAGE);
+                }
+            }
+            // on peut toujours se déplacer avec les dés ou faire une accusation
+            possibleCommands.push_back(engine::MOVE_FROM_DICE);
+            possibleCommands.push_back(engine::ACCUSATION);
         }
+
+        return possibleCommands;
     }
+
 }
 
 
