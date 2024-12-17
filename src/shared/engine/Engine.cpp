@@ -282,6 +282,10 @@ namespace engine {
         currentPlayer = playerList->getCurrent();
     }
 
+    std::vector<state::Card> &Engine::getEnvelope() {
+        return envelope;
+    }
+
 }
 
 
