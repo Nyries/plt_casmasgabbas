@@ -15,6 +15,7 @@ void testSFML() {
 
 using namespace std;
 using namespace state;
+using namespace engine;
 
 void test() {
     //put some code you want to run here
@@ -22,6 +23,7 @@ void test() {
 
 int main(int argc,char* argv[])
 {
+    /*
     test();//used for testing methods
     //Ebauche du main
     const std::string clientJsonPath = "../configurations/client.json";
@@ -68,65 +70,44 @@ int main(int argc,char* argv[])
                 throw std::runtime_error("switch case failed!");
         }
         myEngine.executeCommands();
-    }
-  /*
+    }*/
     try {
-        client::Client client("../configurations/client.json");
-        Map map("../configurations/map.json");
-        vector<vector<Cell>> mapGrid = map.getMapGrid();
-        Cell startCell = mapGrid[8][8];
         PlayerInfo player("Player1", ROSE);
+        Cell startCell(8, 8, CORRIDOR);
         player.setLocation(startCell);
+        cout << "Initial position : (" << startCell.getX()
+             << ", " << startCell.getY() << ")" << endl;
 
 
-        auto *playerCell = dynamic_cast<state::Cell*>(&player.getLocation());
-        std::cout << "Starting position : ("
-                  << playerCell->getX() << ", "
-                  << playerCell->getY() << ")" << std::endl;
+        MoveCommand moveUp(player, MOVE_UP);
+        moveUp.execute();
+        Cell *currentCell = static_cast<state::Cell*>(&player.getLocation());
+        cout << "After MOVE UP: (" << currentCell->getX()
+             << ", " << currentCell->getY() << ")" << endl;
 
+        MoveCommand moveRight(player, MOVE_RIGHT);
+        moveRight.execute();
+        currentCell = static_cast<state::Cell*>(&player.getLocation());
+        cout << "After MOVE RIGHT: (" << currentCell->getX()
+             << ", " << currentCell->getY() << ")" << endl;
 
-        std::cout << "Trying to move up ..." << std::endl;
-        engine::MoveCommand moveCommandUp(player, 1);
-        moveCommandUp.execute();
+        MoveCommand moveDown(player, MOVE_DOWN);
+        moveDown.execute();
+        currentCell = static_cast<state::Cell*>(&player.getLocation());
+        cout << "After MOVE DOWN: (" << currentCell->getX()
+             << ", " << currentCell->getY() << ")" << endl;
 
-        playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
-        std::cout << "After moving up : ("
-                  << playerCell->getX() << ", "
-                  << playerCell->getY() << ")" << std::endl;
+        MoveCommand moveLeft(player, MOVE_LEFT);
+        moveLeft.execute();
+        currentCell = static_cast<state::Cell*>(&player.getLocation());
+        cout << "After MOVE LEFT: (" << currentCell->getX()
+             << ", " << currentCell->getY() << ")" << endl;
 
-
-        std::cout << "Trying to move right ..." << std::endl;
-        engine::MoveCommand moveCommandRight(player, 2);
-        moveCommandRight.execute();
-
-        playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
-        std::cout << "After moving to the right : ("
-                  << playerCell->getX() << ", "
-                  << playerCell->getY() << ")" << std::endl;
-
-
-        std::cout << "Trying to move down ..." << std::endl;
-        engine::MoveCommand moveCommandDown(player, 3);
-        moveCommandDown.execute();
-
-        playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
-        std::cout << "After moving down : ("
-                  << playerCell->getX() << ", "
-                  << playerCell->getY() << ")" << std::endl;
-
-
-        std::cout << "Trying to move left ..." << std::endl;
-        engine::MoveCommand moveCommandLeft(player, 4);
-        moveCommandLeft.execute();
-
-        playerCell = dynamic_cast<state::Cell *>(&player.getLocation());
-        std::cout << "After moving to the left : ("
-                  << playerCell->getX() << ", "
-                  << playerCell->getY() << ")" << std::endl;
-
-    } catch (const std::exception &e) {
-        std::cerr << "Erreur : " << e.what() << std::endl;
-*/
+    } catch (const std::invalid_argument &e) {
+        cerr << "Error : " << e.what() << endl;
+    } catch (...) {
+        cerr << "An unknown error occurred !" << endl;
+    }
     return 0;
 }
 
