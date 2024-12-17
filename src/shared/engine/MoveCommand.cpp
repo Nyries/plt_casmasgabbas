@@ -9,8 +9,7 @@ namespace engine {
     MoveCommand::MoveCommand(Engine &engine, state::PlayerInfo &player, Move direction): Command(engine, ACCUSATION, player), direction(direction) {
 
     }
-
-
+    
     void MoveCommand::execute() {
         state::Location &currentLocation = player.getLocation();
         if (currentLocation.getType() != state::CORRIDOR) {
