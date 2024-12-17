@@ -7,6 +7,7 @@
 
 namespace engine{
     AccusationCommand::AccusationCommand(Engine &engine, state::PlayerInfo &player, std::vector<int> &accusation): Command(engine, ACCUSATION , player), envelope(engine.getEnvelope())  {
+
     }
 
 
