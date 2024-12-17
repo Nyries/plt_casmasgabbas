@@ -18,49 +18,12 @@ using namespace state;
 using namespace engine;
 
 void test() {
-    try {
-        PlayerInfo player("Player1", ROSE);
-        Cell startCell(8, 8, CORRIDOR);
-        player.setLocation(startCell);
-        cout << "Initial position : (" << startCell.getX()
-             << ", " << startCell.getY() << ")" << endl;
-
-
-        MoveCommand moveUp(player, MOVE_UP);
-        moveUp.execute();
-        Cell *currentCell = static_cast<state::Cell*>(&player.getLocation());
-        cout << "After MOVE UP: (" << currentCell->getX()
-             << ", " << currentCell->getY() << ")" << endl;
-
-        MoveCommand moveRight(player, MOVE_RIGHT);
-        moveRight.execute();
-        currentCell = static_cast<state::Cell*>(&player.getLocation());
-        cout << "After MOVE RIGHT: (" << currentCell->getX()
-             << ", " << currentCell->getY() << ")" << endl;
-
-        MoveCommand moveDown(player, MOVE_DOWN);
-        moveDown.execute();
-        currentCell = static_cast<state::Cell*>(&player.getLocation());
-        cout << "After MOVE DOWN: (" << currentCell->getX()
-             << ", " << currentCell->getY() << ")" << endl;
-
-        MoveCommand moveLeft(player, MOVE_LEFT);
-        moveLeft.execute();
-        currentCell = static_cast<state::Cell*>(&player.getLocation());
-        cout << "After MOVE LEFT: (" << currentCell->getX()
-             << ", " << currentCell->getY() << ")" << endl;
-
-    } catch (const std::invalid_argument &e) {
-        cerr << "Error : " << e.what() << endl;
-    } catch (...) {
-        cerr << "An unknown error occurred !" << endl;
-    }
     //put some code you want to run here
 }
 
 int main(int argc,char* argv[])
 {
-    
+
     test();//used for testing methods
     //Ebauche du main
     const std::string clientJsonPath = "../configurations/client.json";
