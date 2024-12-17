@@ -117,7 +117,7 @@ namespace engine {
     std::vector<state::Card*> Engine::getPossessedCards (std::vector<state::Card> cards) {
         playerList->getCurrent();
         int askedPlayers = 0;
-        std::vector<state::Card*> possessedCards = {};
+        std::vector<state::Card*> possessedCards;
 
         while (possessedCards.empty()){
 
@@ -127,19 +127,25 @@ namespace engine {
             for (auto & i : askedPlayer.getCards()) {
 
                 if (i.getType() == state::SUSPECT_CARD) {
-                    if(i.getSuspectName()== cards.at(0).getSuspectName()) {
+                    auto& castI = static_cast<state::SuspectCard&>(i);
+                    auto& castCard = static_cast<state::SuspectCard&>(cards.at(0));
+                    if(castI.getSuspectName()== castCard.getSuspectName()) {
                         possessedCards.push_back(&cards.at(0));
                     }
                 }
 
                 else if (i.getType() == state::WEAPON_CARD) {
-                    if(i.getWeaponName()== cards.at(1).getWeaponName()) {
+                    auto& castI = static_cast<state::WeaponCard&>(i);
+                    auto& castCard = static_cast<state::WeaponCard&>(cards.at(1));
+                    if(castI.getWeaponName()== castCard.getWeaponName()) {
                         possessedCards.push_back(&cards.at(1));
                     }
                 }
 
                 else if (i.getType() == state::ROOM_CARD) {
-                    if(i.getRoomName()== cards.at(2).getRoomName()) {
+                    auto& castI = static_cast<state::RoomCard&>(i);
+                    auto& castCard = static_cast<state::RoomCard&>(cards.at(2));
+                    if(castI.getRoomName()== castCard.getRoomName()) {
                         possessedCards.push_back(&cards.at(2));
                     }
                 }
@@ -194,17 +200,80 @@ namespace engine {
         return possibleCommands;
     }
 
-    void Engine::addCommand(Command newCommand) {
+    void Engine::addCommand(Command* newCommand) {
         commands.push_back( newCommand);
     }
 
-    std::vector<int> Engine::getPossibleMoves(state::PlayerInfo &player) {
-
+    std::vector<Move> Engine::getPossibleMoves(state::PlayerInfo &player) {
+        std::vector<Move> possibleMoves;
+        state::Location playerLocation = player.getLocation();
+        switch (playerLocation.getType()) {
+            case state::CORRIDOR: {
+                auto& playerCell = static_cast<state::Cell&>(playerLocation);
+                const auto& neighbourList = state.getMap()->getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
+                for (int i = 0; i < neighbourList.size(); i++) {
+                    const state::LocationType type = neighbourList.at(i);
+                    if (type == state::CORRIDOR or type == state::DOOR) {
+                        switch (i) {
+                            case 0:
+                                possibleMoves.push_back(MOVE_UP);
+                            break;
+                            case 1:
+                                possibleMoves.push_back(MOVE_DOWN);
+                            break;
+                            case 2:
+                                possibleMoves.push_back(MOVE_LEFT);
+                            break;
+                            case 3:
+                                possibleMoves.push_back(MOVE_RIGHT);
+                            break;
+                            default:
+                                throw std::runtime_error("switch failed");
+                        }
+                    }
+                }
+            }
+            break;
+            case state::DOOR: {
+                possibleMoves.push_back(ENTER_ROOM);
+                auto& playerCell = static_cast<state::Cell&>(playerLocation);
+                const auto& neighbourList = state.getMap()->getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
+                for (int i = 0; i < neighbourList.size(); i++) {
+                    const state::LocationType type = neighbourList.at(i);
+                    if (type == state::CORRIDOR or type == state::DOOR) {
+                        switch (i) {
+                            case 0:
+                                possibleMoves.push_back(MOVE_UP);
+                            break;
+                            case 1:
+                                possibleMoves.push_back(MOVE_DOWN);
+                            break;
+                            case 2:
+                                possibleMoves.push_back(MOVE_LEFT);
+                            break;
+                            case 3:
+                                possibleMoves.push_back(MOVE_RIGHT);
+                            break;
+                            default:
+                                throw std::runtime_error("switch failed");
+                        }
+                    }
+                }
+            }
+            break;
+            case state::ROOM: {
+                possibleMoves.push_back(EXIT_ROOM);
+            }
+            break;
+            default:
+                throw std::runtime_error("switch case failed");
+        }
+        return possibleMoves;
     }
 
     void Engine::executeCommands() {
-        for (Command c: commands) {
-            c.execute();
+        for (Command* c: commands) {
+            c->execute();
         }
     }
 }

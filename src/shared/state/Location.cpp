@@ -7,8 +7,6 @@ namespace state{
 
 	}
 
-    Location::~Location()=default;
-
 
     LocationType Location::getType(){
           return type;
@@ -31,11 +29,6 @@ namespace state{
 		else{
         	return "Mouais";
 		}
-    }
-
-    void Location::setType(LocationType type)
-    {
-		this->type = type;
     }
 
     void Location::setTypeAsString(std::string type)
