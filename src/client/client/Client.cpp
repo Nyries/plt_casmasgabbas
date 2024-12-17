@@ -82,7 +82,7 @@ namespace client{
 		//choosingSuspect(playerNames, numberOfPlayers);
 	}
 
-    void Client::determinePlayerSuspect()
+	void Client::determinePlayerSuspect()
     {
 		vector<int> suspectInt;
 		for (int i=1; i<=6; i++){
@@ -427,7 +427,6 @@ namespace client{
    return accusationChoice;
  }
 
-
 	int Client::moveDisplay(std::vector<state::Cell*> accessibleCells){
 
 	std::cout << "Where do you want to go ?" << std::endl;
@@ -471,13 +470,12 @@ namespace client{
 		return int();
 }
 
-
-void Client::displayPressKey(std::string key){
+	void Client::displayPressKey(std::string key){
 
 	std::cout << " press " << key << " " << std::endl;
-}
+	}
 
-int Client::getValidKey(int max){
+	int Client::getValidKey(int max){
 	try{
 		std::string playerKey;
 		std::cin >> playerKey;
@@ -491,204 +489,196 @@ int Client::getValidKey(int max){
 	catch(const exception& e){
 		std::cout << "Invalid key" << std::endl;
     	return getValidKey(max);
-    }
-}
-
+		}
+	}
 
 /// convertit un string en entier (si on peut)
 
-int Client::convertToInteger(std::string command){
-	int number = std::stoi(command);
-	if (std::isdigit(number)){
-		return number;
+	int Client::convertToInteger(std::string command){
+		int number = std::stoi(command);
+		if (std::isdigit(number)){
+			return number;
+		}
+			return -1;
 	}
-		return -1;
-}
   
-void Client::displayMap()
-{
-	std::vector<std::vector<std::string>> mapGrid = state->getMap()->getDisplayMap();
-	for (std::vector<std::string> row : mapGrid) {
-		for (std::string cell : row) {
-			std::cout << cell;
-		}
-		std::cout << std::endl;
-	}
-}
-
-int Client::choseACardToShowClient (std::vector<state::Card*> cards) {   //cette fonction va de paire avec celle dans engine qui prend en
-		// argument un index, c'est la valeur de la carte qui va être montrée. D'abord cette fonction est appelée, puis on prend
-		// ce qu'elle renvoie et on le met en argument de la fonction qui va montrer physiquement la carte.
-		std::cout << "Which card do you want to show ?" << std::endl;
-		int size = cards.size();
-		if (size==1) {
-			std::cout << "You don't really have the choice. Press 1 to show your card " << std::endl;
-		}
-		else {
-			std::cout << "You have the choice between " << cards.size() << " cards" << std::endl;
-			std::cout << "If you want to show " << cards.at(0) << " press 1" << std::endl;
-			std::cout << "If you want to show " << cards.at(1) << " press 2" << std::endl;
-			if (size == 3) {
-				std::cout << "If you want to show " << cards.at(2) << " press 3" << std::endl;
+	void Client::displayMap()
+	{
+		std::vector<std::vector<std::string>> mapGrid = state->getMap()->getDisplayMap();
+		for (std::vector<std::string> row : mapGrid) {
+			for (std::string cell : row) {
+				std::cout << cell;
 			}
+			std::cout << std::endl;
 		}
-		int cardNumber;
-		std::cin >> cardNumber;
+	}
 
-		std::cout << "You will show " << cards.at(cardNumber) << std::endl;
+	int Client::choseACardToShowClient (std::vector<state::Card*> cards) {   //cette fonction va de paire avec celle dans engine qui prend en
+			// argument un index, c'est la valeur de la carte qui va être montrée. D'abord cette fonction est appelée, puis on prend
+			// ce qu'elle renvoie et on le met en argument de la fonction qui va montrer physiquement la carte.
+			std::cout << "Which card do you want to show ?" << std::endl;
+			int size = cards.size();
+			if (size==1) {
+				std::cout << "You don't really have the choice. Press 1 to show your card " << std::endl;
+			}
+			else {
+				std::cout << "You have the choice between " << cards.size() << " cards" << std::endl;
+				std::cout << "If you want to show " << cards.at(0) << " press 1" << std::endl;
+				std::cout << "If you want to show " << cards.at(1) << " press 2" << std::endl;
+				if (size == 3) {
+					std::cout << "If you want to show " << cards.at(2) << " press 3" << std::endl;
+				}
+			}
+			int cardNumber;
+			std::cin >> cardNumber;
 
-	return cardNumber;
-}
+			std::cout << "You will show " << cards.at(cardNumber) << std::endl;
+
+		return cardNumber;
+	}
 
 /// Analyse du type de la carte, puis affichage de la carte selon son type
-void Client::showMeCardClient (state::Card card) {
-		if (card.getType() == state::SUSPECT_CARD) {
-			auto& shownCard = static_cast<state::SuspectCard&>(card);
-			std::cout <<  " You show " << shownCard.getSuspectName() << std::endl;
+	void Client::showMeCardClient (state::Card card) {
+			if (card.getType() == state::SUSPECT_CARD) {
+				auto& shownCard = static_cast<state::SuspectCard&>(card);
+				std::cout <<  " You show " << shownCard.getSuspectName() << std::endl;
+			}
+			else if (card.getType() == state::WEAPON_CARD) {
+				auto& shownCard = static_cast<state::WeaponCard&>(card);
+				std::cout <<  " You show " << shownCard.getWeaponName() << std::endl;
+			}
+			else {
+				auto& shownCard = static_cast<state::RoomCard&>(card);
+				std::cout <<  " You show " << shownCard.getRoomName() << std::endl;
+			}
 		}
-		else if (card.getType() == state::WEAPON_CARD) {
-			auto& shownCard = static_cast<state::WeaponCard&>(card);
-			std::cout <<  " You show " << shownCard.getWeaponName() << std::endl;
+
+	void Client::throwDiceClient () {
+		std::cout << "Press 1 to throw the dice ! " << std::endl;
+		int keyValue;
+		std::cin >> keyValue;
+		while (keyValue != 1) {
+			std::cout << "Wrong value, press 1 " << std::endl;
 		}
-		else {
-			auto& shownCard = static_cast<state::RoomCard&>(card);
-			std::cout <<  " You show " << shownCard.getRoomName() << std::endl;
+		//std::vector<int> diceValues = getEngine().dice();
+		std::cout << "Dice are thrown" << std::endl;
+
+		// finir avec lancer les dés et afficher la valeur
 		}
+
+	state::PlayerInfo &Client::getClientPlayerInfo() {
+		return *clientPlayer;
 	}
 
-void Client::throwDiceClient () {
-	std::cout << "Press 1 to throw the dice ! " << std::endl;
-	int keyValue;
-	std::cin >> keyValue;
-	while (keyValue != 1) {
-		std::cout << "Wrong value, press 1 " << std::endl;
-	}
-	//std::vector<int> diceValues = getEngine().dice();
-	std::cout << "Dice are thrown" << std::endl;
+	engine::Move Client::chooseMoveDirection(const std::vector<engine::Move> &possibleMoves) {
 
-	// finir avec lancer les dés et afficher la valeur
+		const int size = static_cast<int>(possibleMoves.size());
 
+			for (int i=0; i<size; i++) {
 
+				switch(possibleMoves.at(i)) {
+					case engine::MOVE_UP:
+						std::cout << "If you want to move up, press " << i+1 << std::endl;
+						break;
+					case engine::MOVE_DOWN:
+						std::cout << "If you want to move down, press " << i+1 << std::endl;
+						break;
+					case engine::MOVE_LEFT:
+						std::cout << "If you want to move left, press " << i+1 << std::endl;
+						break;
+					case engine::MOVE_RIGHT:
+						std::cout << "If you want to move right, press " << i+1 << std::endl;
+						break;
+					case engine::ENTER_ROOM:
+						std::cout << "If you want to enter in the room, press " << i+1 << std::endl;
+						break;
+					case engine::EXIT_ROOM:
+						std::cout << "If you want to exit the room, press " << i+1 << std::endl;
+						break;
+					default:
+						throw std::runtime_error("Switch failed");
+				}
+			}
 
-	}
+			std::cout << "What do you want to do ?" << std::endl;
 
-state::PlayerInfo &Client::getClientPlayerInfo() {
-	return *clientPlayer;
-}
+			int choice = getValidKey(size);
 
-engine::Move Client::chooseMoveDirection(const std::vector<engine::Move> &possibleMoves) {
-
-	const int size = static_cast<int>(possibleMoves.size());
-
-		for (int i=0; i<size; i++) {
-
-			switch(possibleMoves.at(i)) {
+			switch(possibleMoves.at(choice)) {
 				case engine::MOVE_UP:
-					std::cout << "If you want to move up, press " << i+1 << std::endl;
+					std::cout << "You chose to move up " << std::endl;
 					break;
 				case engine::MOVE_DOWN:
-					std::cout << "If you want to move down, press " << i+1 << std::endl;
+					std::cout << "You chose to move down " << std::endl;
 					break;
 				case engine::MOVE_LEFT:
-					std::cout << "If you want to move left, press " << i+1 << std::endl;
+					std::cout << "You chose to move left " << std::endl;
 					break;
 				case engine::MOVE_RIGHT:
-					std::cout << "If you want to move right, press " << i+1 << std::endl;
+					std::cout << "You chose to move right " << std::endl;
 					break;
 				case engine::ENTER_ROOM:
-					std::cout << "If you want to enter in the room, press " << i+1 << std::endl;
+					std::cout << "You chose to enter in the room " << std::endl;
 					break;
 				case engine::EXIT_ROOM:
-					std::cout << "If you want to exit the room, press " << i+1 << std::endl;
+					std::cout << "You chose to exit the room " << std::endl;
 					break;
 				default:
 					throw std::runtime_error("Switch failed");
 			}
-		}
+			return possibleMoves.at(choice - 1);
+	}
 
-		std::cout << "What do you want to do ?" << std::endl;
-
-		int choice = getValidKey(size);
-
-		switch(possibleMoves.at(choice)) {
-			case engine::MOVE_UP:
-				std::cout << "You chose to move up " << std::endl;
-				break;
-			case engine::MOVE_DOWN:
-				std::cout << "You chose to move down " << std::endl;
-				break;
-			case engine::MOVE_LEFT:
-				std::cout << "You chose to move left " << std::endl;
-				break;
-			case engine::MOVE_RIGHT:
-				std::cout << "You chose to move right " << std::endl;
-				break;
-			case engine::ENTER_ROOM:
-				std::cout << "You chose to enter in the room " << std::endl;
-				break;
-			case engine::EXIT_ROOM:
-				std::cout << "You chose to exit the room " << std::endl;
-				break;
-			default:
-				throw std::runtime_error("Switch failed");
-		}
-		return possibleMoves.at(choice - 1);
-}
-
-
-
-engine::Engine &Client::getEngine() {
-	return *engine;
-}
+	engine::Engine &Client::getEngine() {
+		return *engine;
+	}
 
 	engine::CommandId Client::chooseAction() {
-		const std::vector<engine::CommandId> actions = engine->getPossibleActions (*currentPlayer);
-		const int size = static_cast<int>(actions.size());
+			const std::vector<engine::CommandId> actions = engine->getPossibleActions (*currentPlayer);
+			const int size = static_cast<int>(actions.size());
 
-		for (int i=0; i<size; i++) {
+			for (int i=0; i<size; i++) {
 
-			switch(actions.at(i)) {
-				case 1: // MOVE_FROM_DICE
-					std::cout << "If you want to move from the dice, press " << i+1 << std::endl;
+				switch(actions.at(i)) {
+					case 1: // MOVE_FROM_DICE
+						std::cout << "If you want to move from the dice, press " << i+1 << std::endl;
+						break;
+					case 2: // HYPOTHESIS
+						std::cout << "If you want to make a hypothesis, press " << i+1 << std::endl;
+						break;
+					case 3: // ACCUSATION
+						std::cout << "If you want to make an accusation, press " << i+1 << std::endl;
+						break;
+					case 4: // SECRET_PASSAGE
+						std::cout << "If you want to use the secret passage, press " << i+1 << std::endl;
+						break;
+					default:
+						throw std::runtime_error("Switch failed");
+				}
+			}
+
+			std::cout << "What do you want to do ?" << std::endl;
+
+			int choice = getValidKey(size);
+
+			switch(choice) {
+				case engine::MOVE_FROM_DICE:
+					std::cout << "You chose to move from the dice " << std::endl;
 					break;
-				case 2: // HYPOTHESIS
-					std::cout << "If you want to make a hypothesis, press " << i+1 << std::endl;
+				case engine::HYPOTHESIS:
+					std::cout << "You chose to do a hypothesis " << std::endl;
 					break;
-				case 3: // ACCUSATION
-					std::cout << "If you want to make an accusation, press " << i+1 << std::endl;
+				case engine::ACCUSATION:
+					std::cout << "You chose to do an accusation " << std::endl;
 					break;
-				case 4: // SECRET_PASSAGE
-					std::cout << "If you want to use the secret passage, press " << i+1 << std::endl;
+				case engine::SECRET_PASSAGE:
+					std::cout << "You chose to use the secret passage " << std::endl;
 					break;
 				default:
 					throw std::runtime_error("Switch failed");
 			}
-		}
+			return actions.at(choice - 1);
 
-		std::cout << "What do you want to do ?" << std::endl;
+		}   // bonne (normalement)
 
-		int choice = getValidKey(size);
-
-		switch(choice) {
-			case engine::MOVE_FROM_DICE:
-				std::cout << "You chose to move from the dice " << std::endl;
-				break;
-			case engine::HYPOTHESIS:
-				std::cout << "You chose to do a hypothesis " << std::endl;
-				break;
-			case engine::ACCUSATION:
-				std::cout << "You chose to do an accusation " << std::endl;
-				break;
-			case engine::SECRET_PASSAGE:
-				std::cout << "You chose to use the secret passage " << std::endl;
-				break;
-			default:
-				throw std::runtime_error("Switch failed");
-		}
-		return actions.at(choice - 1);
-
-	}   // bonne (normalement)
-
-
-
-}
+	}
