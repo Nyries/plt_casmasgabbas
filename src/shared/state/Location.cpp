@@ -31,6 +31,7 @@ namespace state{
 		}
     }
 
+
     void Location::setTypeAsString(std::string type)
     {
 		if (type == "INACCESSIBLE"){

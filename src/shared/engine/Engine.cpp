@@ -276,6 +276,16 @@ namespace engine {
             c->execute();
         }
     }
+
+    void Engine::endTurn() {
+        playerList->next();
+        currentPlayer = playerList->getCurrent();
+    }
+
+    std::vector<state::Card> &Engine::getEnvelope() {
+        return envelope;
+    }
+
 }
 
 
