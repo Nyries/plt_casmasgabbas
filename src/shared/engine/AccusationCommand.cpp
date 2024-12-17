@@ -12,14 +12,14 @@ namespace engine{
     }
 
 
-    }
 
+    void AccusationCommand::execute () {
 
-    void AccusationCommand::execute () {    // TO SEE AGAIN
-
-        std::vector<state::Card> cards = player.getCards();
         for (int i=0; i<envelope.size();i++) {
-            if (cards.at(0)==envelope.at(0) and cards.at(1)==envelope.at(1) and cards.at(2)==envelope.at(2)) {
+            if (accusation.at(0) == static_cast<state::SuspectCard&>(envelope.at(0)).getSuspectName() and
+                accusation.at(1) == static_cast<state::WeaponCard&>(envelope.at(1)).getWeaponName() and
+                accusation.at(2) == static_cast<state::RoomCard&>(envelope.at(2)).getRoomName()){
+
                 player.setCanWin(true);
             }
         }
