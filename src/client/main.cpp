@@ -33,18 +33,18 @@ int main(int argc,char* argv[])
             case engine::HYPOTHESIS: {
                 std::vector<int> hypothesis = myClient.chooseHypothesis();
                 engine::HypothesisCommand myHypothesisCommand(myClient.getClientPlayerInfo(), hypothesis);
-                myEngine.addCommand(myHypothesisCommand);
+                myEngine.addCommand(&myHypothesisCommand);
             }
             break;
             case engine::ACCUSATION: {
                 std::vector<int> accusation = myClient.chooseAccusation();
                 engine::AccusationCommand myAccusationCommand(myClient.getClientPlayerInfo(), accusation);
-                myEngine.addCommand(myAccusationCommand);
+                myEngine.addCommand(&myAccusationCommand);
             }
             break;
             case engine::SECRET_PASSAGE: {
                 engine::SecretPassageCommand mySecretPassageCommand(myClient.getClientPlayerInfo());
-                myEngine.addCommand(mySecretPassageCommand);
+                myEngine.addCommand(&mySecretPassageCommand);
             }
             break;
             case engine::MOVE_FROM_DICE: {
@@ -57,7 +57,8 @@ int main(int argc,char* argv[])
                         break;
                     }
                     const engine::Move moveDirection = myClient.chooseMoveDirection(possibleMoves);
-                    engine::MoveCommand(myClient.getClientPlayerInfo(), moveDirection);
+                    engine::MoveCommand myMoveCommand(myClient.getClientPlayerInfo(), moveDirection);
+                    myEngine.addCommand(&myMoveCommand);
                     myEngine.executeCommands();
                     remainingMoves--;
                 }
@@ -67,6 +68,7 @@ int main(int argc,char* argv[])
                 throw std::runtime_error("switch case failed!");
         }
         myEngine.executeCommands();
+    }
   /*
     try {
         client::Client client("../configurations/client.json");
@@ -125,7 +127,6 @@ int main(int argc,char* argv[])
     } catch (const std::exception &e) {
         std::cerr << "Erreur : " << e.what() << std::endl;
 */
-    }
     return 0;
 }
 
