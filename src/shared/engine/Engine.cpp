@@ -276,6 +276,12 @@ namespace engine {
             c->execute();
         }
     }
+
+    void Engine::endTurn() {
+        playerList->next();
+        currentPlayer = playerList->getCurrent();
+    }
+
 }
 
 
