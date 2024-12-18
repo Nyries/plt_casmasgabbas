@@ -12,22 +12,24 @@ void testSFML() {
 #include <engine.h>
 #include <state.h>
 #include <client.h>
-#include <engine.h>
+#include <render.h>
 
 using namespace std;
-using namespace state;
 
 void test() {
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    sf::RenderWindow window(sf::VideoMode(desktop.height*0.9, desktop.height*0.9), "Cluedo plt", sf::Style::Close);
+    render::Scene scene(window);
     //put some code you want to run here
 }
 
 int main(int argc,char* argv[])
 {
     test();//used for testing methods
-
     //Ebauche du main
     if (argc < 2) {
         throw std::invalid_argument("program needs at least 1 parameter");
+        return 0;
     }
     if (std::string(argv[1]) == "solovsai") {
         const std::string clientJsonPath = "../configurations/client.json";

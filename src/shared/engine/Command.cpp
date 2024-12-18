@@ -12,7 +12,6 @@ namespace engine {
     }
 
     void Command::execute() {
-        //TODO
     }
 
 

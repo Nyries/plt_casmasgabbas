@@ -104,13 +104,13 @@ namespace engine {
             players++;
         }
     }
-
+ 
     std::vector<int> Engine::dice () {
-        const int die1 = UtilityFunctions::randomInt(5)+1;
-        const int die2 = UtilityFunctions::randomInt(5)+1;
+        const int dice1 = UtilityFunctions::randomInt(5)+1;
+        const int dice2 = UtilityFunctions::randomInt(5)+1;
         std::vector<int> dice;
-        dice.push_back(die1);
-        dice.push_back(die2);
+        dice.push_back(dice1);
+        dice.push_back(dice2);
         return dice;
     }
 
@@ -178,22 +178,22 @@ namespace engine {
     std::vector<engine::CommandId> Engine::getPossibleActions (state::PlayerInfo& player) {
         std::vector<engine::CommandId> possibleCommands;
 
-        // Si c'est ton tour
+        // If this is your turn
         if (&player==&(playerList->getCurrent())) {
 
-            // Si tu es dans une salle
+            // If you are in a room
             if (player.getLocation().getType()== state::ROOM) {
                 auto& currentRoom = static_cast<state::Room&>(currentPlayer.getLocation());
-                // Si tu n'as pas encore fait d'hypotèse
+                // If you haven't made a hypothesis in this room
                 if (player.getPreviousHypothesisRoom() != currentRoom.getRoomName()) {
                     possibleCommands.push_back(engine::HYPOTHESIS);
                 }
-                // Si y a un passage secret
+                // If there is a secret passage in this room
                 if (currentRoom.getSecretPassage()!= nullptr) {
                     possibleCommands.push_back(engine::SECRET_PASSAGE);
                 }
             }
-            // on peut toujours se déplacer avec les dés ou faire une accusation
+            // We can always move from the dice or make an accusation
             possibleCommands.push_back(engine::MOVE_FROM_DICE);
             possibleCommands.push_back(engine::ACCUSATION);
         }
@@ -212,7 +212,7 @@ namespace engine {
             case state::CORRIDOR: {
                 auto& playerCell = static_cast<state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap()->getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
-                for (int i = 0; i < neighbourList.size(); i++) {
+                for (int i = 0; i < (int)neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);
                     if (type == state::CORRIDOR or type == state::DOOR) {
                         switch (i) {
@@ -239,7 +239,7 @@ namespace engine {
                 possibleMoves.push_back(ENTER_ROOM);
                 auto& playerCell = static_cast<state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap()->getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
-                for (int i = 0; i < neighbourList.size(); i++) {
+                for (int i = 0; i < (int)neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);
                     if (type == state::CORRIDOR or type == state::DOOR) {
                         switch (i) {
