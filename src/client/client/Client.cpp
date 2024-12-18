@@ -472,51 +472,49 @@ namespace client{
 }
 
 
-void Client::displayPressKey(std::string key){
+	void Client::displayPressKey(std::string key){
 
-	std::cout << " press " << key << " " << std::endl;
-}
-
-int Client::getValidKey(int max){
-	try{
-		std::string playerKey;
-		std::cin >> playerKey;
-    	int keyVal = stoi(playerKey);
-        if(keyVal > 0 && keyVal <= max){
-        	return keyVal;
-        }
-	    std::cout << "Invalid key" << std::endl;
-	    return getValidKey(max);
-    }
-	catch(const exception& e){
-		std::cout << "Invalid key" << std::endl;
-    	return getValidKey(max);
-    }
-}
-
-
-/// convertit un string en entier (si on peut)
-
-int Client::convertToInteger(std::string command){
-	int number = std::stoi(command);
-	if (std::isdigit(number)){
-		return number;
+		std::cout << " press " << key << " " << std::endl;
 	}
-		return -1;
-}
-  
-void Client::displayMap()
-{
-	std::vector<std::vector<std::string>> mapGrid = state->getMap()->getDisplayMap();
-	for (std::vector<std::string> row : mapGrid) {
-		for (std::string cell : row) {
-			std::cout << cell;
+
+	int Client::getValidKey(int max){
+		try{
+			std::string playerKey;
+			std::cin >> playerKey;
+    		int keyVal = stoi(playerKey);
+	        if(keyVal > 0 && keyVal <= max){
+        		return keyVal;
+	        }
+		    std::cout << "Invalid key" << std::endl;
+		    return getValidKey(max);
+	    }
+		catch(const exception& e){
+			std::cout << "Invalid key" << std::endl;
+    		return getValidKey(max);
+	    }
+	}
+
+	int Client::convertToInteger(std::string command){
+		/// convertit un string en entier (si on peut)
+		int number = std::stoi(command);
+		if (std::isdigit(number)){
+			return number;
 		}
-		std::cout << std::endl;
+			return -1;
 	}
-}
+  
+	void Client::displayMap()
+	{
+		std::vector<std::vector<std::string>> mapGrid = state->getMap()->getDisplayMap();
+		for (std::vector<std::string> row : mapGrid) {
+			for (std::string cell : row) {
+				std::cout << cell;
+			}
+			std::cout << std::endl;
+		}
+	}
 
-int Client::choseACardToShowClient (std::vector<state::Card*> cards) {   //cette fonction va de paire avec celle dans engine qui prend en
+	int Client::choseACardToShowClient (std::vector<state::Card*> cards) {   //cette fonction va de paire avec celle dans engine qui prend en
 		// argument un index, c'est la valeur de la carte qui va être montrée. D'abord cette fonction est appelée, puis on prend
 		// ce qu'elle renvoie et on le met en argument de la fonction qui va montrer physiquement la carte.
 		std::cout << "Which card do you want to show ?" << std::endl;
@@ -538,10 +536,11 @@ int Client::choseACardToShowClient (std::vector<state::Card*> cards) {   //cette
 		std::cout << "You will show " << cards.at(cardNumber) << std::endl;
 
 	return cardNumber;
-}
+	}
 
-/// Analyse du type de la carte, puis affichage de la carte selon son type
-void Client::showMeCardClient (state::Card card) {
+
+	void Client::showMeCardClient (state::Card card) {
+		/// Analyse du type de la carte, puis affichage de la carte selon son type
 		if (card.getType() == state::SUSPECT_CARD) {
 			auto& shownCard = static_cast<state::SuspectCard&>(card);
 			std::cout <<  " You show " << shownCard.getSuspectName() << std::endl;
@@ -556,90 +555,90 @@ void Client::showMeCardClient (state::Card card) {
 		}
 	}
 
-void Client::throwDiceClient () {
-	std::cout << "Press 1 to throw the dice ! " << std::endl;
-	int keyValue;
-	std::cin >> keyValue;
-	while (keyValue != 1) {
-		std::cout << "Wrong value, press 1 " << std::endl;
+	void Client::throwDiceClient () {
+		std::cout << "Press 1 to throw the dice ! " << std::endl;
+		int keyValue;
+		std::cin >> keyValue;
+		while (keyValue != 1) {
+			std::cout << "Wrong value, press 1 " << std::endl;
+		}
+		//std::vector<int> diceValues = getEngine().dice();
+		std::cout << "Dice are thrown" << std::endl;
+
+		// finir avec lancer les dés et afficher la valeur
+
+
+
+		}
+
+	state::PlayerInfo &Client::getClientPlayerInfo() {
+		return *clientPlayer;
 	}
-	//std::vector<int> diceValues = getEngine().dice();
-	std::cout << "Dice are thrown" << std::endl;
 
-	// finir avec lancer les dés et afficher la valeur
+	engine::Move Client::chooseMoveDirection(const std::vector<engine::Move> &possibleMoves) {
 
+		const int size = static_cast<int>(possibleMoves.size());
 
+			for (int i=0; i<size; i++) {
 
-	}
+				switch(possibleMoves.at(i)) {
+					case engine::MOVE_UP:
+						std::cout << "If you want to move up, press " << i+1 << std::endl;
+						break;
+					case engine::MOVE_DOWN:
+						std::cout << "If you want to move down, press " << i+1 << std::endl;
+						break;
+					case engine::MOVE_LEFT:
+						std::cout << "If you want to move left, press " << i+1 << std::endl;
+						break;
+					case engine::MOVE_RIGHT:
+						std::cout << "If you want to move right, press " << i+1 << std::endl;
+						break;
+					case engine::ENTER_ROOM:
+						std::cout << "If you want to enter in the room, press " << i+1 << std::endl;
+						break;
+					case engine::EXIT_ROOM:
+						std::cout << "If you want to exit the room, press " << i+1 << std::endl;
+						break;
+					default:
+						throw std::runtime_error("Switch failed");
+				}
+			}
 
-state::PlayerInfo &Client::getClientPlayerInfo() {
-	return *clientPlayer;
-}
+			std::cout << "What do you want to do ?" << std::endl;
 
-engine::Move Client::chooseMoveDirection(const std::vector<engine::Move> &possibleMoves) {
+			int choice = getValidKey(size);
 
-	const int size = static_cast<int>(possibleMoves.size());
-
-		for (int i=0; i<size; i++) {
-
-			switch(possibleMoves.at(i)) {
+			switch(possibleMoves.at(choice)) {
 				case engine::MOVE_UP:
-					std::cout << "If you want to move up, press " << i+1 << std::endl;
+					std::cout << "You chose to move up " << std::endl;
 					break;
 				case engine::MOVE_DOWN:
-					std::cout << "If you want to move down, press " << i+1 << std::endl;
+					std::cout << "You chose to move down " << std::endl;
 					break;
 				case engine::MOVE_LEFT:
-					std::cout << "If you want to move left, press " << i+1 << std::endl;
+					std::cout << "You chose to move left " << std::endl;
 					break;
 				case engine::MOVE_RIGHT:
-					std::cout << "If you want to move right, press " << i+1 << std::endl;
+					std::cout << "You chose to move right " << std::endl;
 					break;
 				case engine::ENTER_ROOM:
-					std::cout << "If you want to enter in the room, press " << i+1 << std::endl;
+					std::cout << "You chose to enter in the room " << std::endl;
 					break;
 				case engine::EXIT_ROOM:
-					std::cout << "If you want to exit the room, press " << i+1 << std::endl;
+					std::cout << "You chose to exit the room " << std::endl;
 					break;
 				default:
 					throw std::runtime_error("Switch failed");
 			}
-		}
-
-		std::cout << "What do you want to do ?" << std::endl;
-
-		int choice = getValidKey(size);
-
-		switch(possibleMoves.at(choice)) {
-			case engine::MOVE_UP:
-				std::cout << "You chose to move up " << std::endl;
-				break;
-			case engine::MOVE_DOWN:
-				std::cout << "You chose to move down " << std::endl;
-				break;
-			case engine::MOVE_LEFT:
-				std::cout << "You chose to move left " << std::endl;
-				break;
-			case engine::MOVE_RIGHT:
-				std::cout << "You chose to move right " << std::endl;
-				break;
-			case engine::ENTER_ROOM:
-				std::cout << "You chose to enter in the room " << std::endl;
-				break;
-			case engine::EXIT_ROOM:
-				std::cout << "You chose to exit the room " << std::endl;
-				break;
-			default:
-				throw std::runtime_error("Switch failed");
-		}
-		return possibleMoves.at(choice - 1);
-}
+			return possibleMoves.at(choice - 1);
+	}
 
 
 
-engine::Engine &Client::getEngine() {
-	return *engine;
-}
+	engine::Engine &Client::getEngine() {
+		return *engine;
+	}
 
 	engine::CommandId Client::chooseAction() {
 		const std::vector<engine::CommandId> actions = engine->getPossibleActions (*currentPlayer);
