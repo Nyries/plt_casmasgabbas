@@ -42,7 +42,7 @@ Les neuf pièces :
 
 - Résoudre le mystère ! Pour gagner, vous devez être le premier joueur à trouver quelles sont les cartes suspect, arme et pièce qui se trouvent dans l’étui confidentiel.
 
-Le Cluedo se joue de 4 à 6 joueurs.
+Le Cluedo se joue de 3 à 6 joueurs.
 
 ## Comment jouer :
 
@@ -51,9 +51,8 @@ Le Cluedo se joue de 4 à 6 joueurs.
 - Chaque joueur lance les dés : celui qui obtient le meilleur score commence à jouer. La partie continue ensuite dans le sens des aiguilles d’une montre.
 
 **2. A votre tour, lancez les dés et déplacez-vous sur le plateau :**
-- Lancez les dés et déplacez votre pion personnage sur le plateau, en fonction du nombre de cases indiqué par les dés. Si votre pion a été déplacé par un autre joueur depuis votre dernier tour, vous pouvez choisir de ne pas bouger et d’émettre une hypothèse directement.
-- Vous pouvez déplacer votre pion verticalement ou horizontalement, avancer ou reculer dans le couloir maiss jamais en diagonale.
-- Vous ne pouvez pas déplacer votre pion deux fois sur la même case pendant un tour.
+- Lancez les dés et déplacez votre pion personnage sur le plateau, en fonction du nombre de cases indiquées par les dés. Si votre pion a été déplacé par un autre joueur depuis votre dernier tour, vous pouvez choisir de ne pas bouger et d’émettre une hypothèse directement.
+- Vous pouvez déplacer votre pion verticalement ou horizontalement, avancer ou reculer dans le couloir mais jamais en diagonale.
 - Essayez toujours d’entrer dans une pièce (au début, n’importe laquelle). Vous n’êtes pas obligé d’utiliser la totalité du score indiqué par les dés pour votre déplacement. Dès que vous entrez dans une pièce, vous pouvez arrêter votre déplacement.
 
 **3. Emettez ensuite une hypothèse pour obtenir des réponses :**
