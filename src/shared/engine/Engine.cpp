@@ -276,6 +276,7 @@ namespace engine {
         for (Command* c: commands) {
             c->execute();
         }
+        commands.clear();
     }
 
     void Engine::endTurn() {
