@@ -116,7 +116,7 @@ namespace engine {
 
 
     std::vector<state::Card*> Engine::getPossessedCards (std::vector<state::Card> cards) {
-        /*playerList->getCurrent();
+        playerList->getCurrent();
         int askedPlayers = 0;
         std::vector<state::Card*> possessedCards;
 
@@ -166,7 +166,7 @@ namespace engine {
             }
 
             } return possessedCards;
-*/
+
         }
 
     state::Card Engine::showCard (std::vector<state::Card> cards, int index) {
@@ -175,7 +175,7 @@ namespace engine {
     }
 
 
-   /* std::vector<engine::CommandId> Engine::getPossibleActions (state::PlayerInfo& player) {
+    std::vector<engine::CommandId> Engine::getPossibleActions (state::PlayerInfo& player) {
         std::vector<engine::CommandId> possibleCommands;
 
         // Si c'est ton tour
@@ -261,7 +261,6 @@ namespace engine {
                     }
                 }
             }
-            
             break;
             case state::ROOM: {
                 possibleMoves.push_back(EXIT_ROOM);
@@ -289,15 +288,4 @@ namespace engine {
     }
 
 
-    }
-
-
-
-
-
-
-
-
-
-
-
+}
