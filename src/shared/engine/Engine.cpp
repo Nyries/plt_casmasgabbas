@@ -261,6 +261,7 @@ namespace engine {
                     }
                 }
             }
+            
             break;
             case state::ROOM: {
                 possibleMoves.push_back(EXIT_ROOM);
