@@ -114,6 +114,7 @@ namespace engine {
         return dice;
     }
 
+
     std::vector<state::Card*> Engine::getPossessedCards (std::vector<state::Card> cards) {
         playerList->getCurrent();
         int askedPlayers = 0;
@@ -288,14 +289,3 @@ namespace engine {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-

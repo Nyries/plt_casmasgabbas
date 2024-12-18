@@ -46,6 +46,16 @@ namespace state {
 
     void Room::setSecretPassage(Room &targetRoom) {
         secretPassage = &targetRoom;
+        targetRoom.secretPassage = this;
     }
 
+    void Room::addDoor(Door &door)
+    {
+        doorList.push_back(&door);
+    }
+
+    void Room::setName(RoomName name)
+    {
+        this->name = name;
+    }
 }

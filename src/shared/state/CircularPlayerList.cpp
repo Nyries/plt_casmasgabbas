@@ -46,4 +46,13 @@ namespace state {
         return list.size();
     }
 
+    void CircularPlayerList::addPlayer(PlayerInfo &player)
+    {
+        list.push_back(player);
+        
+    }
+    std::vector<PlayerInfo> CircularPlayerList::getList()
+    {
+        return list;
+    }
 }

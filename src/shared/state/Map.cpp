@@ -8,6 +8,7 @@
 
 namespace state {
     Map::Map(const std::string& mapJsonPath){
+        system("ls ../../../test/shared;");
         std::ifstream file(mapJsonPath);
         Json::Value jsonData;
         file >> jsonData;
@@ -26,9 +27,7 @@ namespace state {
         roomList.emplace_back(BEDROOM);
 
         roomList.at(2).setSecretPassage(roomList.at(8));
-        roomList.at(8).setSecretPassage(roomList.at(2));
         roomList.at(4).setSecretPassage(roomList.at(6));
-        roomList.at(6).setSecretPassage(roomList.at(4));
 
         //Creating the map grid from the json file
         height = jsonData["mapHeight"].asInt();
