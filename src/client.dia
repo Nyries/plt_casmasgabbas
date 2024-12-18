@@ -4245,7 +4245,7 @@
                 <dia:string>#ai#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#ai::AI#</dia:string>
+                <dia:string>#ai::AI&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
