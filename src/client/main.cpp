@@ -9,6 +9,7 @@ void testSFML() {
 }
 // end of test SFML
 
+#include <engine.h>
 #include <state.h>
 #include <client.h>
 #include <engine.h>
