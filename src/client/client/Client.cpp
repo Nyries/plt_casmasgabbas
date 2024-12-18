@@ -66,7 +66,7 @@ namespace client{
 		}*/
 		//Draw for suspect attribution as well as determining first player
 		cout << "We are now going to draw the dices to determine the player order" << endl << "Drawing dices..." << endl;
-		players = engine->determinePlayerOrder(players, numberOfPlayers);
+		state->determinePlayerOrder();
 
 		for (int i = 0; i<numberOfPlayers; i++) {
 			cout << get<0>(players.at(i)) << " did a score of " << get<1>(players.at(i)) << endl;

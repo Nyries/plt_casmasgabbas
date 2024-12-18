@@ -3,6 +3,7 @@
 //
 #include "CircularPlayerList.h"
 
+#include <algorithm>
 #include <vector>
 #include <iostream>
 #include <string>
@@ -31,6 +32,10 @@ namespace state {
         }
     }
 
+    void CircularPlayerList::shuffle() {
+        std::random_shuffle(list.begin(),list.end());
+    }
+
     PlayerInfo& CircularPlayerList::getCurrent () {
         return *it;
     }
@@ -46,13 +51,6 @@ namespace state {
         return list.size();
     }
 
-    void CircularPlayerList::addPlayer(PlayerInfo &player)
-    {
-        list.push_back(player);
-        
-    }
-    std::vector<PlayerInfo> CircularPlayerList::getList()
-    {
-        return list;
-    }
+
+
 }
