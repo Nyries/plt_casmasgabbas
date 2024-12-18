@@ -3,16 +3,21 @@
 //
 #include "State.h"
 
+#include <filesystem>
+#include <iostream>
 #include <fstream>
 #include <json/json.h>
 
 namespace state {
     State::State(const std::string& stateJsonPath): accusationSuccess(false), envelope()
-    {
+    {   
+
         std::ifstream file(stateJsonPath);
         Json::Value stateJsonData;
         file >> stateJsonData;
         file.close();
+        std::cout << "oui" << std::endl;
+        
 
         players = new CircularPlayerList(stateJsonData["playersCount"].asInt());
         map = new Map(stateJsonData["mapJsonPath"].asString());
@@ -32,5 +37,9 @@ namespace state {
     void State::setCircularPlayerList(std::vector<std::tuple<std::string, int, int>> players)
     {
         this->players = new CircularPlayerList(players);
+    }
+    void State::addPlayer(PlayerInfo &player)
+    {
+        players->addPlayer(player);
     }
 }

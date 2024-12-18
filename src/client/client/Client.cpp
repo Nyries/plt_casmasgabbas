@@ -580,7 +580,7 @@ int Client::choseACardToShowClient (std::vector<state::Card*> cards) {   //cette
 
 
 void Client::showMeCardClient (state::Card card) {
-		if (card.getType() == state::SUSPECT_CARD) {
+		/*if (card.getType() == state::SUSPECT_CARD) {
 			std::cout <<  " You show " << card.getSuspectName() << std::endl;
 		}
 		else if (card.getType() == state::WEAPON_CARD) {
@@ -588,7 +588,7 @@ void Client::showMeCardClient (state::Card card) {
 		}
 		else {
 			std::cout <<  " You show " << card.getRoomName() << std::endl;
-		}
+		}*/
 	}
 
 void throwDiceClient () {

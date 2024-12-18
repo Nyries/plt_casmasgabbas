@@ -34,8 +34,15 @@ BOOST_AUTO_TEST_CASE(TestGetType)
   BOOST_CHECK(card.getType() == CardType::WEAPON_CARD);
 }
 }
+BOOST_AUTO_TEST_CASE(TestSetType)
+{
+{
+  Card card(CardType::WEAPON_CARD);
+  card.setType(CardType::ROOM_CARD);
+  BOOST_CHECK(card.getType() == CardType::ROOM_CARD);
+}
+}
 BOOST_AUTO_TEST_SUITE_END();
-
 
 // Cell.cpp test
 BOOST_AUTO_TEST_SUITE(TestCell)
@@ -461,4 +468,27 @@ BOOST_AUTO_TEST_CASE(TestAddPlayer)
 }
 }
 BOOST_AUTO_TEST_SUITE_END();
-/* vim: set sw=2 sts=2 et : */
+
+// SuspectCard.cpp test
+BOOST_AUTO_TEST_SUITE(TestSuspectCard)
+
+BOOST_AUTO_TEST_CASE(TestGetSuspectName)
+{
+{
+  SuspectCard suspectCard(Suspect::ROSE);
+  BOOST_CHECK(suspectCard.getSuspectName() == Suspect::ROSE);
+}
+}
+BOOST_AUTO_TEST_SUITE_END();
+
+// WeaponCard.cpp test
+BOOST_AUTO_TEST_SUITE(TestWeaponCard)
+
+BOOST_AUTO_TEST_CASE(TestGetWeaponName)
+{
+{
+  WeaponCard weaponCard(Weapon::CANDLESTICK);
+  BOOST_CHECK(weaponCard.getWeaponName() == Weapon::CANDLESTICK);
+}
+}
+BOOST_AUTO_TEST_SUITE_END();

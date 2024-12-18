@@ -10,19 +10,9 @@ namespace state {
     CardType Card::getType() {
         return type;
     }
-
-    Suspect Card::getSuspectName() {
-        return Suspect::VIOLET;
+    
+    void Card::setType(CardType type)
+    {
+        this->type = type;
     }
-
-    Weapon Card::getWeaponName() {
-        return Weapon::WRENCH;
-    }
-
-    RoomName Card::getRoomName() {
-        return RoomName::BEDROOM;
-    }
-
-
-
 }
