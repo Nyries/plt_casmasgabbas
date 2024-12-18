@@ -34,8 +34,6 @@ namespace client{
 		players = vector<tuple<string, int, int>>(numberOfPlayers, make_tuple("name", 0, 0));
 		createParty(numberOfPlayers);
 		state->setCircularPlayerList(players);
-		playerList = state->getPlayerList();
-		currentPlayer = &playerList->getCurrent();
 	}
 
 	int Client::introductionToTheGame(){
