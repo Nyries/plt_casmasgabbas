@@ -137,340 +137,338 @@ namespace client{
     }
 
 	std::vector<int> Client::chooseHypothesis(){
-    std::vector<int> hypothesisChoice;
-    std::cout << "You want to make an hypothesis ! " << std::endl;
-    int choice;
-    std::string stringNumber;
-    std::cout << "If you are suspecting ROSE: press 1 " << std::endl;
-	std::cout << "If you are suspecting PERVENCHE: press 2 " << std::endl;
-	std::cout << "If you are suspecting LEBLANC: press 3 " << std::endl;
-	std::cout << "If you are suspecting OLIVE: press 4 " << std::endl;
-	std::cout << "If you are suspecting MOUTARDE: press 5 " << std::endl;
-	std::cout << "If you are suspecting VIOLET: press 6 " << std::endl;
+	    std::vector<int> hypothesisChoice;
+	    std::cout << "You want to make an hypothesis ! " << std::endl;
+	    int choice;
+	    std::string stringNumber;
+	    std::cout << "If you are suspecting ROSE: press 1 " << std::endl;
+		std::cout << "If you are suspecting PERVENCHE: press 2 " << std::endl;
+		std::cout << "If you are suspecting LEBLANC: press 3 " << std::endl;
+		std::cout << "If you are suspecting OLIVE: press 4 " << std::endl;
+		std::cout << "If you are suspecting MOUTARDE: press 5 " << std::endl;
+		std::cout << "If you are suspecting VIOLET: press 6 " << std::endl;
 
-    bool validChoice = true;
+	    bool validChoice = true;
 
-    std::cin >> stringNumber;
-	choice = convertToInteger(stringNumber);
+	    std::cin >> stringNumber;
+		choice = convertToInteger(stringNumber);
 
-    while (validChoice) {
-      	switch (choice) {
+	    while (validChoice) {
+      		switch (choice) {
 
-	    	case 1: // ROSE
-	        	std::cout << "You chose ROSE ! \n";
-	        	hypothesisChoice.push_back(state::ROSE);
-	       	 	break;
-	    	case 2: // PERVENCHE
-	        	std::cout << "You chose PERVENCHE ! \n";
-	        	hypothesisChoice.push_back(state::PERVENCHE);
-	        	break;
-	    	case 3: // LEBLANC
-	        	std::cout << "You chose LEBLANC ! \n";
-	        	hypothesisChoice.push_back(state::LEBLANC);
-	        	break;
-	    	case 4: // OLIVE
-	        	std::cout << "You chose OLIVE ! \n";
-	        	hypothesisChoice.push_back(state::OLIVE);
-	        	break;
-	    	case 5: // MOUTARDE
-	        	std::cout << "You chose MOUTARDE ! \n";
-	        	hypothesisChoice.push_back(state::MOUTARDE);
-	        	break;
-      		case 6: // VIOLET
-      			std::cout << "You chose VIOLET ! \n";
-      			hypothesisChoice.push_back(state::VIOLET);
-      			break;
-	    	default: // OTHER ONE
-	        	std::cout << "Invalid choice ! Try again \n";
-                validChoice = false;
-    	}
-    }
-
-
-    std::cout << "With which weapon ? " << std::endl;
-    int choice2;
-    std::string stringNumber2;
-    std::cout << "If you think it is CANDLESTICK: press 1 " << std::endl;
-	std::cout << "If you think it is PISTOL: press 2 " << std::endl;
-	std::cout << "If you think it is ROPE: press 3 " << std::endl;
-	std::cout << "If you think it is LEAD_PIPE: press 4 " << std::endl;
-	std::cout << "If you think it is KNIFE: press 5 " << std::endl;
-	std::cout << "If you think it is WRENCH: press 6 " << std::endl;
+	    		case 1: // ROSE
+	        		std::cout << "You chose ROSE ! \n";
+	        		hypothesisChoice.push_back(state::ROSE);
+	       	 		break;
+	    		case 2: // PERVENCHE
+	        		std::cout << "You chose PERVENCHE ! \n";
+	        		hypothesisChoice.push_back(state::PERVENCHE);
+	        		break;
+	    		case 3: // LEBLANC
+	        		std::cout << "You chose LEBLANC ! \n";
+	        		hypothesisChoice.push_back(state::LEBLANC);
+	        		break;
+	    		case 4: // OLIVE
+	        		std::cout << "You chose OLIVE ! \n";
+	        		hypothesisChoice.push_back(state::OLIVE);
+	        		break;
+	    		case 5: // MOUTARDE
+	        		std::cout << "You chose MOUTARDE ! \n";
+	        		hypothesisChoice.push_back(state::MOUTARDE);
+	        		break;
+      			case 6: // VIOLET
+      				std::cout << "You chose VIOLET ! \n";
+      				hypothesisChoice.push_back(state::VIOLET);
+      				break;
+	    		default: // OTHER ONE
+	        		std::cout << "Invalid choice ! Try again \n";
+	                validChoice = false;
+    		}
+	    }
 
 
-    bool validChoice2 = true;
-
-    while (validChoice2){
-
-		std::cin >> stringNumber2;
-		choice2 = convertToInteger(stringNumber2);
-
-		switch (choice2) {
-
-	    	case 1: // CANDLESTICK
-	        	std::cout << "You chose CANDLESTICK ! \n";
-	        	hypothesisChoice.push_back(state::CANDLESTICK);
-	        	break;
-	   		 case 2: // PISTOL
-	        	std::cout << "You chose PISTOL ! \n";
-	        	hypothesisChoice.push_back(state::PISTOL);
-	        	break;
-	    	case 3: // ROPE
-	        	std::cout << "You chose ROPE ! \n";
-	       	 	hypothesisChoice.push_back(state::ROPE);
-	        	break;
-	    	case 4: // LEAD_PIPE
-	        	std::cout << "You chose LEAD_PIPE ! \n";
-	        	hypothesisChoice.push_back(state::LEAD_PIPE);
-	       	 	break;
-	    	case 5: // KNIFE
-	        	std::cout << "You chose KNIFE ! \n";
-	        	hypothesisChoice.push_back(state::KNIFE);
-	        	break;
-			case 6: // WRENCH
-				std::cout << "You chose WRENCH ! \n";
-				hypothesisChoice.push_back(state::WRENCH);
-				break;
-	    	default: // OTHER ONE
-	        	std::cout << "Invalid choice ! Try again \n";
-	        	validChoice2 = false;
-    	}
-
-    }
-
-	auto& currentRoom = static_cast<state::Room&>(currentPlayer->getLocation());
-    hypothesisChoice.push_back(currentRoom.getRoomName());
-
-    std::cout << currentPlayer->getIdentity() << " suggests the Crime was committed by "
-    << hypothesisChoice.at(0) << " in the " << hypothesisChoice.at(2)
-    << " with the " << hypothesisChoice.at(1) << std::endl;
-
-    return hypothesisChoice;
- }
-
-	std::vector<int> Client::chooseAccusation(void){
-
-    std::vector<int> accusationChoice;
-    std::cout << "You want to make an accusation ! " << std::endl;
-    int choice;
-    std::string stringNumber;
-    std::cout << "If you are accusating ROSE: press 1 " << std::endl;
-	std::cout << "If you are accusating PERVENCHE: press 2 " << std::endl;
-	std::cout << "If you are accusating LEBLANC: press 3 " << std::endl;
-	std::cout << "If you are accusating OLIVE: press 4 " << std::endl;
-	std::cout << "If you are accusating MOUTARDE: press 5 " << std::endl;
-	std::cout << "If you are accusating VIOLET: press 6 " << std::endl;
+	    std::cout << "With which weapon ? " << std::endl;
+	    int choice2;
+	    std::string stringNumber2;
+	    std::cout << "If you think it is CANDLESTICK: press 1 " << std::endl;
+		std::cout << "If you think it is PISTOL: press 2 " << std::endl;
+		std::cout << "If you think it is ROPE: press 3 " << std::endl;
+		std::cout << "If you think it is LEAD_PIPE: press 4 " << std::endl;
+		std::cout << "If you think it is KNIFE: press 5 " << std::endl;
+		std::cout << "If you think it is WRENCH: press 6 " << std::endl;
 
 
+	    bool validChoice2 = true;
 
-	bool validChoice = true;
+	    while (validChoice2){
 
-	std::cin >> stringNumber;
-	choice = convertToInteger(stringNumber);
+			std::cin >> stringNumber2;
+			choice2 = convertToInteger(stringNumber2);
 
-	while (validChoice) {
-		switch (choice) {
+			switch (choice2) {
 
-			case 1: // ROSE
-				std::cout << "You chose ROSE ! \n";
-				accusationChoice.push_back(state::ROSE);
-				break;
-			case 2: // PERVENCHE
-				std::cout << "You chose PERVENCHE ! \n";
-				accusationChoice.push_back(state::PERVENCHE);
-				break;
-			case 3: // LEBLANC
-				std::cout << "You chose LEBLANC ! \n";
-				accusationChoice.push_back(state::LEBLANC);
-				break;
-			case 4: // OLIVE
-				std::cout << "You chose OLIVE ! \n";
-				accusationChoice.push_back(state::OLIVE);
-				break;
-			case 5: // MOUTARDE
-				std::cout << "You chose MOUTARDE ! \n";
-				accusationChoice.push_back(state::MOUTARDE);
-				break;
-			case 6: // VIOLET
-				std::cout << "You chose VIOLET ! \n";
-				accusationChoice.push_back(state::VIOLET);
-				break;
+	    		case 1: // CANDLESTICK
+	        		std::cout << "You chose CANDLESTICK ! \n";
+	        		hypothesisChoice.push_back(state::CANDLESTICK);
+	        		break;
+	   			 case 2: // PISTOL
+	        		std::cout << "You chose PISTOL ! \n";
+	        		hypothesisChoice.push_back(state::PISTOL);
+	        		break;
+	    		case 3: // ROPE
+	        		std::cout << "You chose ROPE ! \n";
+	       	 		hypothesisChoice.push_back(state::ROPE);
+	        		break;
+	    		case 4: // LEAD_PIPE
+	        		std::cout << "You chose LEAD_PIPE ! \n";
+	        		hypothesisChoice.push_back(state::LEAD_PIPE);
+	       	 		break;
+	    		case 5: // KNIFE
+	        		std::cout << "You chose KNIFE ! \n";
+	        		hypothesisChoice.push_back(state::KNIFE);
+	        		break;
+				case 6: // WRENCH
+					std::cout << "You chose WRENCH ! \n";
+					hypothesisChoice.push_back(state::WRENCH);
+					break;
+	    		default: // OTHER ONE
+	        		std::cout << "Invalid choice ! Try again \n";
+	        		validChoice2 = false;
+    		}
 
-			default: // OTHER ONE
-				std::cout << "Invalid choice ! Try again \n";
-				validChoice = false;
-		}
+	    }
 
-	}
+		auto& currentRoom = static_cast<state::Room&>(currentPlayer->getLocation());
+	    hypothesisChoice.push_back(currentRoom.getRoomName());
 
-    std::cout << "With which weapon ? " << std::endl;
-    int choice2;
-    std::string stringNumber2;
-    std::cout << "If you think it is CANDLESTICK: press 1 " << std::endl;
-	std::cout << "If you think it is PISTOL: press 2 " << std::endl;
-	std::cout << "If you think it is ROPE: press 3 " << std::endl;
-	std::cout << "If you think it is LEAD_PIPE: press 4 " << std::endl;
-	std::cout << "If you think it is KNIFE: press 5 " << std::endl;
-	std::cout << "If you think it is WRENCH: press 6 " << std::endl;
+	    std::cout << currentPlayer->getIdentity() << " suggests the Crime was committed by "
+	    << hypothesisChoice.at(0) << " in the " << hypothesisChoice.at(2)
+	    << " with the " << hypothesisChoice.at(1) << std::endl;
 
-	bool validChoice2 = true;
+	    return hypothesisChoice;
+	 }
 
-	while (validChoice2) {
+	std::vector<int> Client::chooseAccusation(){
 
-		std::cin >> stringNumber2;
-		choice2 = convertToInteger(stringNumber2);
-
-		switch (choice2) {
-
-			case 1: // CANDLESTICK
-				std::cout << "You chose CANDLESTICK ! \n";
-				accusationChoice.push_back(state::CANDLESTICK);
-				break;
-			case 2: // PISTOL
-				std::cout << "You chose PISTOL ! \n";
-				accusationChoice.push_back(state::PISTOL);
-				break;
-			case 3: // ROPE
-				std::cout << "You chose ROPE ! \n";
-				accusationChoice.push_back(state::ROPE);
-				break;
-			case 4: // LEAD_PIPE
-				std::cout << "You chose LEAD_PIPE ! \n";
-				accusationChoice.push_back(state::LEAD_PIPE);
-				break;
-			case 5: // KNIFE
-				std::cout << "You chose KNIFE ! \n";
-				accusationChoice.push_back(state::KNIFE);
-				break;
-			case 6: // WRENCH
-				std::cout << "You chose WRENCH ! \n";
-				accusationChoice.push_back(state::WRENCH);
-				break;
-			default: // OTHER ONE
-				std::cout << "Invalid choice ! Try again \n";
-				validChoice2 = false;
-
-		}
-
-	}
-
-	std::cout << "Where does it happen ? " << std::endl;
-	int choice3;
-	std::string stringNumber3;
-	std::cout << "If you think it is in the STUDY: press 1 " << std::endl;
-	std::cout << "If you think it is in the HALL: press 2 " << std::endl;
-	std::cout << "If you think it is in the LIVING_ROOM: press 3 " << std::endl;
-	std::cout << "If you think it is in the DINING_ROOM: press 4 " << std::endl;
-	std::cout << "If you think it is in the KITCHEN: press 5 " << std::endl;
-	std::cout << "If you think it is in the BATHROOM: press 6 " << std::endl;
-	std::cout << "If you think it is in the GARAGE: press 7 " << std::endl;
-	std::cout << "If you think it is in the GAME_ROOM: press 8 " << std::endl;
-	std::cout << "If you think it is in the BEDROOM: press 9 " << std::endl;
+	    std::vector<int> accusationChoice;
+	    std::cout << "You want to make an accusation ! " << std::endl;
+	    int choice;
+	    std::string stringNumber;
+	    std::cout << "If you are accusating ROSE: press 1 " << std::endl;
+		std::cout << "If you are accusating PERVENCHE: press 2 " << std::endl;
+		std::cout << "If you are accusating LEBLANC: press 3 " << std::endl;
+		std::cout << "If you are accusating OLIVE: press 4 " << std::endl;
+		std::cout << "If you are accusating MOUTARDE: press 5 " << std::endl;
+		std::cout << "If you are accusating VIOLET: press 6 " << std::endl;
 
 
-	bool validChoice3 = true;
 
-	while (validChoice3) {
+		bool validChoice = true;
 
-		std::cin >> stringNumber3;
-		choice3 = convertToInteger(stringNumber3);
+		std::cin >> stringNumber;
+		choice = convertToInteger(stringNumber);
 
-		switch (choice3) {
+		while (validChoice) {
+			switch (choice) {
 
-			case 1: // STUDY
-				std::cout << "You chose STUDY ! \n";
-				accusationChoice.push_back(state::STUDY);
-				break;
-			case 2: // HALL
-				std::cout << "You chose HALL ! \n";
-				accusationChoice.push_back(state::HALL);
-				break;
-			case 3: // LIVING_ROOM
-				std::cout << "You chose LIVING_ROOM ! \n";
-				accusationChoice.push_back(state::LIVING_ROOM);
-				break;
-			case 4: // DINING_ROOM
-				std::cout << "You chose DINING_ROOM ! \n";
-				accusationChoice.push_back(state::DINING_ROOM);
-				break;
-			case 5: // KITCHEN
-				std::cout << "You chose KITCHEN ! \n";
-				accusationChoice.push_back(state::KITCHEN);
-				break;
-			case 6: // BATHROOM
-				std::cout << "You chose BATHROOM ! \n";
-				accusationChoice.push_back(state::BATHROOM);
-				break;
-			case 7: // GARAGE
-				std::cout << "You chose GARAGE ! \n";
-				accusationChoice.push_back(state::GARAGE);
-				break;
-			case 8: // GAME_ROOM
-				std::cout << "You chose GAME_ROOM ! \n";
-				accusationChoice.push_back(state::GAME_ROOM);
-				break;
-			case 9: // BEDROOM
-				std::cout << "You chose BEDROOM ! \n";
-				accusationChoice.push_back(state::BEDROOM);
-				break;
-			default: // OTHER ONE
-				std::cout << "Invalid choice ! Try again \n";
-				validChoice3 = false;
+				case 1: // ROSE
+					std::cout << "You chose ROSE ! \n";
+					accusationChoice.push_back(state::ROSE);
+					break;
+				case 2: // PERVENCHE
+					std::cout << "You chose PERVENCHE ! \n";
+					accusationChoice.push_back(state::PERVENCHE);
+					break;
+				case 3: // LEBLANC
+					std::cout << "You chose LEBLANC ! \n";
+					accusationChoice.push_back(state::LEBLANC);
+					break;
+				case 4: // OLIVE
+					std::cout << "You chose OLIVE ! \n";
+					accusationChoice.push_back(state::OLIVE);
+					break;
+				case 5: // MOUTARDE
+					std::cout << "You chose MOUTARDE ! \n";
+					accusationChoice.push_back(state::MOUTARDE);
+					break;
+				case 6: // VIOLET
+					std::cout << "You chose VIOLET ! \n";
+					accusationChoice.push_back(state::VIOLET);
+					break;
+
+				default: // OTHER ONE
+					std::cout << "Invalid choice ! Try again \n";
+					validChoice = false;
 			}
 
 		}
 
-    std::cout << currentPlayer->getIdentity() << " accuses "
-    << accusationChoice.at(0) << " of committing the crime in the " << accusationChoice.at(2)
-    << " with the " << accusationChoice.at(1) << std::endl;
+	    std::cout << "With which weapon ? " << std::endl;
+	    int choice2;
+	    std::string stringNumber2;
+	    std::cout << "If you think it is CANDLESTICK: press 1 " << std::endl;
+		std::cout << "If you think it is PISTOL: press 2 " << std::endl;
+		std::cout << "If you think it is ROPE: press 3 " << std::endl;
+		std::cout << "If you think it is LEAD_PIPE: press 4 " << std::endl;
+		std::cout << "If you think it is KNIFE: press 5 " << std::endl;
+		std::cout << "If you think it is WRENCH: press 6 " << std::endl;
 
-   return accusationChoice;
- }
+		bool validChoice2 = true;
 
+		while (validChoice2) {
+
+			std::cin >> stringNumber2;
+			choice2 = convertToInteger(stringNumber2);
+
+			switch (choice2) {
+
+				case 1: // CANDLESTICK
+					std::cout << "You chose CANDLESTICK ! \n";
+					accusationChoice.push_back(state::CANDLESTICK);
+					break;
+				case 2: // PISTOL
+					std::cout << "You chose PISTOL ! \n";
+					accusationChoice.push_back(state::PISTOL);
+					break;
+				case 3: // ROPE
+					std::cout << "You chose ROPE ! \n";
+					accusationChoice.push_back(state::ROPE);
+					break;
+				case 4: // LEAD_PIPE
+					std::cout << "You chose LEAD_PIPE ! \n";
+					accusationChoice.push_back(state::LEAD_PIPE);
+					break;
+				case 5: // KNIFE
+					std::cout << "You chose KNIFE ! \n";
+					accusationChoice.push_back(state::KNIFE);
+					break;
+				case 6: // WRENCH
+					std::cout << "You chose WRENCH ! \n";
+					accusationChoice.push_back(state::WRENCH);
+					break;
+				default: // OTHER ONE
+					std::cout << "Invalid choice ! Try again \n";
+					validChoice2 = false;
+
+			}
+
+		}
+
+		std::cout << "Where does it happen ? " << std::endl;
+		int choice3;
+		std::string stringNumber3;
+		std::cout << "If you think it is in the STUDY: press 1 " << std::endl;
+		std::cout << "If you think it is in the HALL: press 2 " << std::endl;
+		std::cout << "If you think it is in the LIVING_ROOM: press 3 " << std::endl;
+		std::cout << "If you think it is in the DINING_ROOM: press 4 " << std::endl;
+		std::cout << "If you think it is in the KITCHEN: press 5 " << std::endl;
+		std::cout << "If you think it is in the BATHROOM: press 6 " << std::endl;
+		std::cout << "If you think it is in the GARAGE: press 7 " << std::endl;
+		std::cout << "If you think it is in the GAME_ROOM: press 8 " << std::endl;
+		std::cout << "If you think it is in the BEDROOM: press 9 " << std::endl;
+
+
+		bool validChoice3 = true;
+
+		while (validChoice3) {
+
+			std::cin >> stringNumber3;
+			choice3 = convertToInteger(stringNumber3);
+
+			switch (choice3) {
+
+				case 1: // STUDY
+					std::cout << "You chose STUDY ! \n";
+					accusationChoice.push_back(state::STUDY);
+					break;
+				case 2: // HALL
+					std::cout << "You chose HALL ! \n";
+					accusationChoice.push_back(state::HALL);
+					break;
+				case 3: // LIVING_ROOM
+					std::cout << "You chose LIVING_ROOM ! \n";
+					accusationChoice.push_back(state::LIVING_ROOM);
+					break;
+				case 4: // DINING_ROOM
+					std::cout << "You chose DINING_ROOM ! \n";
+					accusationChoice.push_back(state::DINING_ROOM);
+					break;
+				case 5: // KITCHEN
+					std::cout << "You chose KITCHEN ! \n";
+					accusationChoice.push_back(state::KITCHEN);
+					break;
+				case 6: // BATHROOM
+					std::cout << "You chose BATHROOM ! \n";
+					accusationChoice.push_back(state::BATHROOM);
+					break;
+				case 7: // GARAGE
+					std::cout << "You chose GARAGE ! \n";
+					accusationChoice.push_back(state::GARAGE);
+					break;
+				case 8: // GAME_ROOM
+					std::cout << "You chose GAME_ROOM ! \n";
+					accusationChoice.push_back(state::GAME_ROOM);
+					break;
+				case 9: // BEDROOM
+					std::cout << "You chose BEDROOM ! \n";
+					accusationChoice.push_back(state::BEDROOM);
+					break;
+				default: // OTHER ONE
+					std::cout << "Invalid choice ! Try again \n";
+					validChoice3 = false;
+				}
+
+			}
+
+	    std::cout << currentPlayer->getIdentity() << " accuses "
+	    << accusationChoice.at(0) << " of committing the crime in the " << accusationChoice.at(2)
+	    << " with the " << accusationChoice.at(1) << std::endl;
+
+	   return accusationChoice;
+	 }
 
 	int Client::moveDisplay(std::vector<state::Cell*> accessibleCells){
 
-	std::cout << "Where do you want to go ?" << std::endl;
+		std::cout << "Where do you want to go ?" << std::endl;
 
-	int choice = 0;
-	std::string moveDirection;
+		int choice = 0;
+		std::string moveDirection;
 
-	if (accessibleCells.at(0)!=nullptr){std::cout << "If you to go UP: press 1 " << std::endl;}
-	if (accessibleCells.at(1)!=nullptr){std::cout << "If you to go LEFT: press 2 " << std::endl;}
-	if (accessibleCells.at(2)!=nullptr){std::cout << "If you to go DOWN: press 3 " << std::endl;}
-	if (accessibleCells.at(3)!=nullptr){std::cout << "If you to go RIGHT: press 4  " << std::endl;}
+		if (accessibleCells.at(0)!=nullptr){std::cout << "If you to go UP: press 1 " << std::endl;}
+		if (accessibleCells.at(1)!=nullptr){std::cout << "If you to go LEFT: press 2 " << std::endl;}
+		if (accessibleCells.at(2)!=nullptr){std::cout << "If you to go DOWN: press 3 " << std::endl;}
+		if (accessibleCells.at(3)!=nullptr){std::cout << "If you to go RIGHT: press 4  " << std::endl;}
 
-	std::cout << " Choose your direction ! " << std::endl;
-	state::Cell* direction = nullptr;
+		std::cout << " Choose your direction ! " << std::endl;
+		state::Cell* direction = nullptr;
 
-	choice = getValidKey(4);
-	direction = accessibleCells.at(choice-1);
-
-	while (direction == nullptr) {
-		std::cout << "You can't go there ! Choose another direction" << std::endl;
 		choice = getValidKey(4);
 		direction = accessibleCells.at(choice-1);
+
+		while (direction == nullptr) {
+			std::cout << "You can't go there ! Choose another direction" << std::endl;
+			choice = getValidKey(4);
+			direction = accessibleCells.at(choice-1);
+		}
+
+		switch (choice) {
+		    case 1: // UP
+		        std::cout << "You moved UP ! \n";
+		        return 1;
+		    case 2: // LEFT
+	    		std::cout << "You chose LEFT ! \n";
+		        return 2;
+		    case 3: // DOWN
+	    		std::cout << "You chose DOWN ! \n";
+		        return 3;
+		    case 4: // RIGHT
+		        std::cout << "You chose RIGHT ! \n";
+		        return 4;
+		    default: // OTHER ONE
+		        std::cout << "Invalid choice ! Try again \n";
+   		}
+			return int();
 	}
-
-	switch (choice) {
-	    case 1: // UP
-	        std::cout << "You moved UP ! \n";
-	        return 1;
-	    case 2: // LEFT
-	    	std::cout << "You chose LEFT ! \n";
-	        return 2;
-	    case 3: // DOWN
-	    	std::cout << "You chose DOWN ! \n";
-	        return 3;
-	    case 4: // RIGHT
-	        std::cout << "You chose RIGHT ! \n";
-	        return 4;
-	    default: // OTHER ONE
-	        std::cout << "Invalid choice ! Try again \n";
-   	}
-		return int();
-}
-
 
 	void Client::displayPressKey(std::string key){
 
@@ -537,7 +535,6 @@ namespace client{
 
 	return cardNumber;
 	}
-
 
 	void Client::showMeCardClient (state::Card card) {
 		/// Analyse du type de la carte, puis affichage de la carte selon son type
@@ -633,8 +630,6 @@ namespace client{
 			}
 			return possibleMoves.at(choice - 1);
 	}
-
-
 
 	engine::Engine &Client::getEngine() {
 		return *engine;
