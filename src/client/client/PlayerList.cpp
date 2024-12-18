@@ -3,8 +3,8 @@
 //
 #include "PlayerList.h"
 namespace client {
-    PlayerList::PlayerList(std::vector<Player *> &list):list(move(list)), currentPlayer(list.begin) {
-        it = list.begin;
+    PlayerList::PlayerList(std::vector<Player *> &list):list(move(list)), currentPlayer(*list.begin()) {
+        it = list.begin();
     }
 
     Player *PlayerList::getCurrent() {
