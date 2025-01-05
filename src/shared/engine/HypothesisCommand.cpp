@@ -8,7 +8,7 @@
 #include "Engine.h"
 
 namespace engine {
-    HypothesisCommand::HypothesisCommand(Engine &engine, state::PlayerInfo &player, const state::TripleClue &hypothesis): Command(engine, HYPOTHESIS, player), hypothesis(hypothesis) {
+    HypothesisCommand::HypothesisCommand(Engine &engine, state::PlayerInfo &player, const state::TripleClue &hypothesis): Command(engine, player, HYPOTHESIS), hypothesis(hypothesis) {
 
     }
 

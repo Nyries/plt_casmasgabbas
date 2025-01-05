@@ -22,11 +22,32 @@ namespace ai {
         return possibleMoves.at(randomIndex);
     }
 
+    state::TripleClue RandomAI::chooseHypothesis() {
+        state::TripleClue hypothesis{};
+        int randomSuspect = engine::UtilityFunctions::randomInt(6) + 1;
+        hypothesis.suspect = static_cast<state::Suspect>(randomSuspect);
+        int randomWeapon = engine::UtilityFunctions::randomInt(6) + 1;
+        hypothesis.weapon = static_cast<state::Weapon>(randomWeapon);
+        int randomRoom = engine::UtilityFunctions::randomInt(9) + 1;
+        hypothesis.room = static_cast<state::RoomName>(randomRoom);
+        return hypothesis;
+    }
+
+
     int RandomAI::chooseACardToShowClient(const std::vector<state::Card*>& cards) {
         const int randomIndex = engine::UtilityFunctions::randomInt(cards.size());
         return randomIndex;
     }
 
-
+    state::TripleClue RandomAI::chooseAccusation() {
+        state::TripleClue accusation{};
+        int randomSuspect = engine::UtilityFunctions::randomInt(6) + 1;
+        accusation.suspect = static_cast<state::Suspect>(randomSuspect);
+        int randomWeapon = engine::UtilityFunctions::randomInt(6) + 1;
+        accusation.weapon = static_cast<state::Weapon>(randomWeapon);
+        int randomRoom = engine::UtilityFunctions::randomInt(9) + 1;
+        accusation.room = static_cast<state::RoomName>(randomRoom);
+        return accusation;
+    }
 
 }

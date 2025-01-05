@@ -39,14 +39,15 @@ int main(int argc,char* argv[])
         client::HumanPlayerConsole userPlayer(myEngine, playerInfoVec.at(0), "User");
         playerVec.front() = &userPlayer;
         for (int i = 1; i < playerCount; i++) {
-            ai::RandomAI randomAI(myEngine, playerInfoVec.at(i));
-            client::AIPlayer aiPlayer(myEngine, playerInfoVec.at(i), "AI " + i, randomAI);
+            client::AIPlayer aiPlayer(myEngine, playerInfoVec.at(i), "AI " + i, std::make_unique<ai::RandomAI>(myEngine, playerInfoVec.at(i)));
             playerVec.at(i) = &aiPlayer;
         }
         client::Client myClient(myState, myEngine, playerVec);
         client::PlayerList& myPlayerList = myClient.getPlayerList();
 
         //debut de la partie
+        myEngine.determineFirstPlayer();
+        myEngine.distributionCharacters();
 
 
         //game loop
@@ -56,20 +57,20 @@ int main(int argc,char* argv[])
             const engine::CommandId currentAction = currentPlayer.chooseAction();
             switch (currentAction) {
                 case engine::HYPOTHESIS: {
-                    state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
+                    const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
                     engine::HypothesisCommand myHypothesisCommand(myEngine, currentPlayerInfo, hypothesis);
-                    myEngine.addCommand(&myHypothesisCommand);
+                    myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
+                    myEngine.executeCommands();
+
                 }
                 break;
                 case engine::ACCUSATION: {
-                    state::TripleClue accusation = currentPlayer.chooseAccusation();
-                    engine::AccusationCommand myAccusationCommand(myEngine, currentPlayerInfo, accusation);
-                    myEngine.addCommand(&myAccusationCommand);
+                    const state::TripleClue accusation = currentPlayer.chooseAccusation();
+                    myEngine.addCommand(std::make_unique<engine::AccusationCommand>(myEngine, currentPlayerInfo, accusation));
                 }
                 break;
                 case engine::SECRET_PASSAGE: {
-                    engine::SecretPassageCommand mySecretPassageCommand(myEngine, currentPlayerInfo);
-                    myEngine.addCommand(&mySecretPassageCommand);
+                    myEngine.addCommand(std::make_unique<engine::SecretPassageCommand>(myEngine, currentPlayerInfo));
                 }
                 break;
                 case engine::MOVE_FROM_DICE: {
@@ -82,8 +83,7 @@ int main(int argc,char* argv[])
                             break;
                         }
                         const engine::Move moveDirection = currentPlayer.chooseMoveDirection();
-                        engine::MoveCommand myMoveCommand(myEngine, currentPlayerInfo, moveDirection);
-                        myEngine.addCommand(&myMoveCommand);
+                        myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerInfo, moveDirection));
                         myEngine.executeCommands();
                         remainingMoves--;
                     }
@@ -97,6 +97,5 @@ int main(int argc,char* argv[])
             myState.setCurrentPlayer(myPlayerList.getCurrent()->getPlayerInfo());
         }
     }
-
     return 0;
 }

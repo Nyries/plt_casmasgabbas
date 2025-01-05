@@ -4,7 +4,6 @@
 #include "AI.h"
 namespace ai {
     AI::AI(engine::Engine &engine, state::PlayerInfo &playerInfo): engine(engine), playerInfo(playerInfo) {
-
     }
 
 }

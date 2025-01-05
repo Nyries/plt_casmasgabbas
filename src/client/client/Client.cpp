@@ -44,7 +44,7 @@ namespace client{
 			get<0>(players.at(i)) = name;
 		}
 		cout << "We are now going to throw the dice to determine the player order" << endl << "Drawing dices..." << endl;
-		engine.determinePlayerOrder();
+		engine.determineFirstPlayer();
 
 		determinePlayerSuspect();
 		cout << "The suspects have been attributed to each player" << endl;

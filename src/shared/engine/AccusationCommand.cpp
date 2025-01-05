@@ -8,7 +8,7 @@
 #include "Engine.h"
 
 namespace engine{
-    AccusationCommand::AccusationCommand(Engine &engine, state::PlayerInfo &player, const state::TripleClue &accusation): Command(engine, ACCUSATION , player), accusation(accusation) , envelope(engine.getEnvelope())  {
+    AccusationCommand::AccusationCommand(Engine &engine, state::PlayerInfo &player, const state::TripleClue &accusation): Command(engine, player, ACCUSATION), accusation(accusation) , envelope(engine.getEnvelope())  {
 
     }
 

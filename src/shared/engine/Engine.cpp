@@ -11,7 +11,7 @@ namespace engine {
     Engine::Engine(state::State &state): state(state), playerInfoVec(state.getPlayerInfoVec()), map(state.getMap()), envelope(state.getEnvelope()) {
     }
 
-    void Engine::determinePlayerOrder() {
+    void Engine::determineFirstPlayer() {
         int firstPlayerIndex = UtilityFunctions::randomInt(playerInfoVec.size());
         state.setCurrentPlayer(playerInfoVec.at(firstPlayerIndex));
     }
@@ -161,8 +161,8 @@ namespace engine {
         return possibleCommands;
     }
 
-    void Engine::addCommand(Command* newCommand) {
-        commands.push_back( newCommand);
+    void Engine::addCommand(std::unique_ptr<Command> newCommand) {
+        commands.push_back( std::move(newCommand));
     }
 
     std::vector<Move> Engine::getPossibleMoves(state::PlayerInfo &player) {
@@ -233,7 +233,7 @@ namespace engine {
     }
 
     void Engine::executeCommands() {
-        for (Command* c: commands) {
+        for (auto& c: commands) {
             c->execute();
         }
         commands.clear();
@@ -241,6 +241,10 @@ namespace engine {
 
     std::vector<state::Card> &Engine::getEnvelope() {
         return envelope;
+    }
+
+    state::State &Engine::getState() {
+        return state;
     }
 
 

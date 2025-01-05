@@ -11,7 +11,7 @@
 #include "Client.h"
 
 namespace client {
-    HumanPlayer::HumanPlayer(engine::Engine &engine, state::PlayerInfo &playerInfo, std::string& name): Player(engine, playerInfo, true, name) {
+    HumanPlayer::HumanPlayer(engine::Engine &engine, state::PlayerInfo &playerInfo, std::string name): Player(engine, playerInfo, true, name) {
 
     }
 }

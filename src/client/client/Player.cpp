@@ -8,7 +8,7 @@
 #include "Client.h"
 
 namespace client {
-    Player::Player(engine::Engine &engine, state::PlayerInfo &playerInfo, bool isHuman, std::string& name): engine(engine), playerInfo(playerInfo), isHuman(isHuman), name(move(name)) {
+    Player::Player(engine::Engine &engine, state::PlayerInfo &playerInfo, bool isHuman, std::string name): engine(engine), playerInfo(playerInfo), isHuman(isHuman), name(move(name)) {
 
     }
 
