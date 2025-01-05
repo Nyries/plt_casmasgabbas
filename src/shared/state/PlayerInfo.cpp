@@ -6,7 +6,7 @@
 #include <utility>
 
 namespace state {
-    PlayerInfo::PlayerInfo(std::string  name, Suspect identity): name(std::move(name)), cards(), location(nullptr),  identity(identity), canWin(true), previousHypothesisRoom(state::NO_ROOM) {
+    PlayerInfo::PlayerInfo(Suspect identity):cards(), location(nullptr),  identity(identity), canWin(true), previousHypothesisRoom(state::NO_ROOM) {
     }
 
     void PlayerInfo::setLocation(Location &newLocation) {
@@ -31,11 +31,6 @@ namespace state {
 
     void PlayerInfo::setIdentity(Suspect identity) {
         this->identity = identity;
-    }
-
-
-    const std::string& PlayerInfo::getName() {
-        return name;
     }
 
     bool PlayerInfo::getCanWin() {

@@ -7,24 +7,17 @@
 #include <json/json.h>
 
 namespace state {
-    State::State(const std::string& stateJsonPath): accusationSuccess(false), envelope()
+    State::State(const std::string& mapJsonPath, int playerCount): accusationSuccess(false), envelope(), map(mapJsonPath), currentPlayer(playerInfoVec.front())
     {
-        std::ifstream file(stateJsonPath);
-        Json::Value stateJsonData;
-        file >> stateJsonData;
-        file.close();
-
-        players = new CircularPlayerList(stateJsonData["playersCount"].asInt());
-        map = new Map(stateJsonData["mapJsonPath"].asString());
+        envelope.reserve(3);
+        playerInfoVec.reserve(playerCount);
+        for (int i = 0; i < playerCount; i++) {
+            playerInfoVec.emplace_back(PERVENCHE);
+        }
     }
 
-    Map* State::getMap() {
+    Map& State::getMap() {
         return map;
-    }
-
-    CircularPlayerList *State::getPlayerList()
-    {
-        return this->players;
     }
 
     std::vector<Card> &State::getEnvelope()
@@ -32,8 +25,16 @@ namespace state {
         return this->envelope;
     }
 
-    void State::setCircularPlayerList(std::vector<std::tuple<std::string, int, int>> players)
-    {
-        this->players = new CircularPlayerList(players);
+    std::vector<PlayerInfo> &State::getPlayerInfoVec() {
+        return playerInfoVec;
     }
+
+    bool State::getAccusationSuccess() {
+        return accusationSuccess;
+    }
+
+    void State::setAccusationSuccess(bool accusationSuccess) {
+        this->accusationSuccess = accusationSuccess;
+    }
+
 }

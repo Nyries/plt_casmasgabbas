@@ -5,6 +5,6 @@
 
 #include <utility>
 namespace client {
-    AIPlayer::AIPlayer(engine::Engine *engine, state::PlayerInfo &playerInfo, std::string name, ai::AI& ai): Player(engine, playerInfo, false, std::move(name)) , ai(ai){
+    AIPlayer::AIPlayer(engine::Engine &engine, state::PlayerInfo &playerInfo, std::string& name, ai::AI& ai): Player(engine, playerInfo, false, name) , ai(ai){
     }
 }
