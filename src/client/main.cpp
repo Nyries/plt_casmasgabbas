@@ -35,12 +35,12 @@ int main(int argc,char* argv[])
 
         //Construction de la liste des joueurs; le joueur humain est toujours le premier de la liste
         std::vector<state::PlayerInfo>& playerInfoVec = myState.getPlayerInfoVec();
-        std::vector<client::Player*> playerVec(playerCount);
+        std::vector<std::unique_ptr<client::Player>> playerVec(playerCount);
         client::HumanPlayerConsole userPlayer(myEngine, playerInfoVec.at(0), "User");
-        playerVec.front() = &userPlayer;
+        playerVec.front() = std::make_unique<client::Player>(std::move(userPlayer));;
         for (int i = 1; i < playerCount; i++) {
             client::AIPlayer aiPlayer(myEngine, playerInfoVec.at(i), "AI " + i, std::make_unique<ai::RandomAI>(myEngine, playerInfoVec.at(i)));
-            playerVec.at(i) = &aiPlayer;
+            playerVec.at(i) = std::make_unique<client::Player>(std::move(aiPlayer));
         }
         client::Client myClient(myState, myEngine, playerVec);
         client::PlayerList& myPlayerList = myClient.getPlayerList();
@@ -52,13 +52,12 @@ int main(int argc,char* argv[])
 
         //game loop
         while (!myState.getAccusationSuccess()) {
-            client::Player& currentPlayer = *myPlayerList.getCurrent();
+            client::Player& currentPlayer = myPlayerList.getCurrent();
             state::PlayerInfo& currentPlayerInfo =  currentPlayer.getPlayerInfo();
             const engine::CommandId currentAction = currentPlayer.chooseAction();
             switch (currentAction) {
                 case engine::HYPOTHESIS: {
                     const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
-                    engine::HypothesisCommand myHypothesisCommand(myEngine, currentPlayerInfo, hypothesis);
                     myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
                     myEngine.executeCommands();
 
@@ -94,8 +93,9 @@ int main(int argc,char* argv[])
             }
             myEngine.executeCommands();
             myPlayerList.next();
-            myState.setCurrentPlayer(myPlayerList.getCurrent()->getPlayerInfo());
+            myState.setCurrentPlayer(myPlayerList.getCurrent().getPlayerInfo());
         }
     }
+    std::cout << "game end!";
     return 0;
 }

@@ -3,12 +3,12 @@
 //
 #include "PlayerList.h"
 namespace client {
-    PlayerList::PlayerList(std::vector<Player *> &vec):vec(move(vec)), currentPlayer(*vec.begin()) {
+    PlayerList::PlayerList(std::vector<std::unique_ptr<Player>> &vec):vec(move(vec)), currentPlayer(**vec.begin()) {
         it = vec.begin();
     }
 
-    Player *PlayerList::getCurrent() {
-        return *it;
+    Player& PlayerList::getCurrent() {
+        return **it;
     }
 
     void PlayerList::next() {

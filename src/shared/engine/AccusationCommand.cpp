@@ -22,6 +22,7 @@ namespace engine{
                 accusation.room == static_cast<state::RoomCard&>(envelope.at(2)).getRoomName()){
 
                 player.setCanWin(true);
+                engine.getState().setAccusationSuccess(true);
             }
         }
         player.setCanWin(false);

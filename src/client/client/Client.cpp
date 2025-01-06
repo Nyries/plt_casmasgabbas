@@ -16,7 +16,7 @@
 using namespace std;
 
 namespace client{
-	Client::Client (state::State& state, engine::Engine& engine, std::vector<Player*>& playerVec): state(state), engine(engine), playerList(playerVec)
+	Client::Client (state::State& state, engine::Engine& engine, std::vector<std::unique_ptr<client::Player>>& playerVec): state(state), engine(engine), playerList(playerVec)
 {
 
 	}
@@ -37,6 +37,7 @@ namespace client{
 	}
 
 	void Client::createParty(int numberOfPlayers){
+		/*
 		string name;
 		for (int i=0; i < numberOfPlayers; i++){
 			std::cout << "What is the name of player " + std::to_string(i+1) << std::endl;
@@ -55,10 +56,12 @@ namespace client{
 		//Choosing the suspect
 
 		//choosingSuspect(playerNames, numberOfPlayers);
+		*/
 	}
 
     void Client::determinePlayerSuspect()
     {
+		/*
 		vector<int> suspectInt;
 		for (int i=1; i<=6; i++){
 			suspectInt.push_back(i);
@@ -81,7 +84,9 @@ namespace client{
 			int choice  = getValidKey(6);
 			suspectInt.erase(remove(suspectInt.begin(), suspectInt.end(), choice), suspectInt.end());
 			get<2>(players.at(i)) = choice;
+
 		}
+		*/
 	}
 
     std::string Client::intToSuspect(int input)
@@ -102,49 +107,6 @@ namespace client{
 		}
         return std::string();
     }
-
-	int Client::moveDisplay(std::vector<state::Cell*> accessibleCells){
-
-		std::cout << "Where do you want to go ?" << std::endl;
-
-		int choice = 0;
-		std::string moveDirection;
-
-		if (accessibleCells.at(0)!=nullptr){std::cout << "If you to go UP: press 1 " << std::endl;}
-		if (accessibleCells.at(1)!=nullptr){std::cout << "If you to go LEFT: press 2 " << std::endl;}
-		if (accessibleCells.at(2)!=nullptr){std::cout << "If you to go DOWN: press 3 " << std::endl;}
-		if (accessibleCells.at(3)!=nullptr){std::cout << "If you to go RIGHT: press 4  " << std::endl;}
-
-		std::cout << " Choose your direction ! " << std::endl;
-		state::Cell* direction = nullptr;
-
-		choice = getValidKey(4);
-		direction = accessibleCells.at(choice-1);
-
-		while (direction == nullptr) {
-			std::cout << "You can't go there ! Choose another direction" << std::endl;
-			choice = getValidKey(4);
-			direction = accessibleCells.at(choice-1);
-		}
-
-		switch (choice) {
-		    case 1: // UP
-		        std::cout << "You moved UP ! \n";
-		        return 1;
-		    case 2: // LEFT
-	    		std::cout << "You chose LEFT ! \n";
-		        return 2;
-		    case 3: // DOWN
-	    		std::cout << "You chose DOWN ! \n";
-		        return 3;
-		    case 4: // RIGHT
-		        std::cout << "You chose RIGHT ! \n";
-		        return 4;
-		    default: // OTHER ONE
-		        std::cout << "Invalid choice ! Try again \n";
-   		}
-			return int();
-	}
 
 	void Client::displayPressKey(std::string key){
 
@@ -217,6 +179,10 @@ namespace client{
 
 	PlayerList &Client::getPlayerList() {
 		return playerList;
+	}
+
+	void Client::askHypothesisToNeighbors(Player &player, state::TripleClue hypothesis) {
+		auto& playerVec = playerList.getVector();
 	}
 
 
