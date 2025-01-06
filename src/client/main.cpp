@@ -60,6 +60,7 @@ int main(int argc,char* argv[])
                     const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
                     myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
                     myEngine.executeCommands();
+                    myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
 
                 }
                 break;
