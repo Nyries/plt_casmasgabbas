@@ -6,7 +6,7 @@
 #include "state.h"
 #include "MoveCommand.h"
 namespace engine {
-    MoveCommand::MoveCommand(Engine &engine, state::PlayerInfo &player, Move direction): Command(engine, ACCUSATION, player), direction(direction) {
+    MoveCommand::MoveCommand(Engine &engine, state::PlayerInfo &player, Move direction): Command(engine, player, ACCUSATION), direction(direction) {
 
     }
     
