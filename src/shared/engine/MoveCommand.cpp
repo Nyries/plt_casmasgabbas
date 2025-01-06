@@ -9,8 +9,7 @@ namespace engine {
     MoveCommand::MoveCommand(Engine &engine, state::PlayerInfo &player, Move direction): Command(engine, player, ACCUSATION), direction(direction) {
 
     }
-
-
+    
     void MoveCommand::execute() {
         state::Location &currentLocation = player.getLocation();
         if (currentLocation.getType() != state::CORRIDOR) {
@@ -21,16 +20,16 @@ namespace engine {
         int y = currentCell->getY();
 
         switch (direction) {
-            case 1: // Haut
+            case MOVE_UP:
                 y -= 1;
                 break;
-            case 2: // Droite
+            case MOVE_RIGHT:
                 x += 1;
                 break;
-            case 3: // Bas
+            case MOVE_DOWN:
                 y += 1;
                 break;
-            case 4: // Gauche
+            case MOVE_LEFT:
                 x -= 1;
                 break;
             default:
