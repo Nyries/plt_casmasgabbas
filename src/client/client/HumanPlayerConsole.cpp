@@ -376,4 +376,8 @@ namespace client {
 	   return accusationChoice;
     }
 
+	void HumanPlayerConsole::showACardToPlayer(const state::Card &shownCard, const Player &cardOwner) {
+		std::cout << cardOwner.getName() << "showed you the card" << std::endl;
+	}
+
 }

@@ -37,10 +37,10 @@ int main(int argc,char* argv[])
         std::vector<state::PlayerInfo>& playerInfoVec = myState.getPlayerInfoVec();
         std::vector<std::unique_ptr<client::Player>> playerVec(playerCount);
         client::HumanPlayerConsole userPlayer(myEngine, playerInfoVec.at(0), "User");
-        playerVec.front() = std::make_unique<client::Player>(std::move(userPlayer));;
+        playerVec.front() = std::make_unique<client::HumanPlayerConsole>(std::move(userPlayer));;
         for (int i = 1; i < playerCount; i++) {
             client::AIPlayer aiPlayer(myEngine, playerInfoVec.at(i), "AI " + i, std::make_unique<ai::RandomAI>(myEngine, playerInfoVec.at(i)));
-            playerVec.at(i) = std::make_unique<client::Player>(std::move(aiPlayer));
+            playerVec.at(i) = std::make_unique<client::AIPlayer>(std::move(aiPlayer));
         }
         client::Client myClient(myState, myEngine, playerVec);
         client::PlayerList& myPlayerList = myClient.getPlayerList();

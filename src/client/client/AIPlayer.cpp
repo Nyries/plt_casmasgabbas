@@ -30,4 +30,8 @@ namespace client {
         return ai->chooseAccusation();
     }
 
+    void AIPlayer::showACardToPlayer(const state::Card &shownCard, const Player &cardOwner) {
+
+    }
+
 }

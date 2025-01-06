@@ -12,6 +12,10 @@ namespace client {
 
     }
 
+    const std::string& Player::getName() const {
+        return name;
+    }
+
     state::PlayerInfo &Player::getPlayerInfo() {
         return playerInfo;
     }

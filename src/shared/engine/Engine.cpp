@@ -83,13 +83,11 @@ namespace engine {
     void Engine::distributionCharacters () {
         const int numberOfPlayer = playerInfoVec.size();
         const std::vector<state::Suspect> SuspectsVector = {state::VIOLET, state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE} ;
-        auto it = playerInfoVec.begin() + (&state.getCurrentPlayer() - &playerInfoVec.front()); //iterateur initialisé au joueur actuel
+        engine::CircularIterator<state::PlayerInfo> it(playerInfoVec, playerInfoVec.begin() + (&state.getCurrentPlayer() - &playerInfoVec.front())); //iterateur initialisé au joueur actuel
         for (int i = 0; i < numberOfPlayer; i++) {
             it->setIdentity(SuspectsVector.at(i));
+            it->setLocation(state.suspectToStartingCell(SuspectsVector.at(i)));
             ++it;
-            if (it == playerInfoVec.end()) {
-                it = playerInfoVec.begin();
-            }
         }
     }
 

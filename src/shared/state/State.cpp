@@ -7,13 +7,7 @@
 #include <json/json.h>
 
 namespace state {
-    State::State(const std::string& mapJsonPath, int playerCount): envelope(), map(mapJsonPath), currentPlayer(playerInfoVec.front()), accusationSuccess(false)
-    {
-        envelope.reserve(3);
-        playerInfoVec.reserve(playerCount);
-        for (int i = 0; i < playerCount; i++) {
-            playerInfoVec.emplace_back(PERVENCHE);
-        }
+    State::State(const std::string& mapJsonPath, int playerCount): envelope(), map(mapJsonPath), playerInfoVec(playerCount, PlayerInfo(PERVENCHE)), currentPlayer(playerInfoVec.front()), accusationSuccess(false){
     }
 
     Map& State::getMap() {
@@ -44,5 +38,25 @@ namespace state {
     void State::setCurrentPlayer(PlayerInfo &currentPlayer) {
         this->currentPlayer = currentPlayer;
     }
+
+    Location &State::suspectToStartingCell(Suspect suspect) {
+        switch (suspect) {
+            case ROSE:
+                return map.getCell(15,1);
+            case PERVENCHE:
+                return map.getCell(17,25);
+            case LEBLANC:
+                return map.getCell(9,25);
+            case OLIVE:
+                return map.getCell(10,1);
+            case MOUTARDE:
+                return map.getCell(1,8);
+            case VIOLET:
+                return map.getCell(1,18);
+            default:
+                throw std::invalid_argument("Incorrect Suspect enum value");
+        }
+    }
+
 
 }

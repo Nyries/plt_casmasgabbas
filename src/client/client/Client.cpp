@@ -181,8 +181,22 @@ namespace client{
 		return playerList;
 	}
 
-	void Client::askHypothesisToNeighbors(Player &player, state::TripleClue hypothesis) {
-		auto& playerVec = playerList.getVector();
+	void Client::askHypothesisToNeighbors(Player &hypothesisPlayer, state::TripleClue hypothesis) {
+		const auto& itCurrent = playerList.getIterator();
+		auto it = itCurrent;
+		++it;
+		while (it != itCurrent) {
+			auto& player = *it;
+			std::vector<state::Card*> possessedCards = engine.getPossessedCards(hypothesis, player->getPlayerInfo());
+			if (!possessedCards.empty()) {
+				int chosenIndex = player->chooseACardToShowClient(possessedCards);
+				hypothesisPlayer.showACardToPlayer(*possessedCards.at(chosenIndex), *player);
+				++it;
+			}
+			else {
+				break;
+			}
+		}
 	}
 
 
