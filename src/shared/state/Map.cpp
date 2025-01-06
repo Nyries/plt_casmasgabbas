@@ -182,4 +182,9 @@ namespace state {
         }
         return neighbors;
     }
+
+    Cell &Map::getCell(int coordX, int coordY) {
+        return mapGrid.at(coordX).at(coordY);
+    }
+
 }
