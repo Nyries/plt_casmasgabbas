@@ -159,17 +159,11 @@ namespace client{
 
 	void Client::throwDiceClient () {
 		std::cout << "Press 1 to throw the dice ! " << std::endl;
-		int keyValue;
-		std::cin >> keyValue;
-		while (keyValue != 1) {
-			std::cout << "Wrong value, press 1 " << std::endl;
-		}
+		int keyValue = getValidKey(1);
 		//std::vector<int> diceValues = getEngine().dice();
 		std::cout << "Dice are thrown" << std::endl;
 
 		// finir avec lancer les dés et afficher la valeur
-
-
 
 		}
 

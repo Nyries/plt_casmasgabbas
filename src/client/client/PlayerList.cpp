@@ -19,4 +19,12 @@ namespace client {
         return it;
     }
 
+    void PlayerList::setIterator(std::unique_ptr<Player> &element) {
+        it.setElement(element);
+    }
+
+    std::vector<std::unique_ptr<Player> > &PlayerList::getVector() {
+        return vec;
+    }
+
 }

@@ -3,7 +3,9 @@
 //
 #include "CircularIterator.h"
 
+#include <algorithm>
 #include <memory>
+#include <stdexcept>
 #include <state/PlayerInfo.h>
 
 namespace client {
@@ -19,6 +21,15 @@ namespace engine {
     template<typename T>
     CircularIterator<T>::CircularIterator(std::vector<T> &vec, typename std::vector<T>::iterator it): vec(vec), it(it) {
 
+    }
+
+    template<typename T>
+    CircularIterator<T>::CircularIterator(std::vector<T> &vec, T &element): vec(vec),
+    it(std::find_if(vec.begin(), vec.end(), [&element](const T& i) {
+        return &i == &element;})){
+        if (it == vec.end()) {
+            throw std::runtime_error("element not found in vector");
+        }
     }
 
     template<typename T>
@@ -49,6 +60,16 @@ namespace engine {
     template<typename T>
     bool CircularIterator<T>::operator!=(const CircularIterator<T> &otherIterator) {
         return !(it == otherIterator.it);
+    }
+
+    template<typename T>
+    void CircularIterator<T>::setElement(T &element) {
+        it = std::find_if(vec.begin(), vec.end(), [&element](const T& i) {
+            return &i == &element;
+        });
+        if (it == vec.end()) {
+            throw std::runtime_error("element not found in vector");
+        }
     }
 
     template class CircularIterator<std::unique_ptr<client::Player>>;

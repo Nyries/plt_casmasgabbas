@@ -46,7 +46,9 @@ int main(int argc,char* argv[])
         client::PlayerList& myPlayerList = myClient.getPlayerList();
 
         //debut de la partie
-        myEngine.determineFirstPlayer();
+        int firstPlayerIndex = myEngine.determineFirstPlayer();
+        myPlayerList.setIterator(myPlayerList.getVector().at(firstPlayerIndex));
+        myEngine.setCurrentPlayer(playerInfoVec.at(firstPlayerIndex));
         myEngine.distributionCharacters();
 
 
@@ -94,7 +96,8 @@ int main(int argc,char* argv[])
             }
             myEngine.executeCommands();
             myPlayerList.next();
-            myState.setCurrentPlayer(myPlayerList.getCurrent().getPlayerInfo());
+            myEngine.setCurrentPlayer(currentPlayer.getPlayerInfo());
+
         }
     }
     std::cout << "game end!";

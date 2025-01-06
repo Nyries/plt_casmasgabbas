@@ -1,6 +1,8 @@
 //
 // Created by louismmassin on 11/18/24.
 //
+#include "Engine.h"
+
 #include <iostream>
 #include "state.h"
 #include "engine.h"
@@ -8,12 +10,12 @@
 #include <algorithm>
 
 namespace engine {
-    Engine::Engine(state::State &state): state(state), playerInfoVec(state.getPlayerInfoVec()), map(state.getMap()), envelope(state.getEnvelope()) {
+    Engine::Engine(state::State &state): state(state), playerInfoVec(state.getPlayerInfoVec()), map(state.getMap()), envelope(state.getEnvelope()), currentPlayer(playerInfoVec) {
     }
 
-    void Engine::determineFirstPlayer() {
+    int Engine::determineFirstPlayer() {
         int firstPlayerIndex = UtilityFunctions::randomInt(playerInfoVec.size());
-        state.setCurrentPlayer(playerInfoVec.at(firstPlayerIndex));
+        return firstPlayerIndex;
     }
 
     void Engine::dealCards() {
@@ -82,8 +84,8 @@ namespace engine {
 
     void Engine::distributionCharacters () {
         const int numberOfPlayer = playerInfoVec.size();
-        const std::vector<state::Suspect> SuspectsVector = {state::VIOLET, state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE} ;
-        engine::CircularIterator<state::PlayerInfo> it(playerInfoVec, playerInfoVec.begin() + (&state.getCurrentPlayer() - &playerInfoVec.front())); //iterateur initialisé au joueur actuel
+        const std::vector<state::Suspect> SuspectsVector = {state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE, state::VIOLET} ;
+        engine::CircularIterator<state::PlayerInfo> it(playerInfoVec, playerInfoVec.begin() + (&getCurrentPlayer() - &playerInfoVec.front())); //iterateur initialisé au joueur actuel
         for (int i = 0; i < numberOfPlayer; i++) {
             it->setIdentity(SuspectsVector.at(i));
             it->setLocation(state.suspectToStartingCell(SuspectsVector.at(i)));
@@ -137,7 +139,7 @@ namespace engine {
         std::vector<engine::CommandId> possibleCommands;
 
         // Si c'est ton tour
-        if (&player == &state.getCurrentPlayer()) {
+        if (&player == &getCurrentPlayer()) {
 
             // Si tu es dans une salle
             if (player.getLocation().getType()== state::ROOM) {
@@ -156,6 +158,9 @@ namespace engine {
             possibleCommands.push_back(engine::ACCUSATION);
         }
 
+        if (possibleCommands.empty()) {
+            throw std::runtime_error("no possible action found");
+        }
         return possibleCommands;
     }
 
@@ -244,6 +249,15 @@ namespace engine {
     state::State &Engine::getState() {
         return state;
     }
+
+    state::PlayerInfo &Engine::getCurrentPlayer() {
+        return *currentPlayer;
+    }
+
+    void Engine::setCurrentPlayer(state::PlayerInfo &player) {
+        currentPlayer.setElement(player);
+    }
+
 
 
 }
