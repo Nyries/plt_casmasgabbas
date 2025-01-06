@@ -56,45 +56,47 @@ int main(int argc,char* argv[])
         while (!myState.getAccusationSuccess()) {
             client::Player& currentPlayer = myPlayerList.getCurrent();
             state::PlayerInfo& currentPlayerInfo =  currentPlayer.getPlayerInfo();
-            const engine::CommandId currentAction = currentPlayer.chooseAction();
-            switch (currentAction) {
-                case engine::HYPOTHESIS: {
-                    const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
-                    myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
-                    myEngine.executeCommands();
-                    myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
-
-                }
-                break;
-                case engine::ACCUSATION: {
-                    const state::TripleClue accusation = currentPlayer.chooseAccusation();
-                    myEngine.addCommand(std::make_unique<engine::AccusationCommand>(myEngine, currentPlayerInfo, accusation));
-                }
-                break;
-                case engine::SECRET_PASSAGE: {
-                    myEngine.addCommand(std::make_unique<engine::SecretPassageCommand>(myEngine, currentPlayerInfo));
-                }
-                break;
-                case engine::MOVE_FROM_DICE: {
-                    std::vector<int> diceResult = engine::Engine::dice();
-                    myClient.throwDiceClient();
-                    int remainingMoves = diceResult.at(0) + diceResult.at(1);
-                    while (remainingMoves > 0) {
-                        const auto possibleMoves = myEngine.getPossibleMoves(currentPlayerInfo);
-                        if (possibleMoves.empty()) {
-                            break;
-                        }
-                        const engine::Move moveDirection = currentPlayer.chooseMoveDirection();
-                        myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerInfo, moveDirection));
+            if (currentPlayerInfo.getCanWin()) {
+                const engine::CommandId currentAction = currentPlayer.chooseAction();
+                switch (currentAction) {
+                    case engine::HYPOTHESIS: {
+                        const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
+                        myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
                         myEngine.executeCommands();
-                        remainingMoves--;
+                        myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
+
                     }
+                    break;
+                    case engine::ACCUSATION: {
+                        const state::TripleClue accusation = currentPlayer.chooseAccusation();
+                        myEngine.addCommand(std::make_unique<engine::AccusationCommand>(myEngine, currentPlayerInfo, accusation));
+                    }
+                    break;
+                    case engine::SECRET_PASSAGE: {
+                        myEngine.addCommand(std::make_unique<engine::SecretPassageCommand>(myEngine, currentPlayerInfo));
+                    }
+                    break;
+                    case engine::MOVE_FROM_DICE: {
+                        std::vector<int> diceResult = engine::Engine::dice();
+                        myClient.throwDiceClient();
+                        int remainingMoves = diceResult.at(0) + diceResult.at(1);
+                        while (remainingMoves > 0) {
+                            const auto possibleMoves = myEngine.getPossibleMoves(currentPlayerInfo);
+                            if (possibleMoves.empty()) {
+                                break;
+                            }
+                            const engine::Move moveDirection = currentPlayer.chooseMoveDirection();
+                            myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerInfo, moveDirection));
+                            myEngine.executeCommands();
+                            remainingMoves--;
+                        }
+                    }
+                    break;
+                    default:
+                        throw std::runtime_error("switch case failed!");
                 }
-                break;
-                default:
-                    throw std::runtime_error("switch case failed!");
+                myEngine.executeCommands();
             }
-            myEngine.executeCommands();
             myPlayerList.next();
             myEngine.setCurrentPlayer(currentPlayer.getPlayerInfo());
 
