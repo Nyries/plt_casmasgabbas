@@ -88,7 +88,8 @@ namespace engine {
         engine::CircularIterator<state::PlayerInfo> it(playerInfoVec, playerInfoVec.begin() + (&getCurrentPlayer() - &playerInfoVec.front())); //iterateur initialisé au joueur actuel
         for (int i = 0; i < numberOfPlayer; i++) {
             it->setIdentity(SuspectsVector.at(i));
-            it->setLocation(state.suspectToStartingCell(SuspectsVector.at(i)));
+            it->setLocation(state.convertSuspectToStartingCell(SuspectsVector.at(i)));
+            auto& testCell = static_cast<state::Cell&>(it->getLocation());
             ++it;
         }
     }
@@ -170,7 +171,7 @@ namespace engine {
 
     std::vector<Move> Engine::getPossibleMoves(state::PlayerInfo &player) {
         std::vector<Move> possibleMoves;
-        state::Location playerLocation = player.getLocation();
+        state::Location& playerLocation = player.getLocation();
         switch (playerLocation.getType()) {
             case state::CORRIDOR: {
                 auto& playerCell = static_cast<state::Cell&>(playerLocation);
@@ -258,8 +259,30 @@ namespace engine {
         currentPlayer.setElement(player);
     }
 
-
-
+    state::Location& Engine::convertMoveToLocation(const Move move) {
+        state::Location& playerLoc = currentPlayer->getLocation();
+        if (move == ENTER_ROOM && playerLoc.getType() == state::DOOR) {
+            auto& playerDoor = static_cast<state::Door&>(playerLoc);
+            return *playerDoor.getRoom();
+        }
+        if (move!= ENTER_ROOM && move != EXIT_ROOM && (playerLoc.getType() == state::DOOR || playerLoc.getType() == state::CORRIDOR)) {
+            auto& playerCell = static_cast<state::Cell&>(playerLoc);
+            auto neighborList = state.getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
+            if (move == MOVE_UP) {
+                return *neighborList.at(0);
+            }
+            if (move == MOVE_DOWN) {
+                return *neighborList.at(1);
+            }
+            if (move == MOVE_LEFT) {
+                return *neighborList.at(2);
+            }
+            if (move == MOVE_RIGHT) {
+                return *neighborList.at(3);
+            }
+        }
+        throw std::invalid_argument("invalid move relative to player's location type");
+    }
 }
 
 

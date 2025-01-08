@@ -22,14 +22,21 @@ int main(int argc,char* argv[])
 {
     test();//used for testing methods
 
-    //Ebauche du main
-    if (argc < 2) {
-        throw std::invalid_argument("program needs at least 1 parameter");
+    //main
+    if (argc < 3) {
+        throw std::invalid_argument("program needs at least 2 parameters");
     }
     if (std::string(argv[1]) == "solovsai") {
         //Initialisation
         const std::string mapJsonPath = "../configurations/map.json";
-        int playerCount = client::Client::introductionToTheGame();
+        std::unique_ptr<client::IO> tempIO;
+        if (std::string(argv[2]) == "console") {
+            tempIO = std::make_unique<client::ConsoleIO>();
+        }
+        else {
+            throw std::invalid_argument(std::string("invalid argument: ") + argv[2]);
+        }
+        int playerCount = tempIO->introductionToTheGame();
         state::State myState(mapJsonPath, playerCount);
         engine::Engine myEngine(myState);
 
@@ -39,23 +46,23 @@ int main(int argc,char* argv[])
         client::HumanPlayerConsole userPlayer(myEngine, playerInfoVec.at(0), "User");
         playerVec.front() = std::make_unique<client::HumanPlayerConsole>(std::move(userPlayer));;
         for (int i = 1; i < playerCount; i++) {
-            client::AIPlayer aiPlayer(myEngine, playerInfoVec.at(i), "AI " + i, std::make_unique<ai::RandomAI>(myEngine, playerInfoVec.at(i)));
+            client::AIPlayer aiPlayer(myEngine, playerInfoVec.at(i), "AI " + std::to_string(i), std::make_unique<ai::RandomAI>(myEngine, playerInfoVec.at(i)));
             playerVec.at(i) = std::make_unique<client::AIPlayer>(std::move(aiPlayer));
         }
-        client::Client myClient(myState, myEngine, playerVec);
+        client::Client myClient(myState, myEngine, tempIO, playerVec);
         client::PlayerList& myPlayerList = myClient.getPlayerList();
+        client::IO& io = myClient.getIO();
 
         //debut de la partie
         int firstPlayerIndex = myEngine.determineFirstPlayer();
         myPlayerList.setIterator(myPlayerList.getVector().at(firstPlayerIndex));
         myEngine.setCurrentPlayer(playerInfoVec.at(firstPlayerIndex));
         myEngine.distributionCharacters();
-
-
         //game loop
         while (!myState.getAccusationSuccess()) {
             client::Player& currentPlayer = myPlayerList.getCurrent();
             state::PlayerInfo& currentPlayerInfo =  currentPlayer.getPlayerInfo();
+            io.displayMap(myState.getMap());
             if (currentPlayerInfo.getCanWin()) {
                 const engine::CommandId currentAction = currentPlayer.chooseAction();
                 switch (currentAction) {
@@ -64,7 +71,6 @@ int main(int argc,char* argv[])
                         myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
                         myEngine.executeCommands();
                         myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
-
                     }
                     break;
                     case engine::ACCUSATION: {
@@ -86,19 +92,30 @@ int main(int argc,char* argv[])
                                 break;
                             }
                             const engine::Move moveDirection = currentPlayer.chooseMoveDirection();
-                            myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerInfo, moveDirection));
+                            if (moveDirection == engine::EXIT_ROOM) {
+                                auto& currentRoom = static_cast<state::Room&>(currentPlayerInfo.getLocation());
+                                state::Door& newDoor = currentPlayer.chooseDoor(currentRoom.getDoorList());
+                                myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerInfo, newDoor));
+                            }
+                            else {
+                                state::Location& newLocation = myEngine.convertMoveToLocation(moveDirection);
+                                myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerInfo, newLocation));
+                            }
                             myEngine.executeCommands();
+                            if (currentPlayerInfo.getLocation().getType() == state::ROOM) {
+                                break;
+                            }
                             remainingMoves--;
                         }
+                        break;
                     }
-                    break;
                     default:
                         throw std::runtime_error("switch case failed!");
                 }
                 myEngine.executeCommands();
             }
             myPlayerList.next();
-            myEngine.setCurrentPlayer(currentPlayer.getPlayerInfo());
+            myEngine.setCurrentPlayer(myPlayerList.getCurrent().getPlayerInfo());
 
         }
     }

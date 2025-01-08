@@ -9,6 +9,7 @@
 
 #include "state/Weapon.h"
 #include "Client.h"
+#include "ConsoleIO.h"
 
 namespace client {
     HumanPlayerConsole::HumanPlayerConsole(engine::Engine &engine, state::PlayerInfo &playerInfo, std::string name): HumanPlayer(engine, playerInfo, move(name)) {
@@ -21,16 +22,16 @@ namespace client {
         for (int i=0; i<size; i++) {
 
             switch(actions.at(i)) {
-                case 1: // MOVE_FROM_DICE
+                case engine::MOVE_FROM_DICE:
                     std::cout << "If you want to move from the dice, press " << i+1 << std::endl;
                 break;
-                case 2: // HYPOTHESIS
+                case engine::HYPOTHESIS:
                     std::cout << "If you want to make a hypothesis, press " << i+1 << std::endl;
                 break;
-                case 3: // ACCUSATION
+                case engine::ACCUSATION:
                     std::cout << "If you want to make an accusation, press " << i+1 << std::endl;
                 break;
-                case 4: // SECRET_PASSAGE
+                case engine::SECRET_PASSAGE:
                     std::cout << "If you want to use the secret passage, press " << i+1 << std::endl;
                 break;
                 default:
@@ -40,7 +41,7 @@ namespace client {
 
         std::cout << "What do you want to do ?" << std::endl;
 
-        int choice = Client::getValidKey(size);
+        int choice = ConsoleIO::getValidKey(size);
 
         switch(choice) {
             case engine::MOVE_FROM_DICE:
@@ -94,7 +95,7 @@ namespace client {
 
         std::cout << "What do you want to do ?" << std::endl;
 
-        int choice = Client::getValidKey(size);
+        int choice = ConsoleIO::getValidKey(size) - 1;
 
         switch(possibleMoves.at(choice)) {
             case engine::MOVE_UP:
@@ -118,7 +119,7 @@ namespace client {
             default:
                 throw std::runtime_error("Switch failed");
         }
-        return possibleMoves.at(choice - 1);
+        return possibleMoves.at(choice);
     }
 
     state::TripleClue HumanPlayerConsole::chooseHypothesis()  {
@@ -131,7 +132,7 @@ namespace client {
 		std::cout << "If you are suspecting MOUTARDE: press 5 " << std::endl;
 		std::cout << "If you are suspecting VIOLET: press 6 " << std::endl;
 
-	    const int choice = Client::getValidKey(6);
+	    const int choice = ConsoleIO::getValidKey(6);
 
       	switch (choice) {
 	    	case 1: // ROSE
@@ -169,7 +170,7 @@ namespace client {
 		std::cout << "If you think it is KNIFE: press 5 " << std::endl;
 		std::cout << "If you think it is WRENCH: press 6 " << std::endl;
 
-		int choice2 = Client::getValidKey(6);
+		int choice2 = ConsoleIO::getValidKey(6);
 
 		switch (choice2) {
 
@@ -247,7 +248,7 @@ namespace client {
 		std::cout << "If you are accusating MOUTARDE: press 5 " << std::endl;
 		std::cout << "If you are accusating VIOLET: press 6 " << std::endl;
 
-		int choice = Client::getValidKey(6);
+		int choice = ConsoleIO::getValidKey(6);
 		switch (choice) {
 			case 1: // ROSE
 				std::cout << "You chose ROSE ! \n";
@@ -286,7 +287,7 @@ namespace client {
 		std::cout << "If you think it is KNIFE: press 5 " << std::endl;
 		std::cout << "If you think it is WRENCH: press 6 " << std::endl;
 
-		int choice2 = Client::getValidKey(6);
+		int choice2 = ConsoleIO::getValidKey(6);
 		switch (choice2){
 			case 1: // CANDLESTICK
 				std::cout << "You chose CANDLESTICK ! \n";
@@ -328,7 +329,7 @@ namespace client {
 		std::cout << "If you think it is in the BEDROOM: press 9 " << std::endl;
 
 
-		int choice3 = Client::getValidKey(9);
+		int choice3 = ConsoleIO::getValidKey(9);
 		switch (choice3) {
 			case 1: // STUDY
 				std::cout << "You chose STUDY ! \n";
@@ -376,8 +377,18 @@ namespace client {
 	   return accusationChoice;
     }
 
-	void HumanPlayerConsole::showACardToPlayer(const state::Card &shownCard, const Player &cardOwner) {
+	void HumanPlayerConsole::seeACardFromPlayer(const state::Card &shownCard, const Player &cardOwner) {
 		std::cout << cardOwner.getName() << "showed you the card" << std::endl;
+	}
+
+	state::Door &HumanPlayerConsole::chooseDoor(const std::vector<state::Door *> &doorList) {
+		std::cout <<"Select door:\n";
+    	for (int i = 0; i < doorList.size(); i++) {
+    		std::cout << i + 1 << " coordinates " << doorList.at(i)->getX() << "," << doorList.at(i)->getY() << "\n";
+    	}
+    	std::cout << std::endl;
+    	int choice = ConsoleIO::getValidKey(doorList.size());
+    	return *doorList.at(choice - 1);
 	}
 
 }
