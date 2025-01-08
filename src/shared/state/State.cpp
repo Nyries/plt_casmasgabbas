@@ -39,10 +39,10 @@ namespace state {
         this->currentPlayer = currentPlayer;
     }
 
-    Location &State::suspectToStartingCell(Suspect suspect) {
+    Cell &State::convertSuspectToStartingCell(Suspect suspect) {
         switch (suspect) {
             case ROSE:
-                return map.getCell(10,25);
+                return map.getCell(9,25);
             case PERVENCHE:
                 return map.getCell(24,7);
             case LEBLANC:

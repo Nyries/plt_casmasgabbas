@@ -15,8 +15,13 @@ namespace engine {
 
     void HypothesisCommand::execute() {
         std::vector<state::PlayerInfo>& playerInfoVec = engine.getState().getPlayerInfoVec();
-        auto it = CircularIterator<state::PlayerInfo>(playerInfoVec, engine.getCurrentPlayer());
-        it->setLocation(player.getLocation());
+        state::Suspect teleportedSuspect = hypothesis.suspect;
+        const auto teleportedPlayer = std::find_if(playerInfoVec.begin(), playerInfoVec.end(),
+            [teleportedSuspect](state::PlayerInfo& i){
+                return teleportedSuspect == i.getIdentity();
+            });
+        if (teleportedPlayer != playerInfoVec.end()) {
+            teleportedPlayer->setLocation(player.getLocation());
+        }
     }
-
 }

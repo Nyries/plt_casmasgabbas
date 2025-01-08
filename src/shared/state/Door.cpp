@@ -7,6 +7,7 @@
 namespace state {
     Door::Door(int coordX, int coordY, Room *room): Cell(coordX, coordY, LocationType::DOOR), room(room)
     {
+        room->addDoor(*this);
     }
     state::Room *Door::getRoom()
     {
