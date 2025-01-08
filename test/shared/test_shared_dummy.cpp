@@ -34,8 +34,15 @@ BOOST_AUTO_TEST_CASE(TestGetType)
   BOOST_CHECK(card.getType() == CardType::WEAPON_CARD);
 }
 }
+BOOST_AUTO_TEST_CASE(TestSetType)
+{
+{
+  Card card(CardType::WEAPON_CARD);
+  card.setType(CardType::ROOM_CARD);
+  BOOST_CHECK(card.getType() == CardType::ROOM_CARD);
+}
+}
 BOOST_AUTO_TEST_SUITE_END();
-
 
 // Cell.cpp test
 BOOST_AUTO_TEST_SUITE(TestCell)
@@ -174,7 +181,7 @@ BOOST_AUTO_TEST_SUITE(TestMap)
 BOOST_AUTO_TEST_CASE(TestGetDisplayMap)
 {
 {
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   std::vector<std::vector<std::string>> displayMap = map.getDisplayMap();
 
   BOOST_CHECK(displayMap[0][0] == "-");
@@ -187,20 +194,20 @@ BOOST_AUTO_TEST_CASE(TestGetDisplayMap)
 }
 BOOST_AUTO_TEST_CASE(TestGetMapGrid){
 {
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   BOOST_CHECK(map.getMapGrid().at(0).at(0).getType() == LocationType::INACCESSIBLE);
   BOOST_CHECK(map.getMapGrid().at(1).at(2).getType() == LocationType::ROOM);
 }
 }
 BOOST_AUTO_TEST_CASE(TestGetRoomList){
 {
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   BOOST_CHECK(map.getRoomList().at(2).getName() == RoomName::LIVING_ROOM);
 }
 }
 BOOST_AUTO_TEST_CASE(TestGetHeightAndWidth){
 {
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   BOOST_CHECK(map.getHeight() == 3);
   BOOST_CHECK(map.getWidth() == 3);
 }
@@ -209,7 +216,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
   // This method uses getNeighborsAsCell, so we will test it as well
 {
   // First case where coords for getNeighborsAsLocationType are out of bounds
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(4,0).at(0), LocationType::INACCESSIBLE);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(4,0).at(1), LocationType::INACCESSIBLE);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(4,0).at(2), LocationType::INACCESSIBLE);
@@ -217,7 +224,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
 }
 {
   // Second case in the top left corner
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(0,0).at(0), LocationType::INACCESSIBLE);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(0,0).at(1), LocationType::CORRIDOR);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(0,0).at(2), LocationType::INACCESSIBLE);
@@ -225,7 +232,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
 }
 {
   // Third case in the top right corner
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   int width = map.getWidth()-1;
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(width,0).at(0), LocationType::INACCESSIBLE);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(width,0).at(1), LocationType::CORRIDOR);
@@ -234,7 +241,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
 }
 {
   // Fourth case in the bottom right corner
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   int width = map.getWidth()-1;
   int height = map.getHeight()-1;
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(width,height).at(0), LocationType::CORRIDOR);
@@ -244,7 +251,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
 }
 {
   // Fifth case in the bottom left corner
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   int height = map.getHeight()-1;
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(0,height).at(0), LocationType::CORRIDOR);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(0,height).at(1), LocationType::INACCESSIBLE);
@@ -253,7 +260,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
 }
 {
   // Second case where coords for getNeighborsAsLocationType where x=0
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(0,0).at(0), LocationType::INACCESSIBLE);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(0,0).at(1), LocationType::CORRIDOR);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(0,0).at(2), LocationType::INACCESSIBLE);
@@ -261,7 +268,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
 }
 {
   // Third case where coords for getNeighborsAsLocationType where y=0
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(1,0).at(0), LocationType::INACCESSIBLE);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(1,0).at(1), LocationType::CORRIDOR);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(1,0).at(2), LocationType::INACCESSIBLE);
@@ -269,7 +276,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
 }
 {
   // Fourth case where coords for getNeighborsAsLocationType where x=width
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   int width = map.getWidth()-1;
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(width,0).at(0), LocationType::INACCESSIBLE);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(width,0).at(1), LocationType::CORRIDOR);
@@ -278,7 +285,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
 }
 {
   // Fifth case where coords for getNeighborsAsLocationType where y=height
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   int height = map.getHeight()-1;
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(0,height).at(0), LocationType::CORRIDOR);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(0,height).at(1), LocationType::INACCESSIBLE);
@@ -287,7 +294,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
 }
 {
   // Sixth case, general case
-  Map map("test/shared/test_map.json");
+  Map map("../../../test/shared/test_map.json");
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(1,1).at(0), LocationType::INACCESSIBLE);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(1,1).at(1), LocationType::ROOM);
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(1,1).at(2), LocationType::CORRIDOR);
@@ -307,14 +314,14 @@ BOOST_AUTO_TEST_CASE(TestSet_GetLocation){
   BOOST_CHECK(playerInfo.getLocation().getType() == LocationType::CORRIDOR);
 }
 }
-/*BOOST_AUTO_TEST_CASE(TestGiveCard){
+BOOST_AUTO_TEST_CASE(TestGiveCard){
 {
   Card card(CardType::WEAPON_CARD);
   PlayerInfo playerInfo("John", Suspect::ROSE);
   playerInfo.giveCard(card);
   BOOST_CHECK(playerInfo.getCards().at(0).getType() == CardType::WEAPON_CARD);
 }
-}*/
+}
 BOOST_AUTO_TEST_CASE(TestGetName)
 {
 {
@@ -326,8 +333,162 @@ BOOST_AUTO_TEST_CASE(TestGetPlayerIdentity)
 {
 {
   PlayerInfo playerInfo("John", Suspect::ROSE);
-  BOOST_CHECK(playerInfo.getIdentity() == Suspect::ROSE);
+  playerInfo.setIdentity(Suspect::VIOLET);
+  BOOST_CHECK(playerInfo.getIdentity() == Suspect::VIOLET);
+}
+}
+BOOST_AUTO_TEST_CASE(TestGetCanWin)
+{
+{
+  PlayerInfo playerInfo("John", Suspect::ROSE);
+  playerInfo.setCanWin(false);
+  BOOST_CHECK(playerInfo.getCanWin() == false);
+}
+}
+BOOST_AUTO_TEST_CASE(TestGetPreviousHypothesisRoom)
+{
+{
+  PlayerInfo playerInfo("John", Suspect::ROSE);
+  playerInfo.setPreviousHypothesisRoom(RoomName::KITCHEN);
+  BOOST_CHECK(playerInfo.getPreviousHypothesisRoom() == RoomName::KITCHEN);
 }
 }
 BOOST_AUTO_TEST_SUITE_END();
-/* vim: set sw=2 sts=2 et : */
+BOOST_AUTO_TEST_SUITE(TestRoom);
+
+BOOST_AUTO_TEST_CASE(TestSet_GetName)
+{
+{
+  Room room(RoomName::KITCHEN);
+  room.setName(RoomName::LIVING_ROOM);
+  BOOST_CHECK(room.getName() == RoomName::LIVING_ROOM);
+}
+}
+BOOST_AUTO_TEST_CASE(TestGetNameAsString)
+{
+{
+  Room room(RoomName::KITCHEN);
+  BOOST_CHECK(room.getNameAsString() == "KITCHEN");
+}
+{
+  Room room(RoomName::LIVING_ROOM);
+  BOOST_CHECK(room.getNameAsString() == "LIVING_ROOM");
+}
+{
+  Room room(RoomName::DINING_ROOM);
+  BOOST_CHECK(room.getNameAsString() == "DINING_ROOM");
+}
+{
+  Room room(RoomName::GARAGE);
+  BOOST_CHECK(room.getNameAsString() == "GARAGE");
+}
+{
+  Room room(RoomName::GAME_ROOM);
+  BOOST_CHECK(room.getNameAsString() == "GAME_ROOM");
+}
+{
+  Room room(RoomName::BEDROOM);
+  BOOST_CHECK(room.getNameAsString() == "BEDROOM");
+}
+}
+BOOST_AUTO_TEST_CASE(TestSet_Add_GetDoorList)
+{
+{
+  Room room(RoomName::KITCHEN);
+  Door door(1, 1, new Room(RoomName::KITCHEN));
+  room.addDoor(door);
+  BOOST_CHECK(room.getDoorList().at(0)->getRoom()->getName() == RoomName::KITCHEN);
+}
+}
+BOOST_AUTO_TEST_CASE(TestSet_GetSecretPassage)
+{
+{
+  Room room(RoomName::KITCHEN);
+  Room room2(RoomName::LIVING_ROOM);
+  room.setSecretPassage(room2);
+  BOOST_CHECK(room.getSecretPassage()->getName() == RoomName::LIVING_ROOM);
+}
+}
+BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE(TestRoomCard);
+
+BOOST_AUTO_TEST_CASE(TestGetRoomName)
+{
+{
+  RoomCard roomCard(RoomName::KITCHEN);
+  BOOST_CHECK(roomCard.getRoomName() == RoomName::KITCHEN);
+}
+}
+BOOST_AUTO_TEST_SUITE_END();
+
+BOOST_AUTO_TEST_SUITE(TestState);
+
+BOOST_AUTO_TEST_CASE(TestGetPlayerList)
+{
+{
+  State state("../../../test/shared/test_state.json");
+  PlayerInfo playerInfo("John", Suspect::ROSE);
+  state.addPlayer(playerInfo);
+  BOOST_CHECK(state.getPlayerList()->getList().at(0).getName() == "John");
+}
+}
+BOOST_AUTO_TEST_CASE(TestGetMap)
+{
+{
+  State state("../../../test/shared/test_state.json");
+  BOOST_CHECK(state.getMap()->getRoomList().at(2).getName() == RoomName::LIVING_ROOM);
+}
+}
+BOOST_AUTO_TEST_CASE(TestGetEnvelope)
+{
+{
+  State state("../../../test/shared/test_state.json");
+  Card card(CardType::WEAPON_CARD);
+  state.getEnvelope().push_back(card);
+  BOOST_CHECK(state.getEnvelope().at(0).getType() == CardType::WEAPON_CARD);
+}
+}
+BOOST_AUTO_TEST_CASE(TestSetCircularPlayerList)
+{
+{
+  State state("../../../test/shared/test_state.json");
+  std::vector<std::tuple<std::string, int, int>> players;
+  players.push_back(std::make_tuple("John", 0, Suspect::ROSE));
+  state.setCircularPlayerList(players);
+  BOOST_CHECK(state.getPlayerList()->getList().at(0).getName() == "John");
+}
+}
+BOOST_AUTO_TEST_CASE(TestAddPlayer)
+{
+{
+  State state("../../../test/shared/test_state.json");
+  PlayerInfo playerInfo("John", Suspect::ROSE);
+  state.addPlayer(playerInfo);
+  BOOST_CHECK(state.getPlayerList()->getList().at(0).getName() == "John");
+}
+}
+BOOST_AUTO_TEST_SUITE_END();
+
+// SuspectCard.cpp test
+BOOST_AUTO_TEST_SUITE(TestSuspectCard)
+
+BOOST_AUTO_TEST_CASE(TestGetSuspectName)
+{
+{
+  SuspectCard suspectCard(Suspect::ROSE);
+  BOOST_CHECK(suspectCard.getSuspectName() == Suspect::ROSE);
+}
+}
+BOOST_AUTO_TEST_SUITE_END();
+
+// WeaponCard.cpp test
+BOOST_AUTO_TEST_SUITE(TestWeaponCard)
+
+BOOST_AUTO_TEST_CASE(TestGetWeaponName)
+{
+{
+  WeaponCard weaponCard(Weapon::CANDLESTICK);
+  BOOST_CHECK(weaponCard.getWeaponName() == Weapon::CANDLESTICK);
+}
+}
+BOOST_AUTO_TEST_SUITE_END();

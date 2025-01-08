@@ -125,7 +125,7 @@ namespace client{
 
 	void Client::showMeCardClient (state::Card card) {
 		/// Analyse du type de la carte, puis affichage de la carte selon son type
-		if (card.getType() == state::SUSPECT_CARD) {
+		/*if (card.getType() == state::SUSPECT_CARD) {
 			auto& shownCard = static_cast<state::SuspectCard&>(card);
 			std::cout <<  " You show " << shownCard.getSuspectName() << std::endl;
 		}
@@ -134,9 +134,8 @@ namespace client{
 			std::cout <<  " You show " << shownCard.getWeaponName() << std::endl;
 		}
 		else {
-			auto& shownCard = static_cast<state::RoomCard&>(card);
-			std::cout <<  " You show " << shownCard.getRoomName() << std::endl;
-		}
+			std::cout <<  " You show " << card.getRoomName() << std::endl;
+		}*/
 	}
 
 	void Client::throwDiceClient () {
