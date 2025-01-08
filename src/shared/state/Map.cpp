@@ -9,7 +9,7 @@
 
 namespace state {
     Map::Map(const std::string& mapJsonPath){
-        system("ls ../../../test/shared;");
+        //system("ls ../../../test/shared;");
         std::ifstream file(mapJsonPath);
         Json::Value jsonData;
         file >> jsonData;
