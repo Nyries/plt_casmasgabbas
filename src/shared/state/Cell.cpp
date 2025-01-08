@@ -10,11 +10,11 @@ namespace state {
     Cell::~Cell()
     = default;
 
-    int Cell::getX() {
+    int Cell::getX() const{
         return X;
     }
 
-    int Cell::getY() {
+    int Cell::getY() const {
         return Y;
     }
 
@@ -25,17 +25,7 @@ namespace state {
         this->type = type;
     }
 
-    void Cell::setX(int x)
-    {
-        this->X = x;
-    }
-
-    void Cell::setY(int y)
-    {
-        this->Y = y;
-    }
-
-    bool Cell::getOccupied() {
+    bool Cell::getOccupied() const {
         return occupied;
     }
 

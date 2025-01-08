@@ -38,5 +38,13 @@ namespace client {
         ai->seeACardFromPlayer(shownCard, cardOwner.getPlayerInfo());
     }
 
+    void AIPlayer::makePlayerThrowDice() {
+
+    }
+
+    void AIPlayer::displayDiceResult(int result, const Player &player) {
+
+    }
+
 
 }

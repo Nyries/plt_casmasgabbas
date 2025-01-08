@@ -14,14 +14,19 @@ namespace engine {
 
 
     void HypothesisCommand::execute() {
-        std::vector<state::PlayerInfo>& playerInfoVec = engine.getState().getPlayerInfoVec();
-        state::Suspect teleportedSuspect = hypothesis.suspect;
-        const auto teleportedPlayer = std::find_if(playerInfoVec.begin(), playerInfoVec.end(),
-            [teleportedSuspect](state::PlayerInfo& i){
-                return teleportedSuspect == i.getIdentity();
-            });
-        if (teleportedPlayer != playerInfoVec.end()) {
-            teleportedPlayer->setLocation(player.getLocation());
+        if (&player == &engine.getCurrentPlayer() and player.getLocation().getType() == state::ROOM){
+            auto& hypothesisRoom = static_cast<state::Room&>(player.getLocation());
+            if (hypothesisRoom.getRoomName() == hypothesis.room) {
+                std::vector<state::PlayerInfo>& playerInfoVec = engine.getState().getPlayerInfoVec();
+                state::Suspect teleportedSuspect = hypothesis.suspect;
+                const auto teleportedPlayer = std::find_if(playerInfoVec.begin(), playerInfoVec.end(),
+                    [teleportedSuspect](state::PlayerInfo& i){
+                        return teleportedSuspect == i.getIdentity();
+                    });
+                if (teleportedPlayer != playerInfoVec.end()) {
+                    teleportedPlayer->setLocation(player.getLocation());
+                }
+            }
         }
     }
 }

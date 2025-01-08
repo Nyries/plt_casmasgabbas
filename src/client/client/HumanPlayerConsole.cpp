@@ -391,4 +391,15 @@ namespace client {
     	return *doorList.at(choice - 1);
 	}
 
+	void HumanPlayerConsole::makePlayerThrowDice() {
+    	std::cout << "Press 1 to throw the dice ! " << std::endl;
+    	ConsoleIO::getValidKey(1);
+    	std::cout << "Dice are thrown" << std::endl;
+	}
+
+	void HumanPlayerConsole::displayDiceResult(int result, const Player &player) {
+    	std::cout << player.getName() << " threw the dice and got " << result << "!" << std::endl;
+	}
+
+
 }

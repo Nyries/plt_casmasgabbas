@@ -85,8 +85,8 @@ int main(int argc,char* argv[])
                     break;
                     case engine::MOVE_FROM_DICE: {
                         std::vector<int> diceResult = engine::Engine::dice();
-                        myClient.throwDiceClient();
                         int remainingMoves = diceResult.at(0) + diceResult.at(1);
+                        io.displayDiceResult(myPlayerList, remainingMoves, currentPlayer);
                         while (remainingMoves > 0) {
                             const auto possibleMoves = myEngine.getPossibleMoves(currentPlayerInfo);
                             if (possibleMoves.empty()) {
