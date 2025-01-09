@@ -118,4 +118,6 @@ On renseigne le nom de chaque carte au sein d'un "enum" pour chaque type de cart
 
 (image dernière version du state.dia)
 
+Vous trouverez notre diagramme de classes pour les états ci-dessus.
 
+(+Description)
