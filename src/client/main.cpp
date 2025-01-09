@@ -60,6 +60,7 @@ int main(int argc,char* argv[])
         myPlayerList.setIterator(myPlayerList.getVector().at(firstPlayerIndex));
         myEngine.setCurrentPlayer(playerInfoVec.at(firstPlayerIndex));
         myEngine.distributionCharacters();
+        myEngine.dealCards();
         //game loop
         while (!myState.getAccusationSuccess()) {
             client::Player& currentPlayer = myPlayerList.getCurrent();
