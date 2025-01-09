@@ -70,6 +70,7 @@ int main(int argc,char* argv[])
                 switch (currentAction) {
                     case engine::HYPOTHESIS: {
                         const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
+                        io.displayHypothesis(currentPlayer, hypothesis);
                         myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
                         myEngine.executeCommands();
                         myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
@@ -77,6 +78,7 @@ int main(int argc,char* argv[])
                     break;
                     case engine::ACCUSATION: {
                         const state::TripleClue accusation = currentPlayer.chooseAccusation();
+                        io.displayAccusation(currentPlayer, accusation);
                         myEngine.addCommand(std::make_unique<engine::AccusationCommand>(myEngine, currentPlayerInfo, accusation));
                     }
                     break;
