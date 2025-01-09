@@ -54,16 +54,16 @@ Pour remporter la partie, vous devez déterminer :
 - Déplacez le pion personnage et le pion arme que vous citez dans la pièce où vous vous trouvez.
 - Si le pion d'un joueur a été déplacé par un autre joueur depuis votre dernier tour, il peut choisir de ne pas bouger et d’émettre une hypothèse directement.
 - Le joueur placé à votre gauche est le premier à répondre à votre hypothèse. S’il possède au moins une des cartes des éléments que vous avez cités, il **doit** vous en montrer une en cachette des autres joueurs. S'il en possède plusieurs, il choisit la carte qu'il révèle.
-- S’il ne possède aucune des cartes que vous citez dans votre hypothèse, il doit juste vous dire « Je ne peux pas répondre. » et c’est au joueur situé à sa gauche de répondre. Ainsi de suite jusqu’à ce qu’un joueur vous montre **une carte.**
+- Si le joueur ne possède aucune des cartes que vous citez dans votre hypothèse, il dit simplement « Je ne peux pas répondre. » et c’est au joueur situé à sa gauche de répondre. On continue de cette façon jusqu’à ce qu’une carte soit dévoilée ou que tous les joueurs aient été interrogés.
 - Vous ne pouvez pas effectuer une hypothèse dans la même pièce 2 fois de suite. Vous devez d'abord changer de pièce et revenir ensuite.
 
-**4. Enfin, terminez votre tour en cochant les cases sur votre feuilles de détective :**
+**Enfin, terminez votre tour en cochant les cases sur votre feuille de détective :**
 - Cochez les cases des éléments qui vous ont été montrés pendant ce tour. Si une carte se trouve dans la main d'un adversaire, elle ne se trouve pas dans l'étui mystère et n'est donc pas lié au meurtre !
 - **Et si aucun joueur ne vous montre de carte ?** Si une carte ne se trouve ni dans votre main, ni dans celles de vos adversaires, alors elle se trouve dans l'étui mystère ! 
-- Laissez les pions personnage et arme là où vous les avez déplacé. Si le pion personnage que vous avez déplacé appartient à un autre joueur, celui-ci repartira de sa nouvelle position lors de son prochain tour.
+- Laissez les pions personnage et arme là où vous les avez déplacés. Si le pion personnage que vous avez déplacé appartient à un autre joueur, celui-ci repartira de sa nouvelle position lors de son prochain tour.
 - Votre tour est maintenant terminé. C’est au joueur situé à votre gauche de jouer.
 
-**5. Portez une accusation (optionnel) :**
+**Portez une accusation (optionnel) :**
 
 A la fin du tour de chaque joueur, celui-ci **peut** tenter de faire une accusation s'il pense connaître les trois cartes présentes dans l'étui secret.
 
@@ -94,15 +94,28 @@ Des passages secrets sont présents dans la maison. Vous pouvez les utiliser pou
 ## 2. Description et conception des états
 
 ### 2.1 Description des états
-Les états du jeu comprennent les informations sur les joueurs, toutes les cases du plateau ainsi que les salles, et toutes les cartes utilisées dans le jeu.
+Les états du jeu comprennent toutes les informations nécessaires au bon fonctionnement du moteur du jeu.
 
-#### Les infos des joueurs
-Pour chaque joueur on dispose de leur nom, le suspect associé, leur emplacement, la liste de ses cartes, un booléen le fait que le joueur a lancé une accusation fausse ou pas (cela détermine si le joueur peut continuer à jouer ses tours ou pas).
-Ces infos de joueurs sont stockées dans une liste.
+Cela inclut toutes les informations sur les joueurs, les cartes indices, et une décomposition de la carte du manoir en salles et en cellules (couloir & portes).
 
-#### Les cases du jeu
-Les cases du jeu sont stockées dans un tableau 2D. Chacune d'entre elles a un type et des coordonnées, les cases de type "porte" ont une salle associée.
+#### Les joueurs
+Un joueur (PlayerInfo) est caractérisé par son identité (quel suspect il incarne), sa position sur le plateau et sa main (vecteur de cartes indices).
+On garde également en mémoire la dernière pièce dans laquelle il a effectué une hypothèse puisqu'il ne peut pas en effectuer plusieurs à la suite au même endroit.
+Enfin, on lui associe une valeur booléenne indiquant s'il a effectué une accusation, puisqu'un joueur ayant fait une mauvaise accusation ne prend plus part à la partie.
 
-#### Les salles
-Les salles ont un nom, la liste de leurs portes, et potentiellement la salle vers laquelle il y a un passage secret.
+#### Le plateau de jeu
+Les cases du plateau sont stockées dans un tableau.
+Une case est caractérisée par des coordonnées et par un type (CORRIDOR, DOOR, ROOM, INACCESSIBLE).
+- Une case DOOR est un cas particulier de case CORRIDOR, et possède une référence à la SALLE à laquelle elle mène.
+- Une ROOM est caractérisée par son nom, la liste de ses portes, et par une éventuelle autre SALLE qui serait accessible par passage secret.
+- On qualifie d'INACCESSIBLE les cases auxquelles les joueurs ne peuvent pas accéder (extérieur du manoir & pièce centrale).
+
+#### Les cartes indice
+Chaque carte indice est caractérisée par un type (SUSPECT_CARD, WEAPON_CARD, ROOM_CARD) et par un identifiant.
+On renseigne le nom de chaque carte au sein d'un "enum" pour chaque type de carte.
+
+### 2.2 Conception logiciel
+
+(image dernière version du state.dia)
+
 
