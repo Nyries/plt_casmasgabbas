@@ -15,8 +15,7 @@ namespace engine {
     MoveCommand::MoveCommand(Engine &engine, state::PlayerInfo &player, state::Location& newLocation): Command(engine, player, ACCUSATION), newLocation(newLocation) {
 
     }
-
-
+    
     void MoveCommand::execute() {
         state::Location& playerLoc = player.getLocation();
         switch (playerLoc.getType()) {
