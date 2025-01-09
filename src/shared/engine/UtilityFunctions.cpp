@@ -9,7 +9,10 @@
 namespace engine {
     int UtilityFunctions::randomInt(int range) {
         static std::random_device generator;
-        static std::uniform_int_distribution<int> distribution(0,range -1);
+        if (range < 1) {
+            throw std::invalid_argument("invalid randomInt range: " + range);
+        }
+        std::uniform_int_distribution<int> distribution(0,range - 1);
         const int randomResult = distribution(generator);
         return randomResult;
     }

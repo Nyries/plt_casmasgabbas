@@ -1,86 +1,63 @@
 //
-// Created by cassandre on 18/12/24.
+// Created by louismmassin on 1/4/25.
 //
-
-
-#include "state.h"
-#include "engine.h"
 #include "RandomAI.h"
-#include "ai.h"
 
-#include <algorithm>
-#include <cstdlib>
-#include <utility>
-#include <iostream>
-#include <fstream>
-#include <json/json.h>
-
-
-using namespace std;
+#include <engine/Engine.h>
+#include <engine/UtilityFunctions.h>
 
 namespace ai {
+    RandomAI::RandomAI(engine::Engine &engine, state::PlayerInfo &playerInfo):AI(engine, playerInfo) {
+    }
 
-    //ai::RandomAI(){}
+    engine::CommandId RandomAI::chooseAction() {
+        auto possibleActions = engine.getPossibleActions(playerInfo);
+        const int randomIndex = engine::UtilityFunctions::randomInt(possibleActions.size());
+        return possibleActions.at(randomIndex);
+    }
 
+    engine::Move RandomAI::chooseMoveDirection() {
+        auto possibleMoves = engine.getPossibleMoves(playerInfo);
+        const int randomIndex = engine::UtilityFunctions::randomInt(possibleMoves.size());
+        return possibleMoves.at(randomIndex);
+    }
 
-   vector<int> RandomAI::chooseHypothesis () {
-        vector<int> hypothesisChoice;
-
-        const int suspectChoice = engine::UtilityFunctions::randomInt(5)+1;
-        hypothesisChoice.push_back(suspectChoice);
-        const int weaponChoice = engine::UtilityFunctions::randomInt(5)+1;
-        hypothesisChoice.push_back(weaponChoice);
-        auto& currentRoom = static_cast<state::Room&>(playerInfo->getLocation());
-        hypothesisChoice.push_back(currentRoom.getRoomName());
-
-        cout << playerInfo->getIdentity() << " suggests the Crime was committed by "
-        << hypothesisChoice.at(0) << " in the " << hypothesisChoice.at(2)
-        << " with the " << hypothesisChoice.at(1) << endl;
-
-        return hypothesisChoice;
+    state::TripleClue RandomAI::chooseHypothesis() {
+        state::TripleClue hypothesis{};
+        int randomSuspect = engine::UtilityFunctions::randomInt(6) + 1;
+        hypothesis.suspect = static_cast<state::Suspect>(randomSuspect);
+        int randomWeapon = engine::UtilityFunctions::randomInt(6) + 1;
+        hypothesis.weapon = static_cast<state::Weapon>(randomWeapon);
+        int randomRoom = engine::UtilityFunctions::randomInt(9) + 1;
+        hypothesis.room = static_cast<state::RoomName>(randomRoom);
+        return hypothesis;
     }
 
 
-    vector<int> RandomAI::chooseAccusation () {
-       vector<int> accusationChoice;
+    int RandomAI::chooseACardToShowClient(const std::vector<state::Card*>& cards) {
+        const int randomIndex = engine::UtilityFunctions::randomInt(cards.size());
+        return randomIndex;
+    }
 
-       const int suspectChoice = engine::UtilityFunctions::randomInt(5)+1;
-       accusationChoice.push_back(suspectChoice);
-       const int weaponChoice = engine::UtilityFunctions::randomInt(5)+1;
-       accusationChoice.push_back(weaponChoice);
-       const int roomChoice = engine::UtilityFunctions::randomInt(8)+1;
-       accusationChoice.push_back(roomChoice);
-
-       cout << playerInfo->getIdentity() << " accuses "
-       << accusationChoice.at(0) << " of committing the crime in the " << accusationChoice.at(2)
-       << " with the " << accusationChoice.at(1) << std::endl;
-
-       return accusationChoice;
-   }
-
-
-    engine::CommandId RandomAI::chooseAction () {
-       vector<engine::CommandId> possibleActions = engine->getPossibleActions (*playerInfo);
-       const int size = static_cast<int>(possibleActions.size());
-       const int AIActionChoice = engine::UtilityFunctions::randomInt(size)+1;
-
-       return possibleActions.at(AIActionChoice);
-   }
-
-
-
-    engine::Move RandomAI::chooseMoveDirection () {
-
-        vector<engine::Move> possibleMoves = engine->getPossibleMoves(*playerInfo);
-        const int size = static_cast<int>(possibleMoves.size());
-        const int AIMoveDirectionChoice = engine::UtilityFunctions::randomInt(size)+1;
-
-        return possibleMoves.at(AIMoveDirectionChoice);
+    void RandomAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerInfo &cardOwner) {
 
     }
 
 
+    state::TripleClue RandomAI::chooseAccusation() {
+        state::TripleClue accusation{};
+        int randomSuspect = engine::UtilityFunctions::randomInt(6) + 1;
+        accusation.suspect = static_cast<state::Suspect>(randomSuspect);
+        int randomWeapon = engine::UtilityFunctions::randomInt(6) + 1;
+        accusation.weapon = static_cast<state::Weapon>(randomWeapon);
+        int randomRoom = engine::UtilityFunctions::randomInt(9) + 1;
+        accusation.room = static_cast<state::RoomName>(randomRoom);
+        return accusation;
+    }
 
+    state::Door& RandomAI::chooseDoor(const std::vector<state::Door *> &doorList) {
+        const int randomIndex = engine::UtilityFunctions::randomInt(doorList.size());
+        return *doorList.at(randomIndex);
+    }
 
 }
-
