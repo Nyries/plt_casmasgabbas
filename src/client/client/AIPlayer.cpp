@@ -18,6 +18,10 @@ namespace client {
         return ai->chooseMoveDirection();
     }
 
+    state::Door& AIPlayer::chooseDoor(const std::vector<state::Door *> &doorList) {
+        return ai->chooseDoor(doorList);
+    }
+
     state::TripleClue AIPlayer::chooseHypothesis() {
         return ai->chooseHypothesis();
     }
@@ -30,8 +34,17 @@ namespace client {
         return ai->chooseAccusation();
     }
 
-    void AIPlayer::showACardToPlayer(const state::Card &shownCard, const Player &cardOwner) {
+    void AIPlayer::seeACardFromPlayer(const state::Card &shownCard, const Player &cardOwner) {
+        ai->seeACardFromPlayer(shownCard, cardOwner.getPlayerInfo());
+    }
+
+    void AIPlayer::makePlayerThrowDice() {
 
     }
+
+    void AIPlayer::displayDiceResult(int result, const Player &player) {
+
+    }
+
 
 }

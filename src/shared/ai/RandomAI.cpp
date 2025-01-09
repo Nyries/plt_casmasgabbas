@@ -39,6 +39,11 @@ namespace ai {
         return randomIndex;
     }
 
+    void RandomAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerInfo &cardOwner) {
+
+    }
+
+
     state::TripleClue RandomAI::chooseAccusation() {
         state::TripleClue accusation{};
         int randomSuspect = engine::UtilityFunctions::randomInt(6) + 1;
@@ -48,6 +53,11 @@ namespace ai {
         int randomRoom = engine::UtilityFunctions::randomInt(9) + 1;
         accusation.room = static_cast<state::RoomName>(randomRoom);
         return accusation;
+    }
+
+    state::Door& RandomAI::chooseDoor(const std::vector<state::Door *> &doorList) {
+        const int randomIndex = engine::UtilityFunctions::randomInt(doorList.size());
+        return *doorList.at(randomIndex);
     }
 
 }

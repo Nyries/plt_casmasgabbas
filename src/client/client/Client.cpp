@@ -16,9 +16,8 @@
 using namespace std;
 
 namespace client{
-	Client::Client (state::State& state, engine::Engine& engine, std::vector<std::unique_ptr<client::Player>>& playerVec): state(state), engine(engine), playerList(playerVec)
+	Client::Client (state::State& state, engine::Engine& engine, std::unique_ptr<IO>& io, std::vector<std::unique_ptr<client::Player>>& playerVec): state(state), engine(engine), io(std::move(io)), playerList(playerVec)
 {
-
 	}
 
 	int Client::introductionToTheGame(){
@@ -112,23 +111,6 @@ namespace client{
 
 		std::cout << " press " << key << " " << std::endl;
 	}
-
-	int Client::getValidKey(int max){
-		try{
-			std::string playerKey;
-			std::cin >> playerKey;
-    		int keyVal = stoi(playerKey);
-	        if(keyVal > 0 && keyVal <= max){
-        		return keyVal;
-	        }
-		    std::cout << "Invalid key" << std::endl;
-		    return getValidKey(max);
-	    }
-		catch(const exception& e){
-			std::cout << "Invalid key" << std::endl;
-    		return getValidKey(max);
-	    }
-	}
   
 	void Client::displayMap()
 	{
@@ -143,7 +125,7 @@ namespace client{
 
 	void Client::showMeCardClient (state::Card card) {
 		/// Analyse du type de la carte, puis affichage de la carte selon son type
-		if (card.getType() == state::SUSPECT_CARD) {
+		/*if (card.getType() == state::SUSPECT_CARD) {
 			auto& shownCard = static_cast<state::SuspectCard&>(card);
 			std::cout <<  " You show " << shownCard.getSuspectName() << std::endl;
 		}
@@ -152,15 +134,13 @@ namespace client{
 			std::cout <<  " You show " << shownCard.getWeaponName() << std::endl;
 		}
 		else {
-			auto& shownCard = static_cast<state::RoomCard&>(card);
-			std::cout <<  " You show " << shownCard.getRoomName() << std::endl;
-		}
+			std::cout <<  " You show " << card.getRoomName() << std::endl;
+		}*/
 	}
 
 	void Client::throwDiceClient () {
 		std::cout << "Press 1 to throw the dice ! " << std::endl;
-		int keyValue = getValidKey(1);
-		//std::vector<int> diceValues = getEngine().dice();
+		ConsoleIO::getValidKey(1);
 		std::cout << "Dice are thrown" << std::endl;
 
 		// finir avec lancer les dés et afficher la valeur
@@ -184,14 +164,15 @@ namespace client{
 			std::vector<state::Card*> possessedCards = engine.getPossessedCards(hypothesis, player->getPlayerInfo());
 			if (!possessedCards.empty()) {
 				int chosenIndex = player->chooseACardToShowClient(possessedCards);
-				hypothesisPlayer.showACardToPlayer(*possessedCards.at(chosenIndex), *player);
-				++it;
-			}
-			else {
+				hypothesisPlayer.seeACardFromPlayer(*possessedCards.at(chosenIndex), *player);
 				break;
 			}
+			++it;
 		}
 	}
 
+	IO &Client::getIO() {
+		return *io;
+	}
 
 }

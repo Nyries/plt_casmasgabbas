@@ -48,4 +48,9 @@ namespace state {
         secretPassage = &targetRoom;
     }
 
+    void Room::addDoor(Door &door) {
+        doorList.push_back(&door);
+    }
+
+
 }

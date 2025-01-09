@@ -1,0 +1,4 @@
+{
+    "playerCount": 1,
+    "mapJsonPath":"../../../test/shared/test_map.json"
+}

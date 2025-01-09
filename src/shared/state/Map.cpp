@@ -5,9 +5,11 @@
 #include <json/json.h>
 #include <fstream>
 #include <iostream>
+#include <memory>
 
 namespace state {
     Map::Map(const std::string& mapJsonPath){
+        //system("ls ../../../test/shared;");
         std::ifstream file(mapJsonPath);
         Json::Value jsonData;
         file >> jsonData;
@@ -26,35 +28,37 @@ namespace state {
         roomList.emplace_back(BEDROOM);
 
         roomList.at(2).setSecretPassage(roomList.at(8));
-        roomList.at(8).setSecretPassage(roomList.at(2));
         roomList.at(4).setSecretPassage(roomList.at(6));
-        roomList.at(6).setSecretPassage(roomList.at(4));
 
         //Creating the map grid from the json file
         height = jsonData["mapHeight"].asInt();
         width = jsonData["mapWidth"].asInt();
-        mapGrid = std::vector<std::vector<Cell>>(width, std::vector<Cell>(height, Cell(0, 0, LocationType::INACCESSIBLE)));
+        mapGrid.resize(width);
+        for (auto& vec: mapGrid) {
+            vec.resize(height);
+        }
         for (Json::Value cellData : mapData) {
             int x = cellData["x"].asInt();
             int y = cellData["y"].asInt();
 
             std::string locationType = cellData["LocationType"].asString();
             if (locationType == "INACCESSIBLE")
-                mapGrid[x][y] = Cell(x, y, LocationType::INACCESSIBLE);
+                mapGrid[x][y] = std::make_unique<Cell>(x, y, LocationType::INACCESSIBLE);
             else if (locationType == "CORRIDOR")
-                mapGrid[x][y] = Cell(x, y, LocationType::CORRIDOR);
+                mapGrid[x][y] = std::make_unique<Cell>(x, y, LocationType::CORRIDOR);
             else if (locationType == "DOOR"){
-                for (Room room: roomList) {
+                for (Room& room: roomList) {
                     if (room.getNameAsString() == cellData["RoomLink"].asString()) {
-                        mapGrid[x][y] = Door(x, y, &room);
+                        mapGrid[x][y] = std::make_unique<Door>(x, y, &room);
+
                     }
                 }
             }
             else if (locationType == "ROOM")
-                mapGrid[x][y] = Cell(x, y, LocationType::ROOM);
+                mapGrid[x][y] = std::make_unique<Cell>(x, y, LocationType::ROOM);
         }
     }
-    std::vector<std::vector<std::string>> Map::getDisplayMap()
+    std::vector<std::vector<std::string>> Map::getDisplayMap() const
     {
         std::vector<std::vector<std::string>> displayMap(2*height+1, std::vector<std::string>(2*width+1, ""));  
         
@@ -66,28 +70,25 @@ namespace state {
                 else if (j%2==0){
                     displayMap[i][j] = '|';
                 }
-                else if (mapGrid[j/2][i/2].getType() == LocationType::CORRIDOR){
+                else if (mapGrid[j/2][i/2]->getType() == LocationType::CORRIDOR){
                     displayMap[i][j] = ' ';
                 }
-                else if (mapGrid[j/2][i/2].getType() == LocationType::ROOM){
+                else if (mapGrid[j/2][i/2]->getType() == LocationType::ROOM){
                     displayMap[i][j] = 'R';
                 }                
-                else if (mapGrid[j/2][i/2].getType() == LocationType::INACCESSIBLE){
+                else if (mapGrid[j/2][i/2]->getType() == LocationType::INACCESSIBLE){
                     displayMap[i][j] = 'X';
                 }
-                else if (mapGrid[j/2][i/2].getType() == LocationType::DOOR){
+                else if (mapGrid[j/2][i/2]->getType() == LocationType::DOOR){
                     displayMap[i][j] = 'D';
                 }
             }
         }
         return displayMap;
     }
-    std::vector<std::vector<Cell>> Map::getMapGrid()
-    {
-        return this->mapGrid;
-    }
 
-    std::vector<Room> Map::getRoomList()
+
+    std::vector<Room>& Map::getRoomList()
     {
         return roomList;
     }
@@ -102,74 +103,16 @@ namespace state {
     }
     std::vector<Cell*> Map::getNeighborsAsCell(int coordX, int coordY)
     {
-        /**The order of the list is as follow: up, down, left, right*/
-        std::vector<Cell*> neighbors(4, new Cell(0, 0, LocationType::INACCESSIBLE));
-        // Case where coordX or coordY are not in the bounds of the map
-        if (coordX < 0 or coordX >= width or coordY < 0 or coordY >= height){
-            return neighbors;
+        if (coordX < 1 or coordX > mapGrid.size() - 2 or coordY < 1 or coordY > mapGrid.front().size() - 2) {
+            throw std::invalid_argument("invalid coordinates");
         }
-        // Cases in the corners of the map
-        else if (coordX == 0 and coordY == 0){
-            // Top left corner
-            neighbors.at(0) = new Cell(coordX, coordY-1, LocationType::INACCESSIBLE);
-            neighbors.at(1) = &mapGrid[coordX][coordY+1];
-            neighbors.at(2) = new Cell(coordX-1, coordY, LocationType::INACCESSIBLE);
-            neighbors.at(3) = &mapGrid[coordX+1][coordY];
-        }
-        else if (coordX == width-1 and coordY == 0){
-            // Top right corner
-            neighbors.at(0) = new Cell(coordX, coordY-1, LocationType::INACCESSIBLE);
-            neighbors.at(1) = &mapGrid[coordX][coordY+1];
-            neighbors.at(2) = &mapGrid[coordX-1][coordY];
-            neighbors.at(3) = new Cell(coordX+1, coordY, LocationType::INACCESSIBLE);
-        }
-        else if (coordX == width-1 and coordY == height-1){
-            // Bottom right corner
-            neighbors.at(0) = &mapGrid[coordX][coordY-1];
-            neighbors.at(1) = new Cell(coordX, coordY+1, LocationType::INACCESSIBLE);
-            neighbors.at(2) = &mapGrid[coordX-1][coordY];
-            neighbors.at(3) = new Cell(coordX+1, coordY, LocationType::INACCESSIBLE);
-        }
-        else if (coordX == 0 and coordY == height-1){
-            // Bottom left corner
-            neighbors.at(0) = &mapGrid[coordX][coordY-1];
-            neighbors.at(1) = new Cell(coordX, coordY+1, LocationType::INACCESSIBLE);
-            neighbors.at(2) = new Cell(coordX-1, coordY, LocationType::INACCESSIBLE);
-            neighbors.at(3) = &mapGrid[coordX+1][coordY];
-        }
-        // Cases where coordX or coordY are on the edge of the map
-        else if (coordX == 0){
-            neighbors.at(0) = &mapGrid[coordX][coordY-1];
-            neighbors.at(1) = &mapGrid[coordX][coordY+1];
-            neighbors.at(2) = new Cell(coordX-1, coordY, LocationType::INACCESSIBLE);
-            neighbors.at(3) = &mapGrid[coordX+1][coordY];
-        }
-        else if (coordY == 0){
-            neighbors.at(0) = new Cell(coordX, coordY-1, LocationType::INACCESSIBLE);
-            neighbors.at(1) = &mapGrid[coordX][coordY+1];
-            neighbors.at(2) = &mapGrid[coordX-1][coordY];
-            neighbors.at(3) = &mapGrid[coordX+1][coordY];
-        }
-        else if (coordX == width-1){
-            neighbors.at(0) = &mapGrid[coordX][coordY-1];
-            neighbors.at(1) = &mapGrid[coordX][coordY+1];
-            neighbors.at(2) = &mapGrid[coordX-1][coordY];
-            neighbors.at(3) = new Cell(coordX+1, coordY, LocationType::INACCESSIBLE);
-        }
-        else if (coordY == height-1){
-            neighbors.at(0) = &mapGrid[coordX][coordY-1];
-            neighbors.at(1) = new Cell(coordX, coordY+1, LocationType::INACCESSIBLE);
-            neighbors.at(2) = &mapGrid[coordX+1][coordY];
-            neighbors.at(3) = &mapGrid[coordX-1][coordY];
-        }
-        // General Case in the middle of the map
-        else {
-            neighbors.at(0) = &mapGrid[coordX][coordY-1];
-            neighbors.at(1) = &mapGrid[coordX][coordY+1];
-            neighbors.at(2) = &mapGrid[coordX-1][coordY];
-            neighbors.at(3) = &mapGrid[coordX+1][coordY];
-        }
-        return neighbors;
+        //order: up, down, left, right
+        std::vector<Cell*> neighborList(4);
+        neighborList.at(0) = &*mapGrid[coordX][coordY - 1];
+        neighborList.at(1) = &*mapGrid[coordX][coordY + 1];
+        neighborList.at(2) = &*mapGrid[coordX - 1][coordY];
+        neighborList.at(3) = &*mapGrid[coordX + 1][coordY];
+        return neighborList;
     }
 
 
@@ -185,7 +128,7 @@ namespace state {
     }
 
     Cell &Map::getCell(int coordX, int coordY) {
-        return mapGrid.at(coordX).at(coordY);
+        return *mapGrid.at(coordX).at(coordY);
     }
 
 }
