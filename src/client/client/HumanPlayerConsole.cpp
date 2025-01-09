@@ -202,7 +202,7 @@ namespace client {
 	    		throw std::runtime_error("Switch failed");
     	}
 
-		auto& currentRoom = static_cast<state::Room&>(playerInfo.getLocation());
+		const auto& currentRoom = static_cast<const state::Room&>(playerInfo.getLocation());
 	    hypothesisChoice.room = currentRoom.getRoomName();
 
 	    std::cout << playerInfo.getIdentity() << " suggests the Crime was committed by "

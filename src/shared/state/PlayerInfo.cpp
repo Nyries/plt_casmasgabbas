@@ -25,7 +25,12 @@ namespace state {
         return *location;
     }
 
-    Suspect PlayerInfo::getIdentity () {
+    const Location &PlayerInfo::getLocation() const {
+        return *location;
+    }
+
+
+    Suspect PlayerInfo::getIdentity () const {
         return identity;
     }
 
@@ -41,7 +46,7 @@ namespace state {
         this->canWin = accusationFailed;
     }
 
-    RoomName PlayerInfo::getPreviousHypothesisRoom () {
+    RoomName PlayerInfo::getPreviousHypothesisRoom () const{
         return previousHypothesisRoom;
     }
     void PlayerInfo::setPreviousHypothesisRoom (RoomName room) {
