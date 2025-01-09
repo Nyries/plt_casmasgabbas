@@ -102,7 +102,7 @@ namespace engine {
         return dice;
     }
 
-    std::vector<const state::Card*> Engine::getPossessedCards (state::TripleClue inputClues, state::PlayerInfo& player) {
+    std::vector<const state::Card*> Engine::getPossessedCards (state::TripleClue inputClues, state::PlayerInfo& player) const{
         std::vector<const state::Card*> possessedCards;
         const auto& suspectCards = player.getSuspectCards();
         for (const state::SuspectCard& card : suspectCards) {

@@ -182,7 +182,7 @@ namespace client {
 	    return hypothesisChoice;
     }
 
-	int HumanPlayerConsole::chooseACardToShowClient(const std::vector<state::Card*>& cards)  {   //cette fonction va de paire avec celle dans engine qui prend en
+	int HumanPlayerConsole::chooseACardToShowClient(const std::vector<const state::Card*>& cards)  {   //cette fonction va de paire avec celle dans engine qui prend en
     	// argument un index, c'est la valeur de la carte qui va être montrée. D'abord cette fonction est appelée, puis on prend
     	// ce qu'elle renvoie et on le met en argument de la fonction qui va montrer physiquement la carte.
     	std::cout << "Which card do you want to show ?" << std::endl;

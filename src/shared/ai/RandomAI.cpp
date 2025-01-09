@@ -34,7 +34,7 @@ namespace ai {
     }
 
 
-    int RandomAI::chooseACardToShowClient(const std::vector<state::Card*>& cards) {
+    int RandomAI::chooseACardToShowClient(const std::vector<const state::Card*>& cards) {
         const int randomIndex = engine::UtilityFunctions::randomInt(cards.size());
         return randomIndex;
     }
