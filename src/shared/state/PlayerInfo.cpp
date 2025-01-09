@@ -65,5 +65,17 @@ namespace state {
         roomCards.push_back(std::move(card));
     }
 
+    const std::vector<SuspectCard> &PlayerInfo::getSuspectCards() {
+        return suspectCards;
+    }
+
+    const std::vector<WeaponCard> &PlayerInfo::getWeaponCards() {
+        return weaponCards;
+    }
+
+    const std::vector<RoomCard> &PlayerInfo::getRoomCards() {
+        return roomCards;
+    }
+
 
 }

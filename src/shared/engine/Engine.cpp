@@ -102,31 +102,17 @@ namespace engine {
         return dice;
     }
 
-    std::vector<state::Card*> Engine::getPossessedCards (state::TripleClue inputClues, state::PlayerInfo& player) {
-        std::vector<state::Card*> possessedCards;
-        for (auto & i : player.getCards()) {
-
-            if (i.getType() == state::SUSPECT_CARD) {
-                auto& castI = static_cast<state::SuspectCard&>(i);
-                if(castI.getSuspectName()== inputClues.suspect) {
-                    possessedCards.push_back(&i);
-                }
-            }
-
-            else if (i.getType() == state::WEAPON_CARD) {
-                auto& castI = static_cast<state::WeaponCard&>(i);
-                if(castI.getWeaponName()== inputClues.weapon) {
-                    possessedCards.push_back(&i);
-                }
-            }
-
-            else if (i.getType() == state::ROOM_CARD) {
-                auto& castI = static_cast<state::RoomCard&>(i);
-                if(castI.getRoomName()== inputClues.room) {
-                    possessedCards.push_back(&i);
-                }
+    std::vector<const state::Card*> Engine::getPossessedCards (state::TripleClue inputClues, state::PlayerInfo& player) {
+        std::vector<const state::Card*> possessedCards;
+        const auto& suspectCards = player.getSuspectCards();
+        for (const state::SuspectCard& card : suspectCards) {
+            if (card.getSuspectName() == inputClues.suspect) {
+                possessedCards.push_back(&card);
             }
         }
+        const auto& weaponCards = player.getWeaponCards();
+        const auto& roomCards = player.getRoomCards();
+
         return possessedCards;
     }
 
