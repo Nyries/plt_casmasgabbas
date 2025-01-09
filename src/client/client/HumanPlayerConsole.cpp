@@ -7,7 +7,6 @@
 #include <utility>
 #include <engine/Engine.h>
 
-#include "state/Weapon.h"
 #include "Client.h"
 #include "ConsoleIO.h"
 
@@ -125,43 +124,14 @@ namespace client {
     state::TripleClue HumanPlayerConsole::chooseHypothesis()  {
 	    state::TripleClue hypothesisChoice{};
 	    std::cout << "You want to make an hypothesis ! " << std::endl;
-	    std::cout << "If you are suspecting ROSE: press 1 " << std::endl;
-		std::cout << "If you are suspecting PERVENCHE: press 2 " << std::endl;
-		std::cout << "If you are suspecting LEBLANC: press 3 " << std::endl;
-		std::cout << "If you are suspecting OLIVE: press 4 " << std::endl;
-		std::cout << "If you are suspecting MOUTARDE: press 5 " << std::endl;
-		std::cout << "If you are suspecting VIOLET: press 6 " << std::endl;
+    	for (int i = 0; i < 6; i++) {
+    		std::cout << "If you are suspecting " << static_cast<state::Suspect>(i+1) << ": press " << (i+1) << "\n";
+    	}
 
 	    const int choice = ConsoleIO::getValidKey(6);
 
-      	switch (choice) {
-	    	case 1: // ROSE
-	        	std::cout << "You chose ROSE ! \n";
-	        	hypothesisChoice.suspect = state::ROSE;
-	       	 	break;
-	    	case 2: // PERVENCHE
-	        	std::cout << "You chose PERVENCHE ! \n";
-      			hypothesisChoice.suspect = state::PERVENCHE;
-	        	break;
-	    	case 3: // LEBLANC
-	        	std::cout << "You chose LEBLANC ! \n";
-      			hypothesisChoice.suspect = state::LEBLANC;
-	        	break;
-	    	case 4: // OLIVE
-	        	std::cout << "You chose OLIVE ! \n";
-      			hypothesisChoice.suspect = state::OLIVE;
-	        	break;
-	    	case 5: // MOUTARDE
-	        	std::cout << "You chose MOUTARDE ! \n";
-      			hypothesisChoice.suspect = state::MOUTARDE;
-	        	break;
-      		case 6: // VIOLET
-      			std::cout << "You chose VIOLET ! \n";
-      			hypothesisChoice.suspect = state::VIOLET;
-      			break;
-      		default: // OTHER ONE
-	        	throw std::runtime_error("switch failed");
-    	}
+	    std::cout << "You chose " << static_cast<state::Suspect>(choice) << "!\n";
+
 	    std::cout << "With which weapon ? " << std::endl;
 	    std::cout << "If you think it is CANDLESTICK: press 1 " << std::endl;
 		std::cout << "If you think it is PISTOL: press 2 " << std::endl;

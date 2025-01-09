@@ -6,6 +6,11 @@
 #include <iostream>
 #include <vector>
 
+#include "Player.h"
+#include "state/Suspect.cpp"
+#include "state/Weapon.cpp"
+#include "state/RoomName.cpp"
+
 namespace client {
     ConsoleIO::ConsoleIO() {
 
@@ -62,5 +67,12 @@ namespace client {
         std::cout << std::endl;
     }
 
+    void ConsoleIO::displayHypothesis(const Player &player, const state::TripleClue &hypothesis) {
+        std::cout << player.getName() << "suspects " << hypothesis.suspect << " with the " << hypothesis.weapon << " in the " << hypothesis.room << "!"<<std::endl;
+    }
+
+    void ConsoleIO::displayAccusation(const Player &player, const state::TripleClue &accusation) {
+        std::cout << player.getName() << " is accusing " << accusation.suspect << " with the " << accusation.weapon << " in the " << accusation.room << "!"<<std::endl;
+    }
 
 }
