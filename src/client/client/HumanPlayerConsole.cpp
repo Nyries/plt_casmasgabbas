@@ -43,7 +43,7 @@ namespace client {
 
         int choice = ConsoleIO::getValidKey(size);
 
-        switch(choice) {
+        switch(actions.at(choice - 1)) {
             case engine::MOVE_FROM_DICE:
                 std::cout << "You chose to move from the dice " << std::endl;
             break;
