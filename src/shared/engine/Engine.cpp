@@ -136,15 +136,14 @@ namespace engine {
     }
 
 
-    std::vector<engine::CommandId> Engine::getPossibleActions (state::PlayerInfo& player) {
+    std::vector<engine::CommandId> Engine::getPossibleActions (const state::PlayerInfo& player) const {
         std::vector<engine::CommandId> possibleCommands;
-
-        // Si c'est ton tour
-        if (&player == &getCurrentPlayer()) {
+        // Si c'est ton tour)
+        if (&player == &(*currentPlayer)) {
 
             // Si tu es dans une salle
             if (player.getLocation().getType()== state::ROOM) {
-                auto& currentRoom = static_cast<state::Room&>(player.getLocation());
+                const auto& currentRoom = static_cast<const state::Room&>(player.getLocation());
                 // Si tu n'as pas encore fait d'hypotèse
                 if (player.getPreviousHypothesisRoom() != currentRoom.getRoomName()) {
                     possibleCommands.push_back(engine::HYPOTHESIS);
@@ -169,12 +168,12 @@ namespace engine {
         commands.push_back( std::move(newCommand));
     }
 
-    std::vector<Move> Engine::getPossibleMoves(state::PlayerInfo &player) {
+    std::vector<Move> Engine::getPossibleMoves(const state::PlayerInfo &player) const{
         std::vector<Move> possibleMoves;
-        state::Location& playerLocation = player.getLocation();
+        const state::Location& playerLocation = player.getLocation();
         switch (playerLocation.getType()) {
             case state::CORRIDOR: {
-                auto& playerCell = static_cast<state::Cell&>(playerLocation);
+                const auto& playerCell = static_cast<const state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
                 for (int i = 0; i < neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);
@@ -201,7 +200,7 @@ namespace engine {
             break;
             case state::DOOR: {
                 possibleMoves.push_back(ENTER_ROOM);
-                auto& playerCell = static_cast<state::Cell&>(playerLocation);
+                const auto& playerCell = static_cast<const state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
                 for (int i = 0; i < neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);

@@ -38,6 +38,11 @@ namespace engine {
     }
 
     template<typename T>
+    const T &CircularIterator<T>::operator*() const {
+        return *it;
+    }
+
+    template<typename T>
     T *CircularIterator<T>::operator->() {
         return &(*it);
     }
