@@ -53,5 +53,17 @@ namespace state {
         this->previousHypothesisRoom = room;
     }
 
+    void PlayerInfo::addSuspectCard(SuspectCard &card) {
+        suspectCards.push_back(std::move(card));
+    }
+
+    void PlayerInfo::addWeaponCard(WeaponCard &card) {
+        weaponCards.push_back(std::move(card));
+    }
+
+    void PlayerInfo::addRoomCard(RoomCard &card) {
+        roomCards.push_back(std::move(card));
+    }
+
 
 }

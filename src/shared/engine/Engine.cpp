@@ -57,28 +57,27 @@ namespace engine {
         int randomWeapon = UtilityFunctions::randomInt(6);
         int randomRoom = UtilityFunctions::randomInt(9);
 
-        envelope.push_back(std::move(suspectCardsVector[randomSuspect]));
-        suspectCardsVector.erase(suspectCardsVector.begin()+randomSuspect);
-
-        envelope.push_back(std::move(weaponCardsVector[randomWeapon]));
-        weaponCardsVector.erase(weaponCardsVector.begin()+randomWeapon);
-
-        envelope.push_back(std::move(roomCardsVector[randomRoom]));
-        roomCardsVector.erase(roomCardsVector.begin()+randomSuspect);
-
-
-        std::vector<state::Card> allCards;
-        allCards.reserve(suspectCardsVector.size()+weaponCardsVector.size()+roomCardsVector.size());
-
-        allCards.insert(allCards.end(), suspectCardsVector.begin(), suspectCardsVector.end());
-        allCards.insert(allCards.end(), weaponCardsVector.begin(), weaponCardsVector.end());
-        allCards.insert(allCards.end(), roomCardsVector.begin(), roomCardsVector.end());
-
-        while (!allCards.empty()) {
-            const int randomIndex = UtilityFunctions::randomInt(allCards.size());
-            auto it = playerInfoVec.begin() + randomIndex;
-            it->giveCard(allCards.at(randomIndex));
-            allCards.erase(allCards.begin()+randomIndex);
+        int remainingSuspects = 6;
+        int remainingWeapons = 6;
+        int remainingRooms = 9;
+        CircularIterator<state::PlayerInfo> it(playerInfoVec);
+        for (int i = remainingSuspects + remainingWeapons + remainingRooms; i > 0; i--) {
+            const int randomIndex = UtilityFunctions::randomInt(remainingSuspects + remainingWeapons + remainingRooms);
+            if (randomIndex < remainingSuspects) {
+                it->addSuspectCard(suspectCardsVector.at(randomIndex));
+                suspectCardsVector.erase(suspectCardsVector.begin() + randomIndex);
+                remainingSuspects--;
+            }
+            else if (randomIndex < remainingSuspects + remainingWeapons) {
+                it->addWeaponCard(weaponCardsVector.at(randomIndex - remainingSuspects));
+                weaponCardsVector.erase(weaponCardsVector.begin() + randomIndex - remainingSuspects);
+                remainingWeapons--;
+            }
+            else {
+                it->addRoomCard(roomCardsVector.at(randomIndex - remainingSuspects - remainingWeapons));
+                roomCardsVector.erase(roomCardsVector.begin() + randomIndex - remainingSuspects - remainingWeapons);
+                remainingRooms--;
+            }
         }
     }
 

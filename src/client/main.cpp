@@ -17,6 +17,8 @@ void testSFML() {
 
 void test() {
     //put some code you want to run here
+    state::Map testMap("../configurations/map.json");
+    const auto& testCells = testMap.getNeighborsAsCell(15,15);
 }
 
 int main(int argc,char* argv[])
