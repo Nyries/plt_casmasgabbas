@@ -76,4 +76,9 @@ namespace client {
         std::cout << player.getName() << " is accusing " << accusation.suspect << " with the " << accusation.weapon << " in the " << accusation.room << "!"<<std::endl;
     }
 
+    void ConsoleIO::displayGameEnd(const Player &winner) {
+        std::cout << winner.getName() << "won the game !" << std::endl;
+    }
+
+
 }

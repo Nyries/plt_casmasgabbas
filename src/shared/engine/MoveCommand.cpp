@@ -30,6 +30,8 @@ namespace engine {
                         });
                     if (it!=neighborList.end()) {
                         player.setLocation(newCell);
+                        newCell.setOccupied(true);
+                        playerCell.setOccupied(false);
                     }
                 }
                 break;
@@ -45,6 +47,8 @@ namespace engine {
                         });
                     if (it!=neighborList.end()) {
                         player.setLocation(newCell);
+                        newCell.setOccupied(true);
+                        playerCell.setOccupied(false);
                     }
                 }
                 if (newLocation.getType() == state::ROOM) {
@@ -57,6 +61,7 @@ namespace engine {
                         });
                     if (it!=doorList.end()) {
                         player.setLocation(newRoom);
+
                     }
                 }
                 break;

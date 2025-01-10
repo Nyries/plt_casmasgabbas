@@ -71,7 +71,13 @@ namespace state {
                     displayMap[i][j] = '|';
                 }
                 else if (mapGrid[j/2][i/2]->getType() == LocationType::CORRIDOR){
-                    displayMap[i][j] = ' ';
+                    const auto& castCell = static_cast<const Cell&>(*mapGrid[j/2][i/2]);
+                    if (castCell.getOccupied()) {
+                        displayMap[i][j] = 'O';
+                    }
+                    else{
+                        displayMap[i][j] = ' ';
+                    }
                 }
                 else if (mapGrid[j/2][i/2]->getType() == LocationType::ROOM){
                     displayMap[i][j] = 'R';
@@ -80,7 +86,13 @@ namespace state {
                     displayMap[i][j] = 'X';
                 }
                 else if (mapGrid[j/2][i/2]->getType() == LocationType::DOOR){
-                    displayMap[i][j] = 'D';
+                    const auto& castCell = static_cast<const Door&>(*mapGrid[j/2][i/2]);
+                    if (castCell.getOccupied()) {
+                        displayMap[i][j] = 'O';
+                    }
+                    else{
+                        displayMap[i][j] = 'D';
+                    }
                 }
             }
         }

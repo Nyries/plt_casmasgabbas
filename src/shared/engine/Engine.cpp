@@ -83,7 +83,10 @@ namespace engine {
         engine::CircularIterator<state::PlayerInfo> it(playerInfoVec, playerInfoVec.begin() + (&getCurrentPlayer() - &playerInfoVec.front())); //iterateur initialisé au joueur actuel
         for (int i = 0; i < numberOfPlayer; i++) {
             it->setIdentity(SuspectsVector.at(i));
-            it->setLocation(state.convertSuspectToStartingCell(SuspectsVector.at(i)));
+            state::Cell& startingCell = state.convertSuspectToStartingCell(SuspectsVector.at(i));
+            it->setLocation(startingCell);
+            startingCell.setOccupied(true);
+
             ++it;
         }
     }

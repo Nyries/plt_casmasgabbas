@@ -128,11 +128,14 @@ int main(int argc,char* argv[])
                 }
                 myEngine.executeCommands();
             }
+            if ( myState.getAccusationSuccess()) {
+                io.displayGameEnd(currentPlayer);
+                break;
+            }
             myPlayerList.next();
             myEngine.setCurrentPlayer(myPlayerList.getCurrent().getPlayerInfo());
 
         }
     }
-    std::cout << "game end!";
     return 0;
 }
