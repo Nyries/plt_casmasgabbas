@@ -256,14 +256,6 @@ BOOST_AUTO_TEST_SUITE_END();
 
 // PlayerInfo.cpp test
 BOOST_AUTO_TEST_SUITE(TestPlayerInfo)
-BOOST_AUTO_TEST_CASE(TestGiveCard){
-{
-  Card card(CardType::WEAPON_CARD);
-  PlayerInfo playerInfo(Suspect::ROSE);
-  playerInfo.giveCard(card);
-  BOOST_CHECK(playerInfo.getCards().at(0).getType() == CardType::WEAPON_CARD);
-}
-}
 BOOST_AUTO_TEST_CASE(TestSet_GetCanWin)
 {
 {

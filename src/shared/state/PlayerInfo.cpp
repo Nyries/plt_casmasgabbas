@@ -6,19 +6,11 @@
 #include <utility>
 
 namespace state {
-    PlayerInfo::PlayerInfo(Suspect identity):cards(), location(nullptr),  identity(identity), canWin(true), previousHypothesisRoom(state::NO_ROOM) {
+    PlayerInfo::PlayerInfo(Suspect identity): location(nullptr),  identity(identity), canWin(true), previousHypothesisRoom(state::NO_ROOM) {
     }
 
     void PlayerInfo::setLocation(Location &newLocation) {
         this->location = &newLocation;
-    }
-
-    std::vector<Card>& PlayerInfo::getCards () {
-        return cards;
-    }
-
-    void PlayerInfo::giveCard(Card &card) {
-        cards.push_back(std::move(card));
     }
 
     Location& PlayerInfo::getLocation () {

@@ -6,8 +6,8 @@
 #include <ostream>
 
 namespace state {
-    std::ostream& operator<<(std::ostream& os, Weapon suspect) {
-        switch (suspect) {
+    std::ostream& operator<<(std::ostream& os, Weapon weapon) {
+        switch (weapon) {
             case CANDLESTICK:
                 os << "candlestick";
             break;

@@ -2,6 +2,7 @@
 // Created by louismmassin on 1/9/25.
 //
 #include "Suspect.h"
+#include "TripleClue.h"
 
 #include <ostream>
 

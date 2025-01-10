@@ -6,8 +6,8 @@
 #include <ostream>
 
 namespace state {
-    std::ostream& operator<<(std::ostream& os, RoomName suspect) {
-        switch (suspect) {
+    std::ostream& operator<<(std::ostream& os, RoomName roomName) {
+        switch (roomName) {
             case STUDY:
                 os << "study";
             break;
