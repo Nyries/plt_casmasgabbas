@@ -78,6 +78,7 @@ namespace engine {
                 roomCardsVector.erase(roomCardsVector.begin() + randomIndex - remainingSuspects - remainingWeapons);
                 remainingRooms--;
             }
+            ++it;
         }
     }
 

@@ -17,8 +17,6 @@ void testSFML() {
 
 void test() {
     //put some code you want to run here
-    state::Map testMap("../configurations/map.json");
-    const auto& testCells = testMap.getNeighborsAsCell(15,15);
 }
 
 int main(int argc,char* argv[])
@@ -94,6 +92,10 @@ int main(int argc,char* argv[])
                         int remainingMoves = diceResult.at(0) + diceResult.at(1);
                         io.displayDiceResult(myPlayerList, remainingMoves, currentPlayer);
                         while (remainingMoves > 0) {
+                            if (currentPlayerInfo.getLocation().getType() == state::CORRIDOR or currentPlayerInfo.getLocation().getType() == state::DOOR) {
+                                const auto& testCell = static_cast<const state::Cell&>(currentPlayerInfo.getLocation());
+                                std::cout << "coords: " << testCell.getX() << ", " << testCell.getY() << std::endl;
+                            }
                             const auto possibleMoves = myEngine.getPossibleMoves(currentPlayerInfo);
                             if (possibleMoves.empty()) {
                                 break;
@@ -110,6 +112,11 @@ int main(int argc,char* argv[])
                             }
                             myEngine.executeCommands();
                             if (currentPlayerInfo.getLocation().getType() == state::ROOM) {
+                                const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
+                                io.displayHypothesis(currentPlayer, hypothesis);
+                                myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
+                                myEngine.executeCommands();
+                                myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
                                 break;
                             }
                             remainingMoves--;

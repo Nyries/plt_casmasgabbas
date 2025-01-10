@@ -68,8 +68,9 @@ namespace client {
     }
 
     void ConsoleIO::displayHypothesis(const Player &player, const state::TripleClue &hypothesis) {
-        std::cout << player.getName() << "suspects " << hypothesis.suspect << " with the " << hypothesis.weapon << " in the " << hypothesis.room << "!"<<std::endl;
-    }
+        std::cout << player.getName() << " suggests the crime was committed by "
+                << hypothesis.suspect << " in the " << hypothesis.room
+                << " with the " << hypothesis.weapon << "!" << std::endl;    }
 
     void ConsoleIO::displayAccusation(const Player &player, const state::TripleClue &accusation) {
         std::cout << player.getName() << " is accusing " << accusation.suspect << " with the " << accusation.weapon << " in the " << accusation.room << "!"<<std::endl;

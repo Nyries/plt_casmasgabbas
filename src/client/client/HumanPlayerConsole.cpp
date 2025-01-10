@@ -9,6 +9,9 @@
 
 #include "Client.h"
 #include "ConsoleIO.h"
+#include "state/Suspect.hpp"
+#include "state/Weapon.hpp"
+#include "state/RoomName.hpp"
 
 namespace client {
     HumanPlayerConsole::HumanPlayerConsole(engine::Engine &engine, state::PlayerInfo &playerInfo, std::string name): HumanPlayer(engine, playerInfo, move(name)) {
@@ -123,61 +126,30 @@ namespace client {
 
     state::TripleClue HumanPlayerConsole::chooseHypothesis()  {
 	    state::TripleClue hypothesisChoice{};
-	    std::cout << "You want to make an hypothesis ! " << std::endl;
+	    std::cout << "You want to make an hypothesis ! \n";
     	for (int i = 0; i < 6; i++) {
     		std::cout << "If you are suspecting " << static_cast<state::Suspect>(i+1) << ": press " << (i+1) << "\n";
     	}
+    	std::cout << std::endl;
 
 	    const int choice = ConsoleIO::getValidKey(6);
+    	hypothesisChoice.suspect = static_cast<state::Suspect>(choice);
 
-	    std::cout << "You chose " << static_cast<state::Suspect>(choice) << "!\n";
+	    std::cout << "You chose " << hypothesisChoice.suspect << "!\n";
 
-	    std::cout << "With which weapon ? " << std::endl;
-	    std::cout << "If you think it is CANDLESTICK: press 1 " << std::endl;
-		std::cout << "If you think it is PISTOL: press 2 " << std::endl;
-		std::cout << "If you think it is ROPE: press 3 " << std::endl;
-		std::cout << "If you think it is LEAD_PIPE: press 4 " << std::endl;
-		std::cout << "If you think it is KNIFE: press 5 " << std::endl;
-		std::cout << "If you think it is WRENCH: press 6 " << std::endl;
+	    std::cout << "With which weapon ?\n";
+    	for (int i = 0; i < 6; i++) {
+    		std::cout << "If you think it was a " << static_cast<state::Weapon>(i+1) << ": press " << (i+1) << "\n";
+    	}
+    	std::cout << std::endl;
 
 		int choice2 = ConsoleIO::getValidKey(6);
+    	hypothesisChoice.weapon = static_cast<state::Weapon>(choice2);
 
-		switch (choice2) {
-
-	    	case 1: // CANDLESTICK
-	        	std::cout << "You chose CANDLESTICK ! \n";
-				hypothesisChoice.weapon = state::CANDLESTICK;
-	        	break;
-			case 2: // PISTOL
-	        	std::cout << "You chose PISTOL ! \n";
-				hypothesisChoice.weapon = state::PISTOL;
-	        	break;
-	    	case 3: // ROPE
-	        	std::cout << "You chose ROPE ! \n";
-				hypothesisChoice.weapon = state::ROPE;
-	        	break;
-	    	case 4: // LEAD_PIPE
-	        	std::cout << "You chose LEAD_PIPE ! \n";
-				hypothesisChoice.weapon = state::LEAD_PIPE;
-	       	 	break;
-	    	case 5: // KNIFE
-	        	std::cout << "You chose KNIFE ! \n";
-				hypothesisChoice.weapon = state::KNIFE;
-	        	break;
-			case 6: // WRENCH
-				std::cout << "You chose WRENCH ! \n";
-				hypothesisChoice.weapon = state::WRENCH;
-				break;
-	    	default: // OTHER ONE
-	    		throw std::runtime_error("Switch failed");
-    	}
+    	std::cout << "You chose the " << hypothesisChoice.weapon << "!\n";
 
 		const auto& currentRoom = static_cast<const state::Room&>(playerInfo.getLocation());
 	    hypothesisChoice.room = currentRoom.getRoomName();
-
-	    std::cout << playerInfo.getIdentity() << " suggests the Crime was committed by "
-	    << hypothesisChoice.suspect << " in the " << hypothesisChoice.room
-	    << " with the " << hypothesisChoice.weapon << std::endl;
 
 	    return hypothesisChoice;
     }
