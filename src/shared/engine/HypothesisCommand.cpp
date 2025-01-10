@@ -26,6 +26,7 @@ namespace engine {
                 if (teleportedPlayer != playerInfoVec.end()) {
                     teleportedPlayer->setLocation(player.getLocation());
                 }
+                player.setPreviousHypothesisRoom(hypothesisRoom.getRoomName());
             }
         }
     }

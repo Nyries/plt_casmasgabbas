@@ -52,11 +52,6 @@ namespace engine {
         roomCardsVector.emplace_back(state::GARAGE);
         roomCardsVector.emplace_back(state::GAME_ROOM);
 
-
-        int randomSuspect = UtilityFunctions::randomInt(6);
-        int randomWeapon = UtilityFunctions::randomInt(6);
-        int randomRoom = UtilityFunctions::randomInt(9);
-
         int remainingSuspects = 6;
         int remainingWeapons = 6;
         int remainingRooms = 9;
@@ -89,7 +84,6 @@ namespace engine {
         for (int i = 0; i < numberOfPlayer; i++) {
             it->setIdentity(SuspectsVector.at(i));
             it->setLocation(state.convertSuspectToStartingCell(SuspectsVector.at(i)));
-            auto& testCell = static_cast<state::Cell&>(it->getLocation());
             ++it;
         }
     }
@@ -112,7 +106,17 @@ namespace engine {
             }
         }
         const auto& weaponCards = player.getWeaponCards();
+        for (const state::WeaponCard& card: weaponCards) {
+            if (card.getWeaponName() == inputClues.weapon) {
+                possessedCards.push_back(&card);
+            }
+        }
         const auto& roomCards = player.getRoomCards();
+        for (const state::RoomCard& card: roomCards) {
+            if (card.getRoomName() == inputClues.room) {
+                possessedCards.push_back(&card);
+            }
+        }
 
         return possessedCards;
     }
@@ -161,7 +165,7 @@ namespace engine {
             case state::CORRIDOR: {
                 const auto& playerCell = static_cast<const state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
-                for (int i = 0; i < neighbourList.size(); i++) {
+                for (int i = 0; i < (int)neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);
                     if (type == state::CORRIDOR or type == state::DOOR) {
                         switch (i) {
@@ -188,7 +192,7 @@ namespace engine {
                 possibleMoves.push_back(ENTER_ROOM);
                 const auto& playerCell = static_cast<const state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
-                for (int i = 0; i < neighbourList.size(); i++) {
+                for (unsigned long i = 0; i < neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);
                     if (type == state::CORRIDOR or type == state::DOOR) {
                         switch (i) {

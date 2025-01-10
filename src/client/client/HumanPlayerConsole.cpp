@@ -126,7 +126,7 @@ namespace client {
 
     state::TripleClue HumanPlayerConsole::chooseHypothesis()  {
 	    state::TripleClue hypothesisChoice{};
-	    std::cout << "You want to make an hypothesis ! \n";
+	    std::cout << "You want to make a hypothesis ! \n";
     	for (int i = 0; i < 6; i++) {
     		std::cout << "If you are suspecting " << static_cast<state::Suspect>(i+1) << ": press " << (i+1) << "\n";
     	}
@@ -179,154 +179,52 @@ namespace client {
     }
 
 	state::TripleClue HumanPlayerConsole::chooseAccusation()  {
+    	state::TripleClue accusationChoice{};
+    	std::cout << "You want to make an accusation ! \n";
+    	for (int i = 0; i < 6; i++) {
+    		std::cout << "If you want to accuse " << static_cast<state::Suspect>(i+1) << ": press " << (i+1) << "\n";
+    	}
+    	std::cout << std::endl;
 
-	    state::TripleClue accusationChoice{};
-	    std::cout << "You want to make an accusation ! " << std::endl;
-	    std::string stringNumber;
-	    std::cout << "If you are accusating ROSE: press 1 " << std::endl;
-		std::cout << "If you are accusating PERVENCHE: press 2 " << std::endl;
-		std::cout << "If you are accusating LEBLANC: press 3 " << std::endl;
-		std::cout << "If you are accusating OLIVE: press 4 " << std::endl;
-		std::cout << "If you are accusating MOUTARDE: press 5 " << std::endl;
-		std::cout << "If you are accusating VIOLET: press 6 " << std::endl;
+    	const int choice = ConsoleIO::getValidKey(6);
+    	accusationChoice.suspect = static_cast<state::Suspect>(choice);
 
-		int choice = ConsoleIO::getValidKey(6);
-		switch (choice) {
-			case 1: // ROSE
-				std::cout << "You chose ROSE ! \n";
-				accusationChoice.suspect = state::ROSE;
-				break;
-			case 2: // PERVENCHE
-				std::cout << "You chose PERVENCHE ! \n";
-				accusationChoice.suspect = state::PERVENCHE;
-				break;
-			case 3: // LEBLANC
-				std::cout << "You chose LEBLANC ! \n";
-				accusationChoice.suspect = state::LEBLANC;
-				break;
-			case 4: // OLIVE
-				std::cout << "You chose OLIVE ! \n";
-				accusationChoice.suspect = state::OLIVE;
-				break;
-			case 5: // MOUTARDE
-				std::cout << "You chose MOUTARDE ! \n";
-				accusationChoice.suspect = state::MOUTARDE;
-				break;
-			case 6: // VIOLET
-				std::cout << "You chose VIOLET ! \n";
-				accusationChoice.suspect = state::VIOLET;
-				break;
+    	std::cout << "You chose " << accusationChoice.suspect << "!\n";
 
-			default: // OTHER ONE
-				throw std::runtime_error("Switch failed");
-		}
+    	std::cout << "With which weapon ?\n";
+    	for (int i = 0; i < 6; i++) {
+    		std::cout << "If you think it was a " << static_cast<state::Weapon>(i+1) << ": press " << (i+1) << "\n";
+    	}
+    	std::cout << std::endl;
 
-	    std::cout << "With which weapon ? " << std::endl;
-	    std::cout << "If you think it is CANDLESTICK: press 1 " << std::endl;
-		std::cout << "If you think it is PISTOL: press 2 " << std::endl;
-		std::cout << "If you think it is ROPE: press 3 " << std::endl;
-		std::cout << "If you think it is LEAD_PIPE: press 4 " << std::endl;
-		std::cout << "If you think it is KNIFE: press 5 " << std::endl;
-		std::cout << "If you think it is WRENCH: press 6 " << std::endl;
+    	int choice2 = ConsoleIO::getValidKey(6);
+    	accusationChoice.weapon = static_cast<state::Weapon>(choice2);
 
-		int choice2 = ConsoleIO::getValidKey(6);
-		switch (choice2){
-			case 1: // CANDLESTICK
-				std::cout << "You chose CANDLESTICK ! \n";
-				accusationChoice.weapon = state::CANDLESTICK;
-				break;
-			case 2: // PISTOL
-				std::cout << "You chose PISTOL ! \n";
-				accusationChoice.weapon = state::PISTOL;
-				break;
-			case 3: // ROPE
-				std::cout << "You chose ROPE ! \n";
-				accusationChoice.weapon = state::ROPE;
-				break;
-			case 4: // LEAD_PIPE
-				std::cout << "You chose LEAD_PIPE ! \n";
-				accusationChoice.weapon = state::LEAD_PIPE;
-				break;
-			case 5: // KNIFE
-				std::cout << "You chose KNIFE ! \n";
-				accusationChoice.weapon = state::KNIFE;
-				break;
-			case 6: // WRENCH
-				std::cout << "You chose WRENCH ! \n";
-				accusationChoice.weapon = state::WRENCH;
-				break;
-			default: // OTHER ONE
-				throw std::runtime_error("Switch failed");
-		}
+    	std::cout << "You chose the " << accusationChoice.weapon << "!\n";
 
-		std::cout << "Where does it happen ? " << std::endl;
-		std::cout << "If you think it is in the STUDY: press 1 " << std::endl;
-		std::cout << "If you think it is in the HALL: press 2 " << std::endl;
-		std::cout << "If you think it is in the LIVING_ROOM: press 3 " << std::endl;
-		std::cout << "If you think it is in the DINING_ROOM: press 4 " << std::endl;
-		std::cout << "If you think it is in the KITCHEN: press 5 " << std::endl;
-		std::cout << "If you think it is in the BATHROOM: press 6 " << std::endl;
-		std::cout << "If you think it is in the GARAGE: press 7 " << std::endl;
-		std::cout << "If you think it is in the GAME_ROOM: press 8 " << std::endl;
-		std::cout << "If you think it is in the BEDROOM: press 9 " << std::endl;
+    	std::cout << "In which room ?\n";
+    	for (int i = 0; i < 9; i++) {
+    		std::cout << "If you think it was in the " << static_cast<state::RoomName>(i+1) << ": press " << (i+1) << "\n";
+    	}
+    	std::cout << std::endl;
 
+    	int choice3 = ConsoleIO::getValidKey(6);
+    	accusationChoice.room = static_cast<state::RoomName>(choice3);
 
-		int choice3 = ConsoleIO::getValidKey(9);
-		switch (choice3) {
-			case 1: // STUDY
-				std::cout << "You chose STUDY ! \n";
-				accusationChoice.room = state::STUDY;
-				break;
-			case 2: // HALL
-				std::cout << "You chose HALL ! \n";
-			accusationChoice.room = state::HALL;
-				break;
-			case 3: // LIVING_ROOM
-				std::cout << "You chose LIVING_ROOM ! \n";
-			accusationChoice.room = state::LIVING_ROOM;
-				break;
-			case 4: // DINING_ROOM
-				std::cout << "You chose DINING_ROOM ! \n";
-			accusationChoice.room = state::DINING_ROOM;
-				break;
-			case 5: // KITCHEN
-				std::cout << "You chose KITCHEN ! \n";
-			accusationChoice.room = state::KITCHEN;
-				break;
-			case 6: // BATHROOM
-				std::cout << "You chose BATHROOM ! \n";
-			accusationChoice.room = state::BATHROOM;
-				break;
-			case 7: // GARAGE
-				std::cout << "You chose GARAGE ! \n";
-			accusationChoice.room = state::GARAGE;
-				break;
-			case 8: // GAME_ROOM
-				std::cout << "You chose GAME_ROOM ! \n";
-			accusationChoice.room = state::GAME_ROOM;
-				break;
-			case 9: // BEDROOM
-				std::cout << "You chose BEDROOM ! \n";
-			accusationChoice.room = state::BEDROOM;
-				break;
-			default: // OTHER ONE
-				throw std::runtime_error("Switch failed");
-			}
+    	std::cout << "You chose the " << accusationChoice.room << "!\n";
 
-	    std::cout << playerInfo.getIdentity() << " accuses "
-	    << accusationChoice.suspect << " of committing the crime in the " << accusationChoice.room
-	    << " with the " << accusationChoice.weapon << std::endl;
-	   return accusationChoice;
+    	return accusationChoice;
     }
 
 	void HumanPlayerConsole::seeACardFromPlayer(const state::Card &shownCard, const Player &cardOwner) {
-		std::cout << cardOwner.getName() << "showed you the card" << std::endl;
-	}
+    	std::cout << cardOwner.getName() << "showed you the card" << shownCard.getValueAsString() << std::endl;
+
+    }
 
 	state::Door &HumanPlayerConsole::chooseDoor(const std::vector<state::Door *> &doorList) {
 		std::cout <<"Select door:\n";
-    	for (int i = 0; i < doorList.size(); i++) {
-    		std::cout << i + 1 << " coordinates " << doorList.at(i)->getX() << "," << doorList.at(i)->getY() << "\n";
+    	for (int i = 0; i < (int)doorList.size(); i++) {
+    		std::cout << "Door " << i + 1 << ": coordinates " << doorList.at(i)->getX() << "," << doorList.at(i)->getY() << "\n";
     	}
     	std::cout << std::endl;
     	int choice = ConsoleIO::getValidKey(doorList.size());
