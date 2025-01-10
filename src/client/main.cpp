@@ -111,6 +111,7 @@ int main(int argc,char* argv[])
                                 myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerInfo, newLocation));
                             }
                             myEngine.executeCommands();
+                            io.displayMap(myState.getMap());
                             if (currentPlayerInfo.getLocation().getType() == state::ROOM) {
                                 const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
                                 io.displayHypothesis(currentPlayer, hypothesis);
