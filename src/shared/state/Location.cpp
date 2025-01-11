@@ -8,7 +8,7 @@ namespace state{
 	}
 
 
-    LocationType Location::getType(){
+    LocationType Location::getType() const{
           return type;
     }
 

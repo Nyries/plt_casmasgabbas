@@ -52,33 +52,28 @@ namespace engine {
         roomCardsVector.emplace_back(state::GARAGE);
         roomCardsVector.emplace_back(state::GAME_ROOM);
 
-
-        int randomSuspect = UtilityFunctions::randomInt(6);
-        int randomWeapon = UtilityFunctions::randomInt(6);
-        int randomRoom = UtilityFunctions::randomInt(9);
-
-        envelope.push_back(std::move(suspectCardsVector[randomSuspect]));
-        suspectCardsVector.erase(suspectCardsVector.begin()+randomSuspect);
-
-        envelope.push_back(std::move(weaponCardsVector[randomWeapon]));
-        weaponCardsVector.erase(weaponCardsVector.begin()+randomWeapon);
-
-        envelope.push_back(std::move(roomCardsVector[randomRoom]));
-        roomCardsVector.erase(roomCardsVector.begin()+randomSuspect);
-
-
-        std::vector<state::Card> allCards;
-        allCards.reserve(suspectCardsVector.size()+weaponCardsVector.size()+roomCardsVector.size());
-
-        allCards.insert(allCards.end(), suspectCardsVector.begin(), suspectCardsVector.end());
-        allCards.insert(allCards.end(), weaponCardsVector.begin(), weaponCardsVector.end());
-        allCards.insert(allCards.end(), roomCardsVector.begin(), roomCardsVector.end());
-
-        while (!allCards.empty()) {
-            const int randomIndex = UtilityFunctions::randomInt(allCards.size());
-            auto it = playerInfoVec.begin() + randomIndex;
-            it->giveCard(allCards.at(randomIndex));
-            allCards.erase(allCards.begin()+randomIndex);
+        int remainingSuspects = 6;
+        int remainingWeapons = 6;
+        int remainingRooms = 9;
+        CircularIterator<state::PlayerInfo> it(playerInfoVec);
+        for (int i = remainingSuspects + remainingWeapons + remainingRooms; i > 0; i--) {
+            const int randomIndex = UtilityFunctions::randomInt(remainingSuspects + remainingWeapons + remainingRooms);
+            if (randomIndex < remainingSuspects) {
+                it->addSuspectCard(suspectCardsVector.at(randomIndex));
+                suspectCardsVector.erase(suspectCardsVector.begin() + randomIndex);
+                remainingSuspects--;
+            }
+            else if (randomIndex < remainingSuspects + remainingWeapons) {
+                it->addWeaponCard(weaponCardsVector.at(randomIndex - remainingSuspects));
+                weaponCardsVector.erase(weaponCardsVector.begin() + randomIndex - remainingSuspects);
+                remainingWeapons--;
+            }
+            else {
+                it->addRoomCard(roomCardsVector.at(randomIndex - remainingSuspects - remainingWeapons));
+                roomCardsVector.erase(roomCardsVector.begin() + randomIndex - remainingSuspects - remainingWeapons);
+                remainingRooms--;
+            }
+            ++it;
         }
     }
 
@@ -88,8 +83,10 @@ namespace engine {
         engine::CircularIterator<state::PlayerInfo> it(playerInfoVec, playerInfoVec.begin() + (&getCurrentPlayer() - &playerInfoVec.front())); //iterateur initialisé au joueur actuel
         for (int i = 0; i < numberOfPlayer; i++) {
             it->setIdentity(SuspectsVector.at(i));
-            it->setLocation(state.convertSuspectToStartingCell(SuspectsVector.at(i)));
-            auto& testCell = static_cast<state::Cell&>(it->getLocation());
+            state::Cell& startingCell = state.convertSuspectToStartingCell(SuspectsVector.at(i));
+            it->setLocation(startingCell);
+            startingCell.setOccupied(true);
+
             ++it;
         }
     }
@@ -103,31 +100,27 @@ namespace engine {
         return dice;
     }
 
-    std::vector<state::Card*> Engine::getPossessedCards (state::TripleClue inputClues, state::PlayerInfo& player) {
-        std::vector<state::Card*> possessedCards;
-        for (auto & i : player.getCards()) {
-
-            if (i.getType() == state::SUSPECT_CARD) {
-                auto& castI = static_cast<state::SuspectCard&>(i);
-                if(castI.getSuspectName()== inputClues.suspect) {
-                    possessedCards.push_back(&i);
-                }
-            }
-
-            else if (i.getType() == state::WEAPON_CARD) {
-                auto& castI = static_cast<state::WeaponCard&>(i);
-                if(castI.getWeaponName()== inputClues.weapon) {
-                    possessedCards.push_back(&i);
-                }
-            }
-
-            else if (i.getType() == state::ROOM_CARD) {
-                auto& castI = static_cast<state::RoomCard&>(i);
-                if(castI.getRoomName()== inputClues.room) {
-                    possessedCards.push_back(&i);
-                }
+    std::vector<const state::Card*> Engine::getPossessedCards (state::TripleClue inputClues, state::PlayerInfo& player) const{
+        std::vector<const state::Card*> possessedCards;
+        const auto& suspectCards = player.getSuspectCards();
+        for (const state::SuspectCard& card : suspectCards) {
+            if (card.getSuspectName() == inputClues.suspect) {
+                possessedCards.push_back(&card);
             }
         }
+        const auto& weaponCards = player.getWeaponCards();
+        for (const state::WeaponCard& card: weaponCards) {
+            if (card.getWeaponName() == inputClues.weapon) {
+                possessedCards.push_back(&card);
+            }
+        }
+        const auto& roomCards = player.getRoomCards();
+        for (const state::RoomCard& card: roomCards) {
+            if (card.getRoomName() == inputClues.room) {
+                possessedCards.push_back(&card);
+            }
+        }
+
         return possessedCards;
     }
 
@@ -136,15 +129,14 @@ namespace engine {
     }
 
 
-    std::vector<engine::CommandId> Engine::getPossibleActions (state::PlayerInfo& player) {
+    std::vector<engine::CommandId> Engine::getPossibleActions (const state::PlayerInfo& player) const {
         std::vector<engine::CommandId> possibleCommands;
-
-        // Si c'est ton tour
-        if (&player == &getCurrentPlayer()) {
+        // Si c'est ton tour)
+        if (&player == &(*currentPlayer)) {
 
             // Si tu es dans une salle
             if (player.getLocation().getType()== state::ROOM) {
-                auto& currentRoom = static_cast<state::Room&>(player.getLocation());
+                const auto& currentRoom = static_cast<const state::Room&>(player.getLocation());
                 // Si tu n'as pas encore fait d'hypotèse
                 if (player.getPreviousHypothesisRoom() != currentRoom.getRoomName()) {
                     possibleCommands.push_back(engine::HYPOTHESIS);
@@ -169,14 +161,14 @@ namespace engine {
         commands.push_back( std::move(newCommand));
     }
 
-    std::vector<Move> Engine::getPossibleMoves(state::PlayerInfo &player) {
+    std::vector<Move> Engine::getPossibleMoves(const state::PlayerInfo &player) const{
         std::vector<Move> possibleMoves;
-        state::Location& playerLocation = player.getLocation();
+        const state::Location& playerLocation = player.getLocation();
         switch (playerLocation.getType()) {
             case state::CORRIDOR: {
-                auto& playerCell = static_cast<state::Cell&>(playerLocation);
+                const auto& playerCell = static_cast<const state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
-                for (int i = 0; i < neighbourList.size(); i++) {
+                for (int i = 0; i < (int)neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);
                     if (type == state::CORRIDOR or type == state::DOOR) {
                         switch (i) {
@@ -201,9 +193,9 @@ namespace engine {
             break;
             case state::DOOR: {
                 possibleMoves.push_back(ENTER_ROOM);
-                auto& playerCell = static_cast<state::Cell&>(playerLocation);
+                const auto& playerCell = static_cast<const state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
-                for (int i = 0; i < neighbourList.size(); i++) {
+                for (unsigned long i = 0; i < neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);
                     if (type == state::CORRIDOR or type == state::DOOR) {
                         switch (i) {

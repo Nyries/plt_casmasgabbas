@@ -7,7 +7,7 @@ namespace state {
     RoomCard::RoomCard(RoomName value): Card(ROOM_CARD), room(value) {
     }
 
-    RoomName RoomCard::getRoomName() {
+    RoomName RoomCard::getRoomName() const{
         return room;
     }
 }

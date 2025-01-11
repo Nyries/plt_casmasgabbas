@@ -8,7 +8,7 @@ namespace state {
     Room::Room(RoomName name): Location(ROOM), name(name),doorList(), secretPassage(nullptr) {
     }
 
-    RoomName Room::getRoomName() {
+    RoomName Room::getRoomName() const {
         return name;
     }
 
@@ -40,7 +40,11 @@ namespace state {
         return doorList;
     }
 
-    Room* Room::getSecretPassage () {
+    Room* Room::getSecretPassage (){
+        return secretPassage;
+    }
+
+    const Room* Room::getSecretPassage () const{
         return secretPassage;
     }
 

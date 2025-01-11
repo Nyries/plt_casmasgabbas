@@ -7,7 +7,7 @@ namespace state {
     SuspectCard::SuspectCard(Suspect value): Card(SUSPECT_CARD), suspect(value) {
     }
 
-    Suspect SuspectCard::getSuspectName() {
+    Suspect SuspectCard::getSuspectName() const{
         return suspect;
     }
 

@@ -60,6 +60,7 @@ int main(int argc,char* argv[])
         myPlayerList.setIterator(myPlayerList.getVector().at(firstPlayerIndex));
         myEngine.setCurrentPlayer(playerInfoVec.at(firstPlayerIndex));
         myEngine.distributionCharacters();
+        myEngine.dealCards();
         //game loop
         while (!myState.getAccusationSuccess()) {
             client::Player& currentPlayer = myPlayerList.getCurrent();
@@ -70,6 +71,7 @@ int main(int argc,char* argv[])
                 switch (currentAction) {
                     case engine::HYPOTHESIS: {
                         const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
+                        io.displayHypothesis(currentPlayer, hypothesis);
                         myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
                         myEngine.executeCommands();
                         myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
@@ -77,6 +79,7 @@ int main(int argc,char* argv[])
                     break;
                     case engine::ACCUSATION: {
                         const state::TripleClue accusation = currentPlayer.chooseAccusation();
+                        io.displayAccusation(currentPlayer, accusation);
                         myEngine.addCommand(std::make_unique<engine::AccusationCommand>(myEngine, currentPlayerInfo, accusation));
                     }
                     break;
@@ -89,6 +92,10 @@ int main(int argc,char* argv[])
                         int remainingMoves = diceResult.at(0) + diceResult.at(1);
                         io.displayDiceResult(myPlayerList, remainingMoves, currentPlayer);
                         while (remainingMoves > 0) {
+                            if (currentPlayerInfo.getLocation().getType() == state::CORRIDOR or currentPlayerInfo.getLocation().getType() == state::DOOR) {
+                                const auto& testCell = static_cast<const state::Cell&>(currentPlayerInfo.getLocation());
+                                std::cout << "coords: " << testCell.getX() << ", " << testCell.getY() << std::endl;
+                            }
                             const auto possibleMoves = myEngine.getPossibleMoves(currentPlayerInfo);
                             if (possibleMoves.empty()) {
                                 break;
@@ -104,7 +111,13 @@ int main(int argc,char* argv[])
                                 myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerInfo, newLocation));
                             }
                             myEngine.executeCommands();
+                            io.displayMap(myState.getMap());
                             if (currentPlayerInfo.getLocation().getType() == state::ROOM) {
+                                const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
+                                io.displayHypothesis(currentPlayer, hypothesis);
+                                myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
+                                myEngine.executeCommands();
+                                myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
                                 break;
                             }
                             remainingMoves--;
@@ -116,11 +129,14 @@ int main(int argc,char* argv[])
                 }
                 myEngine.executeCommands();
             }
+            if ( myState.getAccusationSuccess()) {
+                io.displayGameEnd(currentPlayer);
+                break;
+            }
             myPlayerList.next();
             myEngine.setCurrentPlayer(myPlayerList.getCurrent().getPlayerInfo());
 
         }
     }
-    std::cout << "game end!";
     return 0;
 }

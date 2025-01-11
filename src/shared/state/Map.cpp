@@ -71,7 +71,13 @@ namespace state {
                     displayMap[i][j] = '|';
                 }
                 else if (mapGrid[j/2][i/2]->getType() == LocationType::CORRIDOR){
-                    displayMap[i][j] = ' ';
+                    const auto& castCell = static_cast<const Cell&>(*mapGrid[j/2][i/2]);
+                    if (castCell.getOccupied()) {
+                        displayMap[i][j] = 'O';
+                    }
+                    else{
+                        displayMap[i][j] = ' ';
+                    }
                 }
                 else if (mapGrid[j/2][i/2]->getType() == LocationType::ROOM){
                     displayMap[i][j] = 'R';
@@ -80,7 +86,13 @@ namespace state {
                     displayMap[i][j] = 'X';
                 }
                 else if (mapGrid[j/2][i/2]->getType() == LocationType::DOOR){
-                    displayMap[i][j] = 'D';
+                    const auto& castCell = static_cast<const Door&>(*mapGrid[j/2][i/2]);
+                    if (castCell.getOccupied()) {
+                        displayMap[i][j] = 'O';
+                    }
+                    else{
+                        displayMap[i][j] = 'D';
+                    }
                 }
             }
         }
@@ -116,19 +128,24 @@ namespace state {
     }
 
 
-    std::vector<LocationType> Map::getNeighborsAsLocationType(int coordX, int coordY)
+    std::vector<LocationType> Map::getNeighborsAsLocationType(int coordX, int coordY) const
     {
         /**The order of the list is as follow: up, down, left, right*/
         std::vector<LocationType> neighbors(4, LocationType::INACCESSIBLE);
-        std::vector<Cell*> neighboringCells = this->getNeighborsAsCell(coordX ,coordY);
-        for (int i=0; i<4; i++){
-            neighbors.at(i) = neighboringCells.at(i)->getType();
-        }
+        neighbors.at(0) = getCell(coordX, coordY - 1).getType();
+        neighbors.at(1) = getCell(coordX, coordY + 1).getType();
+        neighbors.at(2) = getCell(coordX - 1, coordY).getType();
+        neighbors.at(3) = getCell(coordX + 1, coordY).getType();
         return neighbors;
     }
 
     Cell &Map::getCell(int coordX, int coordY) {
         return *mapGrid.at(coordX).at(coordY);
     }
+
+    const Cell &Map::getCell(int coordX, int coordY) const {
+        return *mapGrid.at(coordX).at(coordY);
+    }
+
 
 }

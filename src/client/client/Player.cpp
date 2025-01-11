@@ -16,7 +16,11 @@ namespace client {
         return name;
     }
 
-    state::PlayerInfo &Player::getPlayerInfo() const {
+    state::PlayerInfo &Player::getPlayerInfo() {
+        return playerInfo;
+    }
+
+    const state::PlayerInfo &Player::getPlayerInfo() const {
         return playerInfo;
     }
 

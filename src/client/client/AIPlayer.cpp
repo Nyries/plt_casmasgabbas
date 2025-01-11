@@ -26,7 +26,7 @@ namespace client {
         return ai->chooseHypothesis();
     }
 
-    int AIPlayer::chooseACardToShowClient(const std::vector<state::Card *> &cards) {
+    int AIPlayer::chooseACardToShowClient(const std::vector<const state::Card *> &cards) {
         return ai->chooseACardToShowClient(cards);
     }
 
