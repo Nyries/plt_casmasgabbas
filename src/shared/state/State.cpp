@@ -14,10 +14,10 @@ namespace state {
         return map;
     }
 
-    std::vector<Card> &State::getEnvelope()
-    {
-        return this->envelope;
+    TripleClue State::getEnvelope() const {
+        return envelope;
     }
+
 
     std::vector<PlayerState> &State::getPlayerStateVec() {
         return playerStateVec;

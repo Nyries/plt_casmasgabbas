@@ -233,7 +233,7 @@ namespace engine {
         commands.clear();
     }
 
-    std::vector<state::Card> &Engine::getEnvelope() {
+    state::TripleClue Engine::getEnvelope() const {
         return envelope;
     }
 
