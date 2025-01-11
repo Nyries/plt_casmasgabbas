@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include <iostream>
+#include "Grid.h"
 
 namespace render{
     sf::Color cluedoRed(180, 0, 0);   // Rouge Cluedo
@@ -13,18 +14,37 @@ namespace render{
 {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     std::cout << desktop.width << "x" << desktop.height << std::endl;
-    window.create(sf::VideoMode(desktop.height*0.9, desktop.height*0.9), "Cluedo plt", sf::Style::Close);
+    int windowSize = desktop.height*0.9;
+    window.create(sf::VideoMode(windowSize, windowSize), "Cluedo plt", sf::Style::Close);
     window.setFramerateLimit(120); // Réduit la charge sur le processeur.
     window.setPosition(sf::Vector2i(desktop.width/2 - window.getSize().x/2, desktop.height/2 - window.getSize().y/2));
+    loadMapImage("../ressources/maison_map.png");
+    std::cout << BackgroundTexture.getSize().x << "x" << BackgroundTexture.getSize().y << std::endl;
+    Background.setScale((float)windowSize/BackgroundTexture.getSize().x, (float)windowSize/BackgroundTexture.getSize().y);
+    float x_ratio = (float)windowSize/BackgroundTexture.getSize().x;
+    float y_ratio = (float)windowSize/BackgroundTexture.getSize().y;
+    sf::Color borderColor(0,0,0,50);
+    Grid grid(x_ratio*93, y_ratio*47, 25, 24, 44*x_ratio, borderColor);
+    
     while (window.isOpen()){    
         sf::Event event;
         while (window.pollEvent(event)){
             if (event.type == sf::Event::Closed){
                 window.close();
             }
+            if (event.type == sf::Event::MouseButtonPressed){
+                if (event.mouseButton.button == sf::Mouse::Left){
+                    grid.placePiece(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), cluedoRed);
+                }
+                if (event.mouseButton.button == sf::Mouse::Right){
+                    grid.deletePiece(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                }
+            }
+
         }
         window.clear(sf::Color::White);
-        gameInit();
+        window.draw(Background);
+        grid.draw(window);
         window.display();
         
     }
@@ -42,6 +62,7 @@ void Scene::loadMapImage(std::string mapImagePath)
     BackgroundTexture.loadFromFile(mapImagePath);
     Background.setTexture(BackgroundTexture);
     Background.setPosition(0,0);
+    
     
 }
 void Scene::gameInit()
