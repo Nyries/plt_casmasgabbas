@@ -12,6 +12,7 @@ namespace state {
     }
 
     void PlayerState::setLocation(Location &newLocation) {
+        this->location->setPlayer(nullptr);
         this->location = &newLocation;
         newLocation.setPlayer(this);
     }

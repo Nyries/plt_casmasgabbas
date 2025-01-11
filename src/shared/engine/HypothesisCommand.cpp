@@ -15,7 +15,7 @@ namespace engine {
 
     void HypothesisCommand::execute() {
         if (&player == &engine.getCurrentPlayer() and player.getLocation().getType() == state::ROOM){
-            auto& hypothesisRoom = static_cast<state::Room&>(player.getLocation());
+            auto& hypothesisRoom = static_cast<const state::Room&>(player.getLocation());
             if (hypothesisRoom.getRoomName() == hypothesis.room) {
                 std::vector<state::PlayerState>& playerStateVec = engine.getState().getPlayerStateVec();
                 state::Suspect teleportedSuspect = hypothesis.suspect;

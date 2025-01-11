@@ -123,21 +123,6 @@ namespace client{
 		}
 	}
 
-	void Client::showMeCardClient (state::Card card) {
-		/// Analyse du type de la carte, puis affichage de la carte selon son type
-		/*if (card.getType() == state::SUSPECT_CARD) {
-			auto& shownCard = static_cast<state::SuspectCard&>(card);
-			std::cout <<  " You show " << shownCard.getSuspectName() << std::endl;
-		}
-		else if (card.getType() == state::WEAPON_CARD) {
-			auto& shownCard = static_cast<state::WeaponCard&>(card);
-			std::cout <<  " You show " << shownCard.getWeaponName() << std::endl;
-		}
-		else {
-			std::cout <<  " You show " << card.getRoomName() << std::endl;
-		}*/
-	}
-
 	void Client::throwDiceClient () {
 		std::cout << "Press 1 to throw the dice ! " << std::endl;
 		ConsoleIO::getValidKey(1);
