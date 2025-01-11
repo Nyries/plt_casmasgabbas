@@ -176,11 +176,56 @@ namespace ai {
     }
 
     state::Door &ai::EasyAI::chooseDoor(const std::vector<state::Door *> &doorList) {
-                const int randomIndex = engine::UtilityFunctions::randomInt(doorList.size());
-        return *doorList.at(randomIndex);
+        state::Location position = playerState.getLocation();
+        state::Room room = static_cast<state::Room&>(position);
+
+        std::vector<state::Door*> roomDoors = room.getDoorList();
+        std::vector<state::Door*> allDoors;
+
+        for (int i = 0; i <= static_cast<int>(state::BEDROOM); ++i) {
+            state::Room currentRoom = static_cast<state::RoomName>(i);
+            std::vector<state::Door*> roomDoors = currentRoom.getDoorList();
+            allDoors.insert(allDoors.end(), roomDoors.begin(), roomDoors.end());
+        }
+
+        std::vector<std::tuple<int, state::Door*, state::Door*>> distance;
+
+        for (int i = 0; i<roomDoors.size();i++) {
+            for (int j = 0; j<allDoors.size();i++) {
+                state::Door* door1 = roomDoors.at(i);
+                state::Door* door2 = roomDoors.at(j);
+                auto* door1Cell = static_cast<state::Cell *>(door1);
+                auto* door2Cell = static_cast<state::Cell *>(door2);  // transforme en cellule pour calculer la distance
+                distance.push_back(std::make_tuple(distanceBetweenTwoCells(*door1Cell,*door2Cell), door1, door2));
+            }
+        }
+
+        std::vector<std::tuple<int, state::Door*, state::Door*>> choice;
+
+        for (const auto& t : distance) {
+            int firstValue = std::get<0>(t);
+            if (firstValue + 2 <= previousDiceResult) {
+                choice.push_back(t);
+            }
+        }
+
+        if (choice.size() > 0) {
+            const int randomIndex = engine::UtilityFunctions::randomInt(choice.size());
+            doorDestination = std::get<2>(choice[randomIndex]);  // de type state::Door*  faire une variable global, attribut
+            return *std::get<1>(choice[randomIndex]);
+        }
+
+        if (choice.size() == 0) {
+            // rechercher le minumum de la liste destination std::get<0> -> index du minimum de ça
+            // renvoyer std::get<1>(choice[index])
+            // doorDestination = std::get<2>(choice[index])
+        }
     }
 
     void EasyAI::getDiceResult(int result, const state::PlayerState &player) {
+        if (playerState.getIdentity() == player.getIdentity()) {
+            previousDiceResult = result;
+        }
 
     }
 
