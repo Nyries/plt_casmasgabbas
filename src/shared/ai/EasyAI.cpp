@@ -24,7 +24,10 @@ namespace ai {
     engine::CommandId EasyAI::chooseAction() {
         auto possibleActions = engine.getPossibleActions(playerInfo);
 
-        if (findNumberInArray(knownSuspects,2)==1 and findNumberInArray(knownWeapons,2)==1 and findNumberInArray(knownRooms,2)==1) {
+        if (std::find(knownSuspects.begin(), knownSuspects.end(), 2) != knownSuspects.end()
+            and std::find(knownWeapons.begin(), knownWeapons.end(), 2) != knownWeapons.end()
+            and std::find(knownRooms.begin(), knownRooms.end(), 2) != knownRooms.end())
+            {
             return engine::ACCUSATION;
         }
 
@@ -160,26 +163,14 @@ namespace ai {
         }
     }
 
-
-    // Retourne l'index trouvé (position dans l'array) sert pour trouver un zéro ou un deux (pour accusation)
-    template <size_t N>
-    int EasyAI::findNumberInArray(std::array<int,N>& array, int number) {
-        for (size_t i = 0; i < array.size(); ++i) {
-            if (array[i] == number) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     state::TripleClue ai::EasyAI::chooseAccusation() {
 
         state::TripleClue accusation{};
-        int easySuspect = findNumberInArray(knownSuspects,2);
+        int easySuspect = std::distance(knownSuspects.begin(), std::find(knownSuspects.begin(), knownSuspects.end(), 2));
         accusation.suspect = static_cast<state::Suspect>(easySuspect+1);
-        int easyWeapon = findNumberInArray(knownWeapons,2);
+        int easyWeapon = std::distance(knownWeapons.begin(), std::find(knownWeapons.begin(), knownWeapons.end(), 2));
         accusation.weapon = static_cast<state::Weapon>(easyWeapon+1);
-        int easyRoom = findNumberInArray(knownRooms,2);
+        int easyRoom = std::distance(knownRooms.begin(), std::find(knownRooms.begin(), knownRooms.end(), 2));
         accusation.room = static_cast<state::RoomName>(easyRoom+1);
         return accusation;
     }
