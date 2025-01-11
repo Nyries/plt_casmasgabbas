@@ -7,17 +7,17 @@
 #include <engine/UtilityFunctions.h>
 
 namespace ai {
-    RandomAI::RandomAI(engine::Engine &engine, state::PlayerInfo &playerInfo):AI(engine, playerInfo) {
+    RandomAI::RandomAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState) {
     }
 
     engine::CommandId RandomAI::chooseAction() {
-        auto possibleActions = engine.getPossibleActions(playerInfo);
+        auto possibleActions = engine.getPossibleActions(playerState);
         const int randomIndex = engine::UtilityFunctions::randomInt(possibleActions.size());
         return possibleActions.at(randomIndex);
     }
 
     engine::Move RandomAI::chooseMoveDirection() {
-        auto possibleMoves = engine.getPossibleMoves(playerInfo);
+        auto possibleMoves = engine.getPossibleMoves(playerState);
         const int randomIndex = engine::UtilityFunctions::randomInt(possibleMoves.size());
         return possibleMoves.at(randomIndex);
     }
@@ -28,7 +28,7 @@ namespace ai {
         hypothesis.suspect = static_cast<state::Suspect>(randomSuspect);
         int randomWeapon = engine::UtilityFunctions::randomInt(6) + 1;
         hypothesis.weapon = static_cast<state::Weapon>(randomWeapon);
-        state::Location randomPlace = playerInfo.getLocation();
+        state::Location randomPlace = playerState.getLocation();
         state::LocationType randomRoom = randomPlace.getType();
         hypothesis.room = static_cast<state::RoomName>(randomRoom);
         return hypothesis;
@@ -40,7 +40,7 @@ namespace ai {
         return randomIndex;
     }
 
-    void RandomAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerInfo &cardOwner) {
+    void RandomAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerState &cardOwner) {
         // DO NOTHING
     }
 

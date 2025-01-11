@@ -10,11 +10,11 @@
 #include <algorithm>
 
 namespace engine {
-    Engine::Engine(state::State &state): state(state), playerInfoVec(state.getPlayerInfoVec()), map(state.getMap()), envelope(state.getEnvelope()), currentPlayer(playerInfoVec) {
+    Engine::Engine(state::State &state): state(state), playerStateVec(state.getPlayerStateVec()), map(state.getMap()), envelope(state.getEnvelope()), currentPlayer(playerStateVec) {
     }
 
     int Engine::determineFirstPlayer() {
-        int firstPlayerIndex = UtilityFunctions::randomInt(playerInfoVec.size());
+        int firstPlayerIndex = UtilityFunctions::randomInt(playerStateVec.size());
         return firstPlayerIndex;
     }
 
@@ -55,7 +55,7 @@ namespace engine {
         int remainingSuspects = 6;
         int remainingWeapons = 6;
         int remainingRooms = 9;
-        CircularIterator<state::PlayerInfo> it(playerInfoVec);
+        CircularIterator<state::PlayerState> it(playerStateVec);
         for (int i = remainingSuspects + remainingWeapons + remainingRooms; i > 0; i--) {
             const int randomIndex = UtilityFunctions::randomInt(remainingSuspects + remainingWeapons + remainingRooms);
             if (randomIndex < remainingSuspects) {
@@ -78,9 +78,9 @@ namespace engine {
     }
 
     void Engine::distributionCharacters () {
-        const int numberOfPlayer = playerInfoVec.size();
+        const int numberOfPlayer = playerStateVec.size();
         const std::vector<state::Suspect> SuspectsVector = {state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE, state::VIOLET} ;
-        engine::CircularIterator<state::PlayerInfo> it(playerInfoVec, playerInfoVec.begin() + (&getCurrentPlayer() - &playerInfoVec.front())); //iterateur initialisé au joueur actuel
+        engine::CircularIterator<state::PlayerState> it(playerStateVec, playerStateVec.begin() + (&getCurrentPlayer() - &playerStateVec.front())); //iterateur initialisé au joueur actuel
         for (int i = 0; i < numberOfPlayer; i++) {
             it->setIdentity(SuspectsVector.at(i));
             state::Cell& startingCell = state.convertSuspectToStartingCell(SuspectsVector.at(i));
@@ -100,7 +100,7 @@ namespace engine {
         return dice;
     }
 
-    std::vector<const state::Card*> Engine::getPossessedCards (state::TripleClue inputClues, state::PlayerInfo& player) const{
+    std::vector<const state::Card*> Engine::getPossessedCards (state::TripleClue inputClues, state::PlayerState& player) const{
         std::vector<const state::Card*> possessedCards;
         const auto& suspectCards = player.getSuspectCards();
         for (const state::SuspectCard& card : suspectCards) {
@@ -129,7 +129,7 @@ namespace engine {
     }
 
 
-    std::vector<engine::CommandId> Engine::getPossibleActions (const state::PlayerInfo& player) const {
+    std::vector<engine::CommandId> Engine::getPossibleActions (const state::PlayerState& player) const {
         std::vector<engine::CommandId> possibleCommands;
         // Si c'est ton tour)
         if (&player == &(*currentPlayer)) {
@@ -161,7 +161,7 @@ namespace engine {
         commands.push_back( std::move(newCommand));
     }
 
-    std::vector<Move> Engine::getPossibleMoves(const state::PlayerInfo &player) const{
+    std::vector<Move> Engine::getPossibleMoves(const state::PlayerState &player) const{
         std::vector<Move> possibleMoves;
         const state::Location& playerLocation = player.getLocation();
         switch (playerLocation.getType()) {
@@ -243,11 +243,11 @@ namespace engine {
         return state;
     }
 
-    state::PlayerInfo &Engine::getCurrentPlayer() {
+    state::PlayerState &Engine::getCurrentPlayer() {
         return *currentPlayer;
     }
 
-    void Engine::setCurrentPlayer(state::PlayerInfo &player) {
+    void Engine::setCurrentPlayer(state::PlayerState &player) {
         currentPlayer.setElement(player);
     }
 

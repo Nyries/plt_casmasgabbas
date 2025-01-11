@@ -5,7 +5,7 @@
 #include "state.h"
 #include "SecretPassageCommand.h"
 namespace engine {
-    SecretPassageCommand::SecretPassageCommand(Engine &engine, state::PlayerInfo &player): Command(engine, player, SECRET_PASSAGE) {
+    SecretPassageCommand::SecretPassageCommand(Engine &engine, state::PlayerState &player): Command(engine, player, SECRET_PASSAGE) {
 
     }
 

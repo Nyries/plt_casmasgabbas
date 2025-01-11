@@ -254,38 +254,38 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
 }
 BOOST_AUTO_TEST_SUITE_END();
 
-// PlayerInfo.cpp test
-BOOST_AUTO_TEST_SUITE(TestPlayerInfo)
+// PlayerState.cpp test
+BOOST_AUTO_TEST_SUITE(TestPlayerState)
 BOOST_AUTO_TEST_CASE(TestSet_GetCanWin)
 {
 {
-  PlayerInfo playerInfo(Suspect::ROSE);
-  playerInfo.setCanWin(false);
-  BOOST_CHECK(playerInfo.getCanWin() == false);
+  PlayerState playerState(Suspect::ROSE);
+  playerState.setCanWin(false);
+  BOOST_CHECK(playerState.getCanWin() == false);
 }
 }
 BOOST_AUTO_TEST_CASE(TestSet_GetIdentity)
 {
 {
-  PlayerInfo playerInfo(Suspect::ROSE);
-  playerInfo.setIdentity(Suspect::VIOLET);
-  BOOST_CHECK(playerInfo.getIdentity() == Suspect::VIOLET);
+  PlayerState playerState(Suspect::ROSE);
+  playerState.setIdentity(Suspect::VIOLET);
+  BOOST_CHECK(playerState.getIdentity() == Suspect::VIOLET);
 }
 }
 BOOST_AUTO_TEST_CASE(TestSet_GetLocation){
 {
   Location location(LocationType::CORRIDOR);
-  PlayerInfo playerInfo(Suspect::ROSE);
-  playerInfo.setLocation(location);
-  BOOST_CHECK(playerInfo.getLocation().getType() == LocationType::CORRIDOR);
+  PlayerState playerState(Suspect::ROSE);
+  playerState.setLocation(location);
+  BOOST_CHECK(playerState.getLocation().getType() == LocationType::CORRIDOR);
 }
 }
 BOOST_AUTO_TEST_CASE(TestSet_GetPreviousHypothesisRoom)
 {
 {
-  PlayerInfo playerInfo(Suspect::ROSE);
-  playerInfo.setPreviousHypothesisRoom(RoomName::KITCHEN);
-  BOOST_CHECK(playerInfo.getPreviousHypothesisRoom() == RoomName::KITCHEN);
+  PlayerState playerState(Suspect::ROSE);
+  playerState.setPreviousHypothesisRoom(RoomName::KITCHEN);
+  BOOST_CHECK(playerState.getPreviousHypothesisRoom() == RoomName::KITCHEN);
 }
 }
 BOOST_AUTO_TEST_SUITE_END();

@@ -7,7 +7,7 @@
 #include <ai/RandomAI.h>
 
 namespace client {
-    AIPlayer::AIPlayer(engine::Engine &engine, state::PlayerInfo &playerInfo, std::string name, std::unique_ptr<ai::AI> ai): Player(engine, playerInfo, false, name) , ai(move(ai)){
+    AIPlayer::AIPlayer(engine::Engine &engine, state::PlayerState &playerState, std::string name, std::unique_ptr<ai::AI> ai): Player(engine, playerState, false, name) , ai(move(ai)){
     }
 
     engine::CommandId AIPlayer::chooseAction() {
@@ -35,7 +35,7 @@ namespace client {
     }
 
     void AIPlayer::seeACardFromPlayer(const state::Card &shownCard, const Player &cardOwner) {
-        ai->seeACardFromPlayer(shownCard, cardOwner.getPlayerInfo());
+        ai->seeACardFromPlayer(shownCard, cardOwner.getPlayerState());
     }
 
     void AIPlayer::makePlayerThrowDice() {

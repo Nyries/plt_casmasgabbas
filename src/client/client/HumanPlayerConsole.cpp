@@ -14,11 +14,11 @@
 #include "state/RoomName.hpp"
 
 namespace client {
-    HumanPlayerConsole::HumanPlayerConsole(engine::Engine &engine, state::PlayerInfo &playerInfo, std::string name): HumanPlayer(engine, playerInfo, move(name)) {
+    HumanPlayerConsole::HumanPlayerConsole(engine::Engine &engine, state::PlayerState &playerState, std::string name): HumanPlayer(engine, playerState, move(name)) {
     }
 
     engine::CommandId HumanPlayerConsole::chooseAction()   {
-        const std::vector<engine::CommandId> actions = engine.getPossibleActions (playerInfo);
+        const std::vector<engine::CommandId> actions = engine.getPossibleActions (playerState);
         const int size = static_cast<int>(actions.size());
 
         for (int i=0; i<size; i++) {
@@ -66,7 +66,7 @@ namespace client {
     }
 
     engine::Move HumanPlayerConsole::chooseMoveDirection()   {
-        auto possibleMoves = engine.getPossibleMoves(playerInfo);
+        auto possibleMoves = engine.getPossibleMoves(playerState);
         const int size = static_cast<int>(possibleMoves.size());
 
         for (int i=0; i<size; i++) {
@@ -148,7 +148,7 @@ namespace client {
 
     	std::cout << "You chose the " << hypothesisChoice.weapon << "!\n";
 
-		const auto& currentRoom = static_cast<const state::Room&>(playerInfo.getLocation());
+		const auto& currentRoom = static_cast<const state::Room&>(playerState.getLocation());
 	    hypothesisChoice.room = currentRoom.getRoomName();
 
 	    return hypothesisChoice;

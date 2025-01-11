@@ -18,11 +18,11 @@
 #include <state/WeaponCard.h>
 
 namespace ai {
-    EasyAI::EasyAI(engine::Engine &engine, state::PlayerInfo &playerInfo):AI(engine, playerInfo) {
+    EasyAI::EasyAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState) {
     }
 
     engine::CommandId EasyAI::chooseAction() {
-        auto possibleActions = engine.getPossibleActions(playerInfo);
+        auto possibleActions = engine.getPossibleActions(playerState);
 
         if (std::find(knownSuspects.begin(), knownSuspects.end(), 2) != knownSuspects.end()
             and std::find(knownWeapons.begin(), knownWeapons.end(), 2) != knownWeapons.end()
@@ -98,17 +98,17 @@ namespace ai {
 
 
 
-        if (playerInfo.getLocation().getType() == state::ROOM) {
+        if (playerState.getLocation().getType() == state::ROOM) {
 
             return engine::ENTER_ROOM;
         }
 
-        if (playerInfo.getLocation().getType() == state::DOOR) {
-            state::RoomName previousRoom = playerInfo.getPreviousHypothesisRoom();
-            auto locationType = playerInfo.getLocation().getType();
+        if (playerState.getLocation().getType() == state::DOOR) {
+            state::RoomName previousRoom = playerState.getPreviousHypothesisRoom();
+            auto locationType = playerState.getLocation().getType();
 
             /*if (locationType == state::ROOM) {
-                state::Room* room = playerInfo.getLocation().getRoom();
+                state::Room* room = playerState.getLocation().getRoom();
 
                 if (room) {
                 }
@@ -120,7 +120,7 @@ namespace ai {
 
 
 
-        auto possibleMoves = engine.getPossibleMoves(playerInfo);
+        auto possibleMoves = engine.getPossibleMoves(playerState);
         const int randomIndex = engine::UtilityFunctions::randomInt(possibleMoves.size());
         return possibleMoves.at(randomIndex);
     }
@@ -131,7 +131,7 @@ namespace ai {
         hypothesis.suspect = static_cast<state::Suspect>(randomSuspect);
         int randomWeapon = engine::UtilityFunctions::randomInt(6) + 1;
         hypothesis.weapon = static_cast<state::Weapon>(randomWeapon);
-        state::Location randomPlace = playerInfo.getLocation();
+        state::Location randomPlace = playerState.getLocation();
         state::LocationType randomRoom = randomPlace.getType();
         hypothesis.room = static_cast<state::RoomName>(randomRoom);
         return hypothesis;
@@ -145,7 +145,7 @@ namespace ai {
     }
 
 
-    void ai::EasyAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerInfo &cardOwner) {
+    void ai::EasyAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerState &cardOwner) {
 
         if (shownCard.getType() == state::SUSPECT_CARD) {
             int number = std::stoi(shownCard.getValueAsString());

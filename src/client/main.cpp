@@ -43,12 +43,12 @@ int main(int argc,char* argv[])
         engine::Engine myEngine(myState);
 
         //Construction de la liste des joueurs; le joueur humain est toujours le premier de la liste
-        std::vector<state::PlayerInfo>& playerInfoVec = myState.getPlayerInfoVec();
+        std::vector<state::PlayerState>& playerStateVec = myState.getPlayerStateVec();
         std::vector<std::unique_ptr<client::Player>> playerVec(playerCount);
-        client::HumanPlayerConsole userPlayer(myEngine, playerInfoVec.at(0), "User");
+        client::HumanPlayerConsole userPlayer(myEngine, playerStateVec.at(0), "User");
         playerVec.front() = std::make_unique<client::HumanPlayerConsole>(std::move(userPlayer));;
         for (int i = 1; i < playerCount; i++) {
-            client::AIPlayer aiPlayer(myEngine, playerInfoVec.at(i), "AI " + std::to_string(i), std::make_unique<ai::RandomAI>(myEngine, playerInfoVec.at(i)));
+            client::AIPlayer aiPlayer(myEngine, playerStateVec.at(i), "AI " + std::to_string(i), std::make_unique<ai::RandomAI>(myEngine, playerStateVec.at(i)));
             playerVec.at(i) = std::make_unique<client::AIPlayer>(std::move(aiPlayer));
         }
         client::Client myClient(myState, myEngine, tempIO, playerVec);
@@ -58,21 +58,21 @@ int main(int argc,char* argv[])
         //debut de la partie
         int firstPlayerIndex = myEngine.determineFirstPlayer();
         myPlayerList.setIterator(myPlayerList.getVector().at(firstPlayerIndex));
-        myEngine.setCurrentPlayer(playerInfoVec.at(firstPlayerIndex));
+        myEngine.setCurrentPlayer(playerStateVec.at(firstPlayerIndex));
         myEngine.distributionCharacters();
         myEngine.dealCards();
         //game loop
         while (!myState.getAccusationSuccess()) {
             client::Player& currentPlayer = myPlayerList.getCurrent();
-            state::PlayerInfo& currentPlayerInfo =  currentPlayer.getPlayerInfo();
+            state::PlayerState& currentPlayerState =  currentPlayer.getPlayerState();
             io.displayMap(myState.getMap());
-            if (currentPlayerInfo.getCanWin()) {
+            if (currentPlayerState.getCanWin()) {
                 const engine::CommandId currentAction = currentPlayer.chooseAction();
                 switch (currentAction) {
                     case engine::HYPOTHESIS: {
                         const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
                         io.displayHypothesis(currentPlayer, hypothesis);
-                        myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
+                        myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerState, hypothesis));
                         myEngine.executeCommands();
                         myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
                     }
@@ -80,11 +80,11 @@ int main(int argc,char* argv[])
                     case engine::ACCUSATION: {
                         const state::TripleClue accusation = currentPlayer.chooseAccusation();
                         io.displayAccusation(currentPlayer, accusation);
-                        myEngine.addCommand(std::make_unique<engine::AccusationCommand>(myEngine, currentPlayerInfo, accusation));
+                        myEngine.addCommand(std::make_unique<engine::AccusationCommand>(myEngine, currentPlayerState, accusation));
                     }
                     break;
                     case engine::SECRET_PASSAGE: {
-                        myEngine.addCommand(std::make_unique<engine::SecretPassageCommand>(myEngine, currentPlayerInfo));
+                        myEngine.addCommand(std::make_unique<engine::SecretPassageCommand>(myEngine, currentPlayerState));
                     }
                     break;
                     case engine::MOVE_FROM_DICE: {
@@ -92,30 +92,30 @@ int main(int argc,char* argv[])
                         int remainingMoves = diceResult.at(0) + diceResult.at(1);
                         io.displayDiceResult(myPlayerList, remainingMoves, currentPlayer);
                         while (remainingMoves > 0) {
-                            if (currentPlayerInfo.getLocation().getType() == state::CORRIDOR or currentPlayerInfo.getLocation().getType() == state::DOOR) {
-                                const auto& testCell = static_cast<const state::Cell&>(currentPlayerInfo.getLocation());
+                            if (currentPlayerState.getLocation().getType() == state::CORRIDOR or currentPlayerState.getLocation().getType() == state::DOOR) {
+                                const auto& testCell = static_cast<const state::Cell&>(currentPlayerState.getLocation());
                                 std::cout << "coords: " << testCell.getX() << ", " << testCell.getY() << std::endl;
                             }
-                            const auto possibleMoves = myEngine.getPossibleMoves(currentPlayerInfo);
+                            const auto possibleMoves = myEngine.getPossibleMoves(currentPlayerState);
                             if (possibleMoves.empty()) {
                                 break;
                             }
                             const engine::Move moveDirection = currentPlayer.chooseMoveDirection();
                             if (moveDirection == engine::EXIT_ROOM) {
-                                auto& currentRoom = static_cast<state::Room&>(currentPlayerInfo.getLocation());
+                                auto& currentRoom = static_cast<state::Room&>(currentPlayerState.getLocation());
                                 state::Door& newDoor = currentPlayer.chooseDoor(currentRoom.getDoorList());
-                                myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerInfo, newDoor));
+                                myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerState, newDoor));
                             }
                             else {
                                 state::Location& newLocation = myEngine.convertMoveToLocation(moveDirection);
-                                myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerInfo, newLocation));
+                                myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerState, newLocation));
                             }
                             myEngine.executeCommands();
                             io.displayMap(myState.getMap());
-                            if (currentPlayerInfo.getLocation().getType() == state::ROOM) {
+                            if (currentPlayerState.getLocation().getType() == state::ROOM) {
                                 const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
                                 io.displayHypothesis(currentPlayer, hypothesis);
-                                myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerInfo, hypothesis));
+                                myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerState, hypothesis));
                                 myEngine.executeCommands();
                                 myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
                                 break;
@@ -134,7 +134,7 @@ int main(int argc,char* argv[])
                 break;
             }
             myPlayerList.next();
-            myEngine.setCurrentPlayer(myPlayerList.getCurrent().getPlayerInfo());
+            myEngine.setCurrentPlayer(myPlayerList.getCurrent().getPlayerState());
 
         }
     }

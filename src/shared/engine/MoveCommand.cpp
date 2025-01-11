@@ -12,7 +12,7 @@
 #include "state/LocationType.h"
 
 namespace engine {
-    MoveCommand::MoveCommand(Engine &engine, state::PlayerInfo &player, state::Location& newLocation): Command(engine, player, ACCUSATION), newLocation(newLocation) {
+    MoveCommand::MoveCommand(Engine &engine, state::PlayerState &player, state::Location& newLocation): Command(engine, player, ACCUSATION), newLocation(newLocation) {
 
     }
     

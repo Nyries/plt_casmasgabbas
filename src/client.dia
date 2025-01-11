@@ -1082,7 +1082,7 @@
         <dia:real val="2.1999999999999997"/>
       </dia:attribute>
       <dia:attribute name="name">
-        <dia:string>#PlayerInfo#</dia:string>
+        <dia:string>#PlayerState#</dia:string>
       </dia:attribute>
       <dia:attribute name="stereotype">
         <dia:string>##</dia:string>
@@ -1925,10 +1925,10 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#playerInfo#</dia:string>
+            <dia:string>#playerState#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#state::PlayerInfo&amp;#</dia:string>
+            <dia:string>#state::PlayerState&amp;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -2042,10 +2042,10 @@
             </dia:composite>
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#playerInfo#</dia:string>
+                <dia:string>#playerState#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#state::PlayerInfo&amp;#</dia:string>
+                <dia:string>#state::PlayerState&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -2125,13 +2125,13 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#getPlayerInfo#</dia:string>
+            <dia:string>#getPlayerState#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#const state::PlayerInfo&amp;#</dia:string>
+            <dia:string>#const state::PlayerState&amp;#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -2155,13 +2155,13 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#getPlayerInfo#</dia:string>
+            <dia:string>#getPlayerState#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#state::PlayerInfo&amp;#</dia:string>
+            <dia:string>#state::PlayerState&amp;#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -2722,10 +2722,10 @@
             </dia:composite>
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#playerInfo#</dia:string>
+                <dia:string>#playerState#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#state::PlayerInfo&amp;#</dia:string>
+                <dia:string>#state::PlayerState&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -3919,10 +3919,10 @@
             </dia:composite>
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#playerInfo#</dia:string>
+                <dia:string>#playerState#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#state::PlayerInfo&amp;#</dia:string>
+                <dia:string>#state::PlayerState&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
@@ -4853,10 +4853,10 @@
             </dia:composite>
             <dia:composite type="umlparameter">
               <dia:attribute name="name">
-                <dia:string>#playerInfo#</dia:string>
+                <dia:string>#playerState#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#state::PlayerInfo&amp;#</dia:string>
+                <dia:string>#state::PlayerState&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>

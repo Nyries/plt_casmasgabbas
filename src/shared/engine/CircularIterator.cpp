@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <memory>
 #include <stdexcept>
-#include <state/PlayerInfo.h>
+#include <state/PlayerState.h>
 
 namespace client {
     class Player;
@@ -78,6 +78,6 @@ namespace engine {
     }
 
     template class CircularIterator<std::unique_ptr<client::Player>>;
-    template class CircularIterator<state::PlayerInfo>;
+    template class CircularIterator<state::PlayerState>;
 
 }
