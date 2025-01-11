@@ -85,8 +85,6 @@ namespace engine {
             it->setIdentity(SuspectsVector.at(i));
             state::Cell& startingCell = state.convertSuspectToStartingCell(SuspectsVector.at(i));
             it->setLocation(startingCell);
-            startingCell.setOccupied(true);
-
             ++it;
         }
     }
@@ -235,7 +233,7 @@ namespace engine {
         commands.clear();
     }
 
-    std::vector<state::Card> &Engine::getEnvelope() {
+    state::TripleClue Engine::getEnvelope() const {
         return envelope;
     }
 

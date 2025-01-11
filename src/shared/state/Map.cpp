@@ -100,7 +100,7 @@ namespace state {
     }
 
 
-    std::vector<Room>& Map::getRoomList()
+    const std::vector<Room>& Map::getRoomList() const
     {
         return roomList;
     }

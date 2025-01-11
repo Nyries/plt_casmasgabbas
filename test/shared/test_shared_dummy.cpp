@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(TestSet_GetOccupied)
 {
 {
   Cell cell(1, 2, LocationType::INACCESSIBLE);
-  cell.setOccupied(true);
+  //cell.setOccupied(true);
   BOOST_CHECK(cell.getOccupied() == true);
 }
 }

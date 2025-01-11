@@ -5,12 +5,16 @@
 
 #include <utility>
 
+#include "Location.h"
+
 namespace state {
     PlayerState::PlayerState(Suspect identity): location(nullptr),  identity(identity), canWin(true), previousHypothesisRoom(state::NO_ROOM) {
     }
 
     void PlayerState::setLocation(Location &newLocation) {
+        this->location->setPlayer(nullptr);
         this->location = &newLocation;
+        newLocation.setPlayer(this);
     }
 
     Location& PlayerState::getLocation () {
