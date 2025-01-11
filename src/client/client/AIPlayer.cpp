@@ -43,7 +43,7 @@ namespace client {
     }
 
     void AIPlayer::displayDiceResult(int result, const Player &player) {
-
+        ai->getDiceResult(result, player.getPlayerState());
     }
 
 

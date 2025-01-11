@@ -61,4 +61,9 @@ namespace ai {
         return *doorList.at(randomIndex);
     }
 
+    void RandomAI::getDiceResult(int result, const state::PlayerState &player) {
+
+    }
+
+
 }

@@ -180,5 +180,9 @@ namespace ai {
         return *doorList.at(randomIndex);
     }
 
+    void EasyAI::getDiceResult(int result, const state::PlayerState &player) {
+
+    }
+
 
 }
