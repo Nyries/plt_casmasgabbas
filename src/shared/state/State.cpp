@@ -23,7 +23,7 @@ namespace state {
         return playerStateVec;
     }
 
-    bool State::getAccusationSuccess() {
+    bool State::getAccusationSuccess() const{
         return accusationSuccess;
     }
 
