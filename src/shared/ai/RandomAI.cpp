@@ -28,7 +28,8 @@ namespace ai {
         hypothesis.suspect = static_cast<state::Suspect>(randomSuspect);
         int randomWeapon = engine::UtilityFunctions::randomInt(6) + 1;
         hypothesis.weapon = static_cast<state::Weapon>(randomWeapon);
-        int randomRoom = engine::UtilityFunctions::randomInt(9) + 1;
+        state::Location randomPlace = playerInfo.getLocation();
+        state::LocationType randomRoom = randomPlace.getType();
         hypothesis.room = static_cast<state::RoomName>(randomRoom);
         return hypothesis;
     }
@@ -40,7 +41,7 @@ namespace ai {
     }
 
     void RandomAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerInfo &cardOwner) {
-
+        // DO NOTHING
     }
 
 
