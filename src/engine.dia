@@ -3143,17 +3143,17 @@
     </dia:object>
     <dia:object type="UML - Generalization" version="1" id="O15">
       <dia:attribute name="obj_pos">
-        <dia:point val="21.2833,-10.58"/>
+        <dia:point val="21.2888,-10.58"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="20.4333,-10.6316;49.4826,13.5767"/>
+        <dia:rectangle val="20.4387,-10.6303;49.4826,13.5767"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="21.2833,-10.58"/>
-        <dia:point val="21.2542,5.7883"/>
+        <dia:point val="21.2888,-10.58"/>
+        <dia:point val="21.2833,5.7883"/>
         <dia:point val="49.4326,5.7883"/>
         <dia:point val="49.4326,13.5267"/>
       </dia:attribute>
