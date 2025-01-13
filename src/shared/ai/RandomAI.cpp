@@ -28,9 +28,13 @@ namespace ai {
         hypothesis.suspect = static_cast<state::Suspect>(randomSuspect);
         int randomWeapon = engine::UtilityFunctions::randomInt(6) + 1;
         hypothesis.weapon = static_cast<state::Weapon>(randomWeapon);
-        state::Location randomPlace = playerState.getLocation();
-        state::LocationType randomRoom = randomPlace.getType();
-        hypothesis.room = static_cast<state::RoomName>(randomRoom);
+        auto locationEnum = playerState.getLocation().getType();
+        if (locationEnum == state::ROOM) {
+            auto& randomRoom = static_cast<state::Room&>(playerState.getLocation());
+            hypothesis.room = randomRoom.getRoomName();
+        } else {
+            throw std::runtime_error("error");
+        }
         return hypothesis;
     }
 
@@ -62,7 +66,7 @@ namespace ai {
     }
 
     void RandomAI::getDiceResult(int result, const state::PlayerState &player) {
-
+        // NOTHING
     }
 
 
