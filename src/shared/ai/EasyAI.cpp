@@ -13,12 +13,13 @@
 #include <engine.h>
 #include <algorithm>
 #include <limits>
+#include <queue>
 #include <state/RoomCard.h>
 #include <state/SuspectCard.h>
 #include <state/WeaponCard.h>
 
 namespace ai {
-    EasyAI::EasyAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState) {
+    EasyAI::EasyAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState), doorDestination(nullptr) {
     }
 
     engine::CommandId EasyAI::chooseAction() {
@@ -94,58 +95,117 @@ namespace ai {
         } return -1;
     }
 
+
     engine::Move EasyAI::chooseMoveDirection() {
+        auto& cell1 = static_cast<state::Cell&>(playerState.getLocation());
+        auto& cell2 = doorDestination;
 
+        // POSITION DEPART ET ARRIVEE
+        int startX = cell1.getX();;
+        int startY = cell1.getY();
+        int targetX = cell2->getX();
+        int targetY = cell2->getY();
 
+        // JOUEUR DANS UNE PIECE ?
 
         if (playerState.getLocation().getType() == state::ROOM) {
-
-            return engine::ENTER_ROOM;
+            return engine::EXIT_ROOM;
         }
+
+        // SI JOUEUR SUR UNE PORTE IL RENTRE OU PAS
 
         if (playerState.getLocation().getType() == state::DOOR) {
-            state::RoomName previousRoom = playerState.getPreviousHypothesisRoom();
-            auto locationType = playerState.getLocation().getType();
+            auto& door = static_cast<state::Door&>(playerState.getLocation());
+            const state::Room* connectedRoom = door.getRoom();
+            if (connectedRoom->getRoomName()!=playerState.getPreviousHypothesisRoom()) {
+                return engine::ENTER_ROOM;
+            }
+        }
 
-            /*if (locationType == state::ROOM) {
-                state::Room* room = playerState.getLocation().getRoom();
+        // DIRECTION DES DEPLACEMENTS
+        std::vector<std::pair<int, int>> directions = {
+            {0, -1},  // UP
+            {0, 1},   // DOWN
+            {-1, 0},  // LEFT
+            {1, 0}    // RIGHT
+        };
 
-                if (room) {
+        // Définir les coûts pour les déplacements
+        int mapWidth = const_cast<state::Map&>(map).getWidth();
+        int mapHeight = const_cast<state::Map&>(map).getHeight();
+
+
+        std::vector<std::vector<int>> distances(mapWidth, std::vector<int>(mapHeight, std::numeric_limits<int>::max()));
+        distances[startX][startY] = 0;
+
+        std::vector<std::pair<int, int>> toExplore;
+        toExplore.push_back({startX, startY});
+
+        // TROUVER LES DISTANCES AVEC TOUTES LES CELLULES
+        while (!toExplore.empty()) {
+            auto [currentX, currentY] = toExplore.front();
+            toExplore.pop_back();
+
+            // CHECK LES VOISINS
+            std::vector<state::LocationType> neighbors = map.getNeighborsAsLocationType(currentX, currentY);
+            for (size_t i = 0; i < directions.size(); i++) {
+                int nextX = currentX + directions[i].first;
+                int nextY = currentY + directions[i].second;
+
+                // CHECK LE TYPE DES CELLULES + LIMITES MAP
+                if (nextX >= 0 && nextY >= 0 && nextX < mapWidth && nextY < mapHeight &&
+                    neighbors[i] != state::ROOM &&
+                    neighbors[i] != state::INACCESSIBLE) {
+                    if (distances[nextX][nextY] > distances[currentX][currentY] + 1) {
+                        distances[nextX][nextY] = distances[currentX][currentY] + 1;
+                        toExplore.push_back({nextX, nextY});
+                    }
                 }
-*/
+            }
+        }
 
+        // REVENIR A LA CELLULE PRECEDENTE
+        for (size_t i = 0; i < directions.size(); i++) {
+            int prevX = targetX - directions[i].first;
+            int prevY = targetY - directions[i].second;
+
+            if (prevX >= 0 && prevY >= 0 && prevX < mapWidth && prevY < mapHeight &&
+                distances[prevX][prevY] == distances[targetX][targetY] - 1) {
+                // RENVOYER LA DIRECTION
+                if (directions[i] == std::make_pair(0, -1)) return engine::MOVE_DOWN;
+                if (directions[i] == std::make_pair(0, 1)) return engine::MOVE_UP;
+                if (directions[i] == std::make_pair(1, 0)) return engine::MOVE_RIGHT;
+                if (directions[i] == std::make_pair(-1, 0)) return engine::MOVE_LEFT;
+            }
+        }
         }
 
 
-
-
-
-        auto possibleMoves = engine.getPossibleMoves(playerState);
-        const int randomIndex = engine::UtilityFunctions::randomInt(possibleMoves.size());
-        return possibleMoves.at(randomIndex);
-    }
-
-    state::TripleClue ai::EasyAI::chooseHypothesis() {
+    state::TripleClue EasyAI::chooseHypothesis() {
         state::TripleClue hypothesis{};
-        int randomSuspect = engine::UtilityFunctions::randomInt(6) + 1;
-        hypothesis.suspect = static_cast<state::Suspect>(randomSuspect);
-        int randomWeapon = engine::UtilityFunctions::randomInt(6) + 1;
-        hypothesis.weapon = static_cast<state::Weapon>(randomWeapon);
-        state::Location randomPlace = playerState.getLocation();
-        state::LocationType randomRoom = randomPlace.getType();
-        hypothesis.room = static_cast<state::RoomName>(randomRoom);
+        int easySuspect = engine::UtilityFunctions::randomInt(6) + 1;
+        hypothesis.suspect = static_cast<state::Suspect>(easySuspect);
+        int easyWeapon = engine::UtilityFunctions::randomInt(6) + 1;
+        hypothesis.weapon = static_cast<state::Weapon>(easyWeapon);
+        auto locationEnum = playerState.getLocation().getType();
+        if (locationEnum == state::ROOM) {
+            auto& easyRoom = static_cast<state::Room&>(playerState.getLocation());
+            hypothesis.room = easyRoom.getRoomName();
+        } else {
+            throw std::runtime_error("error");
+        }
         return hypothesis;
     }
 
 
-    int ai::EasyAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards) {
+    int EasyAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards) {
         const int randomIndex = engine::UtilityFunctions::randomInt(cards.size());
         return randomIndex;
 
     }
 
 
-    void ai::EasyAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerState &cardOwner) {
+    void EasyAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerState &cardOwner) {
 
         if (shownCard.getType() == state::SUSPECT_CARD) {
             int number = std::stoi(shownCard.getValueAsString());
@@ -163,7 +223,7 @@ namespace ai {
         }
     }
 
-    state::TripleClue ai::EasyAI::chooseAccusation() {
+    state::TripleClue EasyAI::chooseAccusation() {
 
         state::TripleClue accusation{};
         int easySuspect = std::distance(knownSuspects.begin(), std::find(knownSuspects.begin(), knownSuspects.end(), 2));
@@ -175,17 +235,19 @@ namespace ai {
         return accusation;
     }
 
-    state::Door &ai::EasyAI::chooseDoor(const std::vector<state::Door *> &doorList) {
+    state::Door &EasyAI::chooseDoor(const std::vector<state::Door *> &doorList) {
         state::Location position = playerState.getLocation();
         state::Room room = static_cast<state::Room&>(position);
 
         std::vector<state::Door*> roomDoors = room.getDoorList();
         std::vector<state::Door*> allDoors;
 
-        for (int i = 0; i <= static_cast<int>(state::BEDROOM); ++i) {
+        for (int i = 1; i <= static_cast<int>(state::BEDROOM); ++i) {
             state::Room currentRoom = static_cast<state::RoomName>(i);
-            std::vector<state::Door*> roomDoors = currentRoom.getDoorList();
-            allDoors.insert(allDoors.end(), roomDoors.begin(), roomDoors.end());
+            if (currentRoom.getRoomName() != room.getRoomName()) {
+                std::vector<state::Door*> roomDoors2 = currentRoom.getDoorList();
+                allDoors.insert(allDoors.end(), roomDoors2.begin(), roomDoors2.end());
+            }
         }
 
         std::vector<std::tuple<int, state::Door*, state::Door*>> distance;
@@ -215,10 +277,18 @@ namespace ai {
             return *std::get<1>(choice[randomIndex]);
         }
 
-        if (choice.size() == 0) {
-            // rechercher le minumum de la liste destination std::get<0> -> index du minimum de ça
-            // renvoyer std::get<1>(choice[index])
-            // doorDestination = std::get<2>(choice[index])
+        if (choice.size() == 0) {   // distance ne sera jamais vide, c'est impossible
+
+            int min = std::get<0>(distance.at(0));
+            int index = 0;
+            for (int i = 1; i<distance.size(); i++) {
+                if (std::get<0>(distance.at(i))<min) {
+                    min = std::get<0>(distance.at(i));
+                    index = i;
+                }
+            }
+            doorDestination = std::get<2>(choice[index]);
+            return *std::get<1>(choice[index]);
         }
     }
 
