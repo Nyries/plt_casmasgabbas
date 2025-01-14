@@ -198,10 +198,9 @@ namespace ai {
     }
 
 
-    int EasyAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards) {
+    int EasyAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards, const state::PlayerState &client) {
         const int randomIndex = engine::UtilityFunctions::randomInt(cards.size());
         return randomIndex;
-
     }
 
 
