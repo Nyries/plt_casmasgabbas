@@ -43,7 +43,7 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
                     io.displayDiceResult(myPlayerList, remainingMoves, currentPlayer);
                     while (remainingMoves > 0) {
                         if (currentPlayerState.getLocation().getType() == state::CORRIDOR or currentPlayerState.getLocation().getType() == state::DOOR) {
-                            const auto& testCell = static_cast<const state::Cell&>(currentPlayerState.getLocation());
+                            const auto& testCell = dynamic_cast<const state::Cell&>(currentPlayerState.getLocation());
                             std::cout << "coords: " << testCell.getX() << ", " << testCell.getY() << std::endl;
                         }
                         const auto possibleMoves = myEngine.getPossibleMoves(currentPlayerState);
@@ -52,7 +52,7 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
                         }
                         const engine::Move moveDirection = currentPlayer.chooseMoveDirection();
                         if (moveDirection == engine::EXIT_ROOM) {
-                            auto& currentRoom = static_cast<state::Room&>(currentPlayerState.getLocation());
+                            auto& currentRoom = dynamic_cast<state::Room&>(currentPlayerState.getLocation());
                             state::Door& newDoor = currentPlayer.chooseDoor(currentRoom.getDoorList());
                             myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerState, newDoor));
                         }
