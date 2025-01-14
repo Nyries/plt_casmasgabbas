@@ -68,7 +68,7 @@ namespace engine {
     }
 
     template<typename T>
-    void CircularIterator<T>::setElement(T &element) {
+    void CircularIterator<T>::setElement(const T &element) {
         it = std::find_if(vec.begin(), vec.end(), [&element](const T& i) {
             return &i == &element;
         });

@@ -3565,7 +3565,7 @@
         </dia:composite>
         <dia:composite type="umloperation">
           <dia:attribute name="name">
-            <dia:string>#setIterator#</dia:string>
+            <dia:string>#setCurrent#</dia:string>
           </dia:attribute>
           <dia:attribute name="stereotype">
             <dia:string>##</dia:string>
@@ -3597,7 +3597,7 @@
                 <dia:string>#element#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#std::unique_ptr&lt;Player&gt;&amp;#</dia:string>
+                <dia:string>#const std::unique_ptr&lt;Player&gt;&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>

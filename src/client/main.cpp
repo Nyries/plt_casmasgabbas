@@ -126,7 +126,7 @@ int main(int argc,char* argv[])
         //debut de la partie
         client::PlayerList& myPlayerList = myClient.getPlayerList();
         int firstPlayerIndex = myEngine.determineFirstPlayer();
-        myPlayerList.setIterator(myPlayerList.getVector().at(firstPlayerIndex));
+        myPlayerList.setCurrent(myPlayerList.getVector().at(firstPlayerIndex));
         myEngine.setCurrentPlayer(playerStateVec.at(firstPlayerIndex));
         myEngine.distributionCharacters();
         myEngine.dealCards();

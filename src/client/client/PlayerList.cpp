@@ -19,7 +19,7 @@ namespace client {
         return it;
     }
 
-    void PlayerList::setIterator(std::unique_ptr<Player> &element) {
+    void PlayerList::setCurrent(const std::unique_ptr<Player> &element) {
         it.setElement(element);
     }
 
