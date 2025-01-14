@@ -26,9 +26,14 @@ namespace client {
         return ai->chooseHypothesis();
     }
 
-    int AIPlayer::chooseACardToShowClient(const std::vector<const state::Card *> &cards) {
-        return ai->chooseACardToShowClient(cards);
-    }
+int AIPlayer::chooseACardToShowClient(const std::vector<const state::Card *> &cards) {
+
+}
+
+
+    /*int AIPlayer::chooseACardToShowClient(const std::vector<const state::Card *> &cards, const state::PlayerState client) {
+        return ai->chooseACardToShowClient(cards,client);
+    }*/
 
     state::TripleClue AIPlayer::chooseAccusation() {
         return ai->chooseAccusation();
