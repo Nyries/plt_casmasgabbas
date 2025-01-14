@@ -17,6 +17,7 @@
 #include <state/RoomCard.h>
 #include <state/SuspectCard.h>
 #include <state/WeaponCard.h>
+#include <iostream>
 
 namespace ai {
     EasyAI::EasyAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState), doorDestination(nullptr) {
@@ -97,14 +98,19 @@ namespace ai {
 
 
     engine::Move EasyAI::chooseMoveDirection() {
+        std::cout << "problem" << std::endl;
         auto& cell1 = static_cast<state::Cell&>(playerState.getLocation());
-        auto& cell2 = doorDestination;
+        auto cell2 =  doorDestination;
 
         // POSITION DEPART ET ARRIVEE
         int startX = cell1.getX();;
+        std::cout << "problem2" << std::endl;
         int startY = cell1.getY();
+        std::cout << "problem2after" << std::endl;
         int targetX = cell2->getX();
+        std::cout << "problem2again" << std::endl;
         int targetY = cell2->getY();
+        std::cout << "problem2bis" << std::endl;
 
         // JOUEUR DANS UNE PIECE ?
 
@@ -123,13 +129,14 @@ namespace ai {
         }
 
         // DIRECTION DES DEPLACEMENTS
+        std::cout << "problem2bisbis" << std::endl;
         std::vector<std::pair<int, int>> directions = {
             {0, -1},  // UP
             {0, 1},   // DOWN
             {-1, 0},  // LEFT
             {1, 0}    // RIGHT
         };
-
+        std::cout << "problem3" << std::endl;
         // Définir les coûts pour les déplacements
         int mapWidth = const_cast<state::Map&>(map).getWidth();
         int mapHeight = const_cast<state::Map&>(map).getHeight();
@@ -140,12 +147,12 @@ namespace ai {
 
         std::vector<std::pair<int, int>> toExplore;
         toExplore.push_back({startX, startY});
-
+        std::cout << "problem4" << std::endl;
         // TROUVER LES DISTANCES AVEC TOUTES LES CELLULES
         while (!toExplore.empty()) {
             auto [currentX, currentY] = toExplore.front();
             toExplore.pop_back();
-
+            std::cout << "problem5" << std::endl;
             // CHECK LES VOISINS
             std::vector<state::LocationType> neighbors = map.getNeighborsAsLocationType(currentX, currentY);
             for (size_t i = 0; i < directions.size(); i++) {
@@ -163,7 +170,7 @@ namespace ai {
                 }
             }
         }
-
+        std::cout << "problem6" << std::endl;
         // REVENIR A LA CELLULE PRECEDENTE
         for (size_t i = 0; i < directions.size(); i++) {
             int prevX = targetX - directions[i].first;
@@ -172,6 +179,7 @@ namespace ai {
             if (prevX >= 0 && prevY >= 0 && prevX < mapWidth && prevY < mapHeight &&
                 distances[prevX][prevY] == distances[targetX][targetY] - 1) {
                 // RENVOYER LA DIRECTION
+                std::cout << "problem7" << std::endl;
                 if (directions[i] == std::make_pair(0, -1)) return engine::MOVE_DOWN;
                 if (directions[i] == std::make_pair(0, 1)) return engine::MOVE_UP;
                 if (directions[i] == std::make_pair(1, 0)) return engine::MOVE_RIGHT;

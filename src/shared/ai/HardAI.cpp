@@ -170,8 +170,8 @@ namespace ai {
 
     }
 
-    int HardAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards) {
 
+    int HardAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards, const state::PlayerState &client) {
         int numberOfCards = playerState.getCards().size();
         int numberOfPlayers = engine.getState().getPlayerStateVec().size() - 1;
 
@@ -182,11 +182,8 @@ namespace ai {
 
         cardsShownToEverybody.resize(numberOfCards, std::vector(numberOfPlayers,0));
 
-
-
-
-
     }
+
 
     void HardAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerState &cardOwner) {
 
