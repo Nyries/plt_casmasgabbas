@@ -15,7 +15,7 @@ namespace engine {
             throw std::invalid_argument("Invalid player's starting position");
         }
 
-        state::Room *secretPassage = static_cast<state::Room &>(player.getLocation()).getSecretPassage();
+        state::Room *secretPassage = dynamic_cast<state::Room &>(player.getLocation()).getSecretPassage();
         player.setLocation(*secretPassage);
 
     }

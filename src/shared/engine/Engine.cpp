@@ -134,7 +134,7 @@ namespace engine {
 
             // Si tu es dans une salle
             if (player.getLocation().getType()== state::ROOM) {
-                const auto& currentRoom = static_cast<const state::Room&>(player.getLocation());
+                const auto& currentRoom = dynamic_cast<const state::Room&>(player.getLocation());
                 // Si tu n'as pas encore fait d'hypotèse
                 if (player.getPreviousHypothesisRoom() != currentRoom.getRoomName()) {
                     possibleCommands.push_back(engine::HYPOTHESIS);
@@ -164,7 +164,7 @@ namespace engine {
         const state::Location& playerLocation = player.getLocation();
         switch (playerLocation.getType()) {
             case state::CORRIDOR: {
-                const auto& playerCell = static_cast<const state::Cell&>(playerLocation);
+                const auto& playerCell = dynamic_cast<const state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
                 for (int i = 0; i < (int)neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);
@@ -191,7 +191,7 @@ namespace engine {
             break;
             case state::DOOR: {
                 possibleMoves.push_back(ENTER_ROOM);
-                const auto& playerCell = static_cast<const state::Cell&>(playerLocation);
+                const auto& playerCell = dynamic_cast<const state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
                 for (unsigned long i = 0; i < neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);

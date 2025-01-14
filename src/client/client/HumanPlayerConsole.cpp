@@ -148,7 +148,7 @@ namespace client {
 
     	std::cout << "You chose the " << hypothesisChoice.weapon << "!\n";
 
-		const auto& currentRoom = static_cast<const state::Room&>(playerState.getLocation());
+		const auto& currentRoom = dynamic_cast<const state::Room&>(playerState.getLocation());
 	    hypothesisChoice.room = currentRoom.getRoomName();
 
 	    return hypothesisChoice;
