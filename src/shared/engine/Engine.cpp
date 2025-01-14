@@ -10,7 +10,7 @@
 #include <algorithm>
 
 namespace engine {
-    Engine::Engine(state::State &state): state(state), playerStateVec(state.getPlayerStateVec()), map(state.getMap()), envelope(state.getEnvelope()), currentPlayer(playerStateVec) {
+    Engine::Engine(state::State &state): state(state), playerStateVec(state.getPlayerStateVec()), map(state.getMap()), envelope(state.getEnvelope()), currentPlayer(playerStateVec.begin()) {
     }
 
     int Engine::determineFirstPlayer() {
@@ -55,7 +55,7 @@ namespace engine {
         int remainingSuspects = 6;
         int remainingWeapons = 6;
         int remainingRooms = 9;
-        CircularIterator<state::PlayerState> it(playerStateVec);
+        auto it = getIterator();
         for (int i = remainingSuspects + remainingWeapons + remainingRooms; i > 0; i--) {
             const int randomIndex = UtilityFunctions::randomInt(remainingSuspects + remainingWeapons + remainingRooms);
             if (randomIndex < remainingSuspects) {
@@ -73,19 +73,19 @@ namespace engine {
                 roomCardsVector.erase(roomCardsVector.begin() + randomIndex - remainingSuspects - remainingWeapons);
                 remainingRooms--;
             }
-            ++it;
+            incrementIterator(it);
         }
     }
 
     void Engine::distributionCharacters () {
         const int numberOfPlayer = playerStateVec.size();
         const std::vector<state::Suspect> SuspectsVector = {state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE, state::VIOLET} ;
-        engine::CircularIterator<state::PlayerState> it(playerStateVec, playerStateVec.begin() + (&getCurrentPlayer() - &playerStateVec.front())); //iterateur initialisé au joueur actuel
+        auto it = getIterator(); //iterateur initialisé au joueur actuel
         for (int i = 0; i < numberOfPlayer; i++) {
             it->setIdentity(SuspectsVector.at(i));
             state::Cell& startingCell = state.convertSuspectToStartingCell(SuspectsVector.at(i));
             it->setLocation(startingCell);
-            ++it;
+            incrementIterator(it);
         }
     }
 
@@ -246,7 +246,12 @@ namespace engine {
     }
 
     void Engine::setCurrentPlayer(state::PlayerState &player) {
-        currentPlayer.setElement(player);
+        currentPlayer = std::find_if(playerStateVec.begin(), playerStateVec.end(), [&player](const auto& i) {
+            return &i == &player;
+        });
+        if (currentPlayer == playerStateVec.end()) {
+            throw std::runtime_error("element not found in vector");
+        }
     }
 
     state::Location& Engine::convertMoveToLocation(const Move move) {
@@ -273,6 +278,19 @@ namespace engine {
         }
         throw std::invalid_argument("invalid move relative to player's location type");
     }
+
+    std::vector<state::PlayerState>::iterator Engine::getIterator() {
+        return currentPlayer;
+    }
+
+    void Engine::incrementIterator(std::vector<state::PlayerState>::iterator &it) {
+        ++it;
+        if (it == playerStateVec.end()) {
+            it = playerStateVec.begin();
+        }
+    }
+
+
 }
 
 

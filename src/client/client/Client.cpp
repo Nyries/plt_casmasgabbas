@@ -143,7 +143,7 @@ namespace client{
 	void Client::askHypothesisToNeighbors(Player &hypothesisPlayer, state::TripleClue hypothesis) {
 		const auto& itCurrent = playerList.getIterator();
 		auto it = itCurrent;
-		++it;
+		playerList.incrementIterator(it);
 		while (it != itCurrent) {
 			auto& player = *it;
 			std::vector<const state::Card*> possessedCards = engine.getPossessedCards(hypothesis, player->getPlayerState());
@@ -152,7 +152,7 @@ namespace client{
 				hypothesisPlayer.seeACardFromPlayer(*possessedCards.at(chosenIndex), *player);
 				break;
 			}
-			++it;
+			playerList.incrementIterator(it);
 		}
 	}
 
