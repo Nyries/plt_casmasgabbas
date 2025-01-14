@@ -312,5 +312,9 @@ namespace ai {
 
     }
 
+    void EasyAI::startOfTheGame() {
+
+    }
+
 
 }

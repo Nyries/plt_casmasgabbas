@@ -47,5 +47,8 @@ namespace client {
         ai->getDiceResult(result, player.getPlayerState());
     }
 
+    void AIPlayer::startOfTheGame() {
+        ai->startOfTheGame();
+    }
 
 }

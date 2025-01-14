@@ -312,12 +312,9 @@ namespace ai {
         }
     }
 
+    void MediumAI::startOfTheGame() {
 
-
-
-
-
-
+    }
 
 }
 

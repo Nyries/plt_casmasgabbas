@@ -12,6 +12,7 @@ void test() {
 void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& myClient) {
     client::PlayerList& myPlayerList = myClient.getPlayerList();
     client::IO& io = myClient.getIO();
+    io.startOfTheGame(myPlayerList);
     while (!myState.getAccusationSuccess()) {
         client::Player& currentPlayer = myPlayerList.getCurrent();
         state::PlayerState& currentPlayerState =  currentPlayer.getPlayerState();

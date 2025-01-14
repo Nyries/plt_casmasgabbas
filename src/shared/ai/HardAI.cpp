@@ -287,6 +287,11 @@ namespace ai {
         }
     }
 
+    void HardAI::startOfTheGame() {
+
+    }
+
+
 
 
 

@@ -242,5 +242,9 @@ namespace client {
     	std::cout << player.getName() << " threw the dice and got " << result << "!" << std::endl;
 	}
 
+	void HumanPlayerConsole::startOfTheGame() {
+
+	}
+
 
 }
