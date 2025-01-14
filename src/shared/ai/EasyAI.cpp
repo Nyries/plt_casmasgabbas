@@ -18,6 +18,7 @@
 #include <state/SuspectCard.h>
 #include <state/WeaponCard.h>
 #include <iostream>
+#include <optional>
 
 namespace ai {
     EasyAI::EasyAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState), doorDestination(nullptr) {
@@ -100,16 +101,21 @@ namespace ai {
     engine::Move EasyAI::chooseMoveDirection() {
         std::cout << "problem" << std::endl;
         auto& cell1 = static_cast<state::Cell&>(playerState.getLocation());
-        auto cell2 =  doorDestination;
+        auto* cell2ptr = static_cast<state::Cell *>(doorDestination);
+        state::Cell& cell2 = *cell2ptr;
+        std::cout << "X: " << cell1.getX() << " ; Y: " << cell1.getY() << std::endl;
+        std::cout << "type : " << cell1.type << std::endl;
+        std::cout << "type : " << cell2.type << std::endl;
+        std::cout << "X: " << cell2.getX() << " ; Y: " << cell2.getY() << std::endl;
 
         // POSITION DEPART ET ARRIVEE
         int startX = cell1.getX();;
         std::cout << "problem2" << std::endl;
         int startY = cell1.getY();
         std::cout << "problem2after" << std::endl;
-        int targetX = cell2->getX();
+        int targetX = cell2.getX();
         std::cout << "problem2again" << std::endl;
-        int targetY = cell2->getY();
+        int targetY = cell2.getY();
         std::cout << "problem2bis" << std::endl;
 
         // JOUEUR DANS UNE PIECE ?
