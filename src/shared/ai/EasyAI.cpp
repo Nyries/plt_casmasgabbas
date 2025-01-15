@@ -30,7 +30,7 @@ namespace ai {
         if (std::find(knownSuspects.begin(), knownSuspects.end(), 2) != knownSuspects.end()
             and std::find(knownWeapons.begin(), knownWeapons.end(), 2) != knownWeapons.end()
             and std::find(knownRooms.begin(), knownRooms.end(), 2) != knownRooms.end())
-            {
+        {
             return engine::ACCUSATION;
         }
 
@@ -173,7 +173,7 @@ namespace ai {
                         distances[nextX][nextY] = distances[currentX][currentY] + 1;
                         toExplore.push_back({nextX, nextY});
                     }
-                }
+                    }
             }
         }
         std::cout << "problem6" << std::endl;
@@ -190,9 +190,10 @@ namespace ai {
                 if (directions[i] == std::make_pair(0, 1)) return engine::MOVE_UP;
                 if (directions[i] == std::make_pair(1, 0)) return engine::MOVE_RIGHT;
                 if (directions[i] == std::make_pair(-1, 0)) return engine::MOVE_LEFT;
-            }
+                }
         }
-        }
+        throw std::runtime_error("error");
+    }
 
 
     state::TripleClue EasyAI::chooseHypothesis() {
@@ -265,8 +266,8 @@ namespace ai {
 
         std::vector<std::tuple<int, state::Door*, state::Door*>> distance;
 
-        for (int i = 0; i<roomDoors.size();i++) {
-            for (int j = 0; j<allDoors.size();i++) {
+        for (long unsigned i = 0; i<roomDoors.size();i++) {
+            for (long unsigned j = 0; j<allDoors.size();j++) {
                 state::Door* door1 = roomDoors.at(i);
                 state::Door* door2 = roomDoors.at(j);
                 auto* door1Cell = static_cast<state::Cell *>(door1);
@@ -294,7 +295,7 @@ namespace ai {
 
             int min = std::get<0>(distance.at(0));
             int index = 0;
-            for (int i = 1; i<distance.size(); i++) {
+            for (long unsigned i = 1; i<distance.size(); i++) {
                 if (std::get<0>(distance.at(i))<min) {
                     min = std::get<0>(distance.at(i));
                     index = i;
@@ -303,6 +304,7 @@ namespace ai {
             doorDestination = std::get<2>(choice[index]);
             return *std::get<1>(choice[index]);
         }
+        throw std::runtime_error("error");
     }
 
     void EasyAI::getDiceResult(int result, const state::PlayerState &player) {
@@ -314,7 +316,90 @@ namespace ai {
 
     void EasyAI::startOfTheGame() {
 
+        // PARTIE MISE A JOUR DE doorDestination
+
+        // RECUPERER TOUTES LES PORTES DU JEU
+        std::vector<state::Door*> allDoors;
+        for (int i = 1; i <= static_cast<int>(state::BEDROOM); ++i) {
+            state::Room currentRoom = static_cast<state::RoomName>(i);
+            std::vector<state::Door*> roomDoors = currentRoom.getDoorList();
+            allDoors.insert(allDoors.end(), roomDoors.begin(), roomDoors.end());
+        }
+
+        std::vector<std::tuple<int, state::Door*>> distance;
+
+        // CALCULER TOUTES LES DISTANCES ENTRE LA POSITION DU JOUEUR ET LES PORTES
+        for (long unsigned i = 0; i<allDoors.size();i++) {
+
+            auto& positionPlayerPtr = static_cast<state::Cell&>(playerState.getLocation());
+
+            state::Door* door2 = allDoors.at(i);
+            auto* door2CellPtr = static_cast<state::Cell *>(door2);  // transforme en cellule pour calculer la distance
+            state::Cell& cell2 = *door2CellPtr;
+
+
+            distance.push_back(std::make_tuple(distanceBetweenTwoCells(positionPlayerPtr,cell2), door2));
+        }
+
+
+        std::vector<std::tuple<int, state::Door*>> choice;
+
+        for (const auto& t : distance) {
+            int firstValue = std::get<0>(t);
+            if (firstValue + 2 <= previousDiceResult) {
+                choice.push_back(t);
+            }
+        }
+
+        if (choice.size() > 0) {
+            const int randomIndex = engine::UtilityFunctions::randomInt(choice.size());
+            doorDestination = std::get<1>(choice[randomIndex]);  // de type state::Door*  faire une variable global, attribut
+        }
+
+        if (choice.size() == 0) {   // distance ne sera jamais vide, c'est impossible
+
+            int min = std::get<0>(distance.at(0));
+            int index = 0;
+            for (long unsigned i = 1; i<distance.size(); i++) {
+                if (std::get<0>(distance.at(i))<min) {
+                    min = std::get<0>(distance.at(i));
+                    index = i;
+                }
+            }
+            doorDestination = std::get<1>(choice[index]);
+        }
+
+
+        // PARTIE MISE A JOUR DES ARRAYS KNOWN
+
+        auto suspectCards = playerState.getSuspectCards();
+        auto weaponCards = playerState.getWeaponCards();
+        auto roomCards = playerState.getRoomCards();
+
+        for (long unsigned i = 0; i<suspectCards.size();i++) {
+            int suspect = suspectCards.at(i).getSuspectName();
+            knownSuspects.at(suspect-1) = 1;
+        }
+        for (long unsigned i = 0; i<weaponCards.size();i++) {
+            int weapon = weaponCards.at(i).getWeaponName();
+            knownWeapons.at(weapon-1) = 1;
+        }
+        for (long unsigned i = 0; i<roomCards.size();i++) {
+            int room = roomCards.at(i).getRoomName();
+            knownRooms.at(room-1) = 1;
+        }
+
+        // INITIALISATION DE LA MATRICE QUI VA SUIVRE QUELLE CARTE EST MONTREE A QUI
+        // INUTILE POUR EASYAI
+
+
     }
-
-
 }
+
+
+
+
+
+
+
+
