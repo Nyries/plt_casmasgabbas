@@ -1,34 +1,60 @@
 #include "Grid.h"
 
 namespace render {
-Grid::Grid(unsigned int x, unsigned int y, unsigned int rows, unsigned int cols, float cellSize, const sf::Color& gridColor)
-        : m_xpos(x), m_ypos(y), m_rows(rows), m_cols(cols), m_cellSize(cellSize) {
-        // Créer les cases de la grille
-        this->setPosition(x, y);
-        for (unsigned int row = 0; row < rows; ++row) {
-            for (unsigned int col = 0; col < cols; ++col) {
-                sf::RectangleShape cell(sf::Vector2f(cellSize, cellSize));
-                cell.setPosition(x + col * cellSize, y + row * cellSize);
-                cell.setFillColor(sf::Color::Transparent);
-                cell.setOutlineThickness(1);
-                cell.setOutlineColor(gridColor);
-                m_cells.push_back(cell);
+    Grid::Grid(int rows, int cols, float width, float height) : rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows)
+    {
+        createGrid();
+    }
+
+    void Grid::createGrid()
+    {
+        cells.clear();
+        for (int y = 0; y < rows; ++y) {
+            for (int x = 0; x < cols; ++x) {
+                sf::Color color(255, 255, 153);
+                RenderCell cell(x * cellWidth, y * cellHeight, cellWidth, cellHeight, x, y);
+                cells.push_back(cell); 
             }
         }
-}
+    }
 
-void Grid::draw(sf::RenderWindow &window)
-{
-        for (const auto& cell : m_cells) {
-            window.draw(cell);
-        }
- 
-        for (const auto& piece : m_pieces) {
-            window.draw(piece);
-        }
-}
+    void Grid::mergeCells(int startX, int startY, int endX, int endY, sf::Color& color)
+    {
+        float mergedWidth = (endX - startX + 1) * cellWidth;
+        float mergedHeight = (endY - startY + 1) * cellHeight;
 
-void Grid::placePiece(const sf::Vector2i &mousePos, const sf::Color &pieceColor)
+        // Créer une nouvelle cellule fusionnée
+        sf::RectangleShape mergedCell;
+        mergedCell.setPosition(startX * cellWidth, startY * cellHeight);
+        mergedCell.setSize({mergedWidth, mergedHeight});
+        mergedCell.setFillColor(color);
+        mergedCell.setOutlineColor(sf::Color::Black);
+        mergedCell.setOutlineThickness(1);
+
+        // Marquer les cellules fusionnées comme inutilisées
+        for (auto& cell : cells) {
+            if (cell.gridX >= startX && cell.gridX <= endX &&
+                cell.gridY >= startY && cell.gridY <= endY) {
+                cell.isMerged = true;
+            }
+        }
+
+        // Ajouter la cellule fusionnée à la liste
+        RenderCell cell(mergedCell.getPosition().x, mergedCell.getPosition().y,
+                        mergedCell.getSize().x, mergedCell.getSize().y, startX, startY);
+        cells.push_back(cell);
+    }
+
+    void Grid::draw(sf::RenderWindow &window)
+    {
+        for (const auto& cell : cells) {
+            if (!cell.isMerged) {
+                window.draw(cell);
+            }
+        }
+    }
+
+/*void Grid::placePiece(const sf::Vector2i &mousePos, const sf::Color &pieceColor)
 {
     unsigned int col = mousePos.x / m_cellSize;
     unsigned int row = mousePos.y / m_cellSize;
@@ -65,5 +91,5 @@ void Grid::deletePiece(const sf::Vector2i &mousePos)
                 m_pieces.erase(it);
             }
         }
-}
+}*/
 }

@@ -24,7 +24,7 @@ namespace render{
     float x_ratio = (float)windowSize/BackgroundTexture.getSize().x;
     float y_ratio = (float)windowSize/BackgroundTexture.getSize().y;
     sf::Color borderColor(0,0,0,50);
-    Grid grid(x_ratio*93, y_ratio*47, 25, 24, 44*x_ratio, borderColor);
+    Grid grid(25, 24, 93*x_ratio, y_ratio);
     
     while (window.isOpen()){    
         sf::Event event;
@@ -33,12 +33,12 @@ namespace render{
                 window.close();
             }
             if (event.type == sf::Event::MouseButtonPressed){
-                if (event.mouseButton.button == sf::Mouse::Left){
+                /*if (event.mouseButton.button == sf::Mouse::Left){
                     grid.placePiece(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), cluedoRed);
                 }
                 if (event.mouseButton.button == sf::Mouse::Right){
                     grid.deletePiece(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
-                }
+                }*/
             }
 
         }
