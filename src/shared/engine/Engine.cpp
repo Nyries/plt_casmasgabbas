@@ -257,11 +257,11 @@ namespace engine {
     state::Location& Engine::convertMoveToLocation(const Move move) {
         state::Location& playerLoc = currentPlayer->getLocation();
         if (move == ENTER_ROOM && playerLoc.getType() == state::DOOR) {
-            auto& playerDoor = static_cast<state::Door&>(playerLoc);
+            auto& playerDoor = dynamic_cast<state::Door&>(playerLoc);
             return *playerDoor.getRoom();
         }
         if (move!= ENTER_ROOM && move != EXIT_ROOM && (playerLoc.getType() == state::DOOR || playerLoc.getType() == state::CORRIDOR)) {
-            auto& playerCell = static_cast<state::Cell&>(playerLoc);
+            auto& playerCell = dynamic_cast<state::Cell&>(playerLoc);
             auto neighborList = state.getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
             if (move == MOVE_UP) {
                 return *neighborList.at(0);
