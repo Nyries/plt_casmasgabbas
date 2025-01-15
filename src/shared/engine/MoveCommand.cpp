@@ -20,9 +20,9 @@ namespace engine {
         state::Location& playerLoc = player.getLocation();
         switch (playerLoc.getType()) {
             case state::CORRIDOR:{
+                auto& playerCell = dynamic_cast<state::Cell&>(playerLoc);
                 if (newLocation.getType() == state::CORRIDOR or newLocation.getType() == state::DOOR) {
                     auto& newCell = dynamic_cast<state::Cell&>(newLocation);
-                    auto& playerCell = dynamic_cast<state::Cell&>(playerLoc);
                     auto neighborList = engine.getState().getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
                     auto it = std::find_if(neighborList.begin(), neighborList.end(),
                     [&newCell](const state::Cell* i) {
@@ -35,9 +35,9 @@ namespace engine {
                 break;
             }
             case state::DOOR: {
+                auto& playerCell = dynamic_cast<state::Cell&>(playerLoc);
                 if (newLocation.getType() == state::CORRIDOR or newLocation.getType() == state::DOOR) {
                     auto& newCell = dynamic_cast<state::Cell&>(newLocation);
-                    auto& playerCell = dynamic_cast<state::Cell&>(playerLoc);
                     auto neighborList = engine.getState().getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
                     auto it = std::find_if(neighborList.begin(), neighborList.end(),
                     [&newCell](const state::Cell* i) {
