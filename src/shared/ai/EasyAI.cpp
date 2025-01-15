@@ -320,8 +320,9 @@ namespace ai {
 
         // RECUPERER TOUTES LES PORTES DU JEU
         std::vector<state::Door*> allDoors;
-        for (int i = 1; i <= static_cast<int>(state::BEDROOM); ++i) {
-            state::Room currentRoom = static_cast<state::RoomName>(i);
+        for (int i = 0; i < 9; i++) {
+            auto RoomList = map.getRoomList();
+            auto currentRoom = RoomList.at(i);
             std::vector<state::Door*> roomDoors = currentRoom.getDoorList();
             allDoors.insert(allDoors.end(), roomDoors.begin(), roomDoors.end());
         }
@@ -342,32 +343,17 @@ namespace ai {
         }
 
 
-        std::vector<std::tuple<int, state::Door*>> choice;
-
-        for (const auto& t : distance) {
-            int firstValue = std::get<0>(t);
-            if (firstValue + 2 <= previousDiceResult) {
-                choice.push_back(t);
+        int min = std::get<0>(distance.at(0));
+        int index = 0;
+        for (long unsigned i = 1; i<distance.size(); i++) {
+            if (std::get<0>(distance.at(i))<min) {
+                min = std::get<0>(distance.at(i));
+                index = i;
             }
         }
+        doorDestination = std::get<1>(distance[index]);
 
-        if (choice.size() > 0) {
-            const int randomIndex = engine::UtilityFunctions::randomInt(choice.size());
-            doorDestination = std::get<1>(choice[randomIndex]);  // de type state::Door*  faire une variable global, attribut
-        }
-
-        if (choice.size() == 0) {   // distance ne sera jamais vide, c'est impossible
-
-            int min = std::get<0>(distance.at(0));
-            int index = 0;
-            for (long unsigned i = 1; i<distance.size(); i++) {
-                if (std::get<0>(distance.at(i))<min) {
-                    min = std::get<0>(distance.at(i));
-                    index = i;
-                }
-            }
-            doorDestination = std::get<1>(choice[index]);
-        }
+        std::cout << "joueur: " << playerState.getIdentity() << " & doorDestination: " << doorDestination << std::endl;
 
 
         // PARTIE MISE A JOUR DES ARRAYS KNOWN
