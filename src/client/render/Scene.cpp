@@ -12,19 +12,28 @@ namespace render{
     sf::Color cluedoGreenGray(132, 145, 134); // Gris vert Cluedo
     Scene::Scene(sf::RenderWindow& window): window(window)
 {
-    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    desktop = sf::VideoMode::getDesktopMode();
+    
     std::cout << desktop.width << "x" << desktop.height << std::endl;
-    int windowSize = desktop.height*0.9;
-    window.create(sf::VideoMode(windowSize, windowSize), "Cluedo plt", sf::Style::Close);
+    // Create the window
+    int windowWidth = desktop.width*0.9;
+    int windowHeight = desktop.height*0.9;
+    window.create(sf::VideoMode(windowWidth, windowHeight), "Cluedo plt", sf::Style::Close);
     window.setFramerateLimit(120); // Réduit la charge sur le processeur.
     window.setPosition(sf::Vector2i(desktop.width/2 - window.getSize().x/2, desktop.height/2 - window.getSize().y/2));
-    loadMapImage("../ressources/maison_map.png");
-    std::cout << BackgroundTexture.getSize().x << "x" << BackgroundTexture.getSize().y << std::endl;
-    Background.setScale((float)windowSize/BackgroundTexture.getSize().x, (float)windowSize/BackgroundTexture.getSize().y);
-    float x_ratio = (float)windowSize/BackgroundTexture.getSize().x;
-    float y_ratio = (float)windowSize/BackgroundTexture.getSize().y;
-    sf::Color borderColor(0,0,0,50);
-    Grid grid(25, 24, 93*x_ratio, y_ratio);
+    
+    //Splitting the window in two parts, one for the map and the other for the UI
+    UIBackground = sf::RectangleShape(sf::Vector2f(abs(windowHeight-windowWidth), windowHeight));
+    UIBackground.setPosition(0, 0);
+    UIBackground.setFillColor(cluedoRed);
+    MapBackground = sf::RectangleShape(sf::Vector2f(windowHeight, windowHeight));
+    MapBackground.setPosition(windowWidth-windowHeight, 0);
+    MapTexture.loadFromFile("../ressources/maison_map.png");
+    MapSprite.setTexture(MapTexture);
+    MapSprite.setPosition(sf::Vector2f(windowWidth-windowHeight, 0));  
+    MapSprite.setScale((float)windowHeight/MapTexture.getSize().x, (float)windowHeight/MapTexture.getSize().y);  
+    Grid grid(25, 24, MapBackground.getSize().x, MapBackground.getSize().y);
+    grid.setPosition(windowWidth-windowHeight, 0);
     
     while (window.isOpen()){    
         sf::Event event;
@@ -43,8 +52,13 @@ namespace render{
 
         }
         window.clear(sf::Color::White);
-        window.draw(Background);
+
+        window.draw(UIBackground);
+        window.draw(MapBackground);
+
+        window.draw(MapSprite);
         grid.draw(window);
+        
         window.display();
         
     }
@@ -59,11 +73,7 @@ namespace render{
 }
 void Scene::loadMapImage(std::string mapImagePath)
 {
-    BackgroundTexture.loadFromFile(mapImagePath);
-    Background.setTexture(BackgroundTexture);
-    Background.setPosition(0,0);
-    
-    
+  
 }
 void Scene::gameInit()
 {

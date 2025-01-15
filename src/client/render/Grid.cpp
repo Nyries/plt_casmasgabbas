@@ -54,6 +54,13 @@ namespace render {
         }
     }
 
+    void Grid::setPosition(float x, float y)
+    {
+        for (auto& cell : cells) {
+            cell.setPosition(cell.getPosition().x + x, cell.getPosition().y + y);
+        }
+    }
+
 /*void Grid::placePiece(const sf::Vector2i &mousePos, const sf::Color &pieceColor)
 {
     unsigned int col = mousePos.x / m_cellSize;

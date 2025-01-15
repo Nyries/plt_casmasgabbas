@@ -1,12 +1,17 @@
 #include <engine.h>
 #include <state.h>
 #include <client.h>
-#include <engine.h>
+#include <render.h>
 #include <ai.h>
 #include <iostream>
 
+#include <SFML/Graphics.hpp>
+
 void test() {
     //put some code you want to run here
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Cluedo plt");
+    render::Scene scene(window);
+
 }
 
 void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& myClient) {

@@ -6,7 +6,7 @@ render::RenderCell::RenderCell (float x, float y, float width, float height, int
 : gridX(gridX), gridY(gridY){
         setPosition(x, y);
         setSize({width, height});
-        setFillColor(sf::Color(255, 255, 153));
+        setFillColor(sf::Color(255, 255, 153, 70));
         setOutlineColor(sf::Color::Black);
-        setOutlineThickness(10);
+        setOutlineThickness(1);
     }
