@@ -15,4 +15,11 @@ namespace client {
         }
     }
 
+    void IO::startOfTheGame(PlayerList &playerList) {
+        for (auto& currentPlayer: playerList.getVector()) {
+            currentPlayer->startOfTheGame();
+        }
+    }
+
+
 }

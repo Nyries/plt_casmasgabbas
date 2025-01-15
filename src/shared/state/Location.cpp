@@ -46,4 +46,9 @@ namespace state{
 			this->type = LocationType::INACCESSIBLE;}
 
     }
+
+	void Location::setPlayer(const PlayerState *player) {
+		//n'est là que pour le polymorphisme
+	}
+
 }

@@ -7,7 +7,7 @@
 #include <ai/RandomAI.h>
 
 namespace client {
-    AIPlayer::AIPlayer(engine::Engine &engine, state::PlayerInfo &playerInfo, std::string name, std::unique_ptr<ai::AI> ai): Player(engine, playerInfo, false, name) , ai(move(ai)){
+    AIPlayer::AIPlayer(engine::Engine &engine, state::PlayerState &playerState, std::string name, std::unique_ptr<ai::AI> ai): Player(engine, playerState, false, name) , ai(move(ai)){
     }
 
     engine::CommandId AIPlayer::chooseAction() {
@@ -26,16 +26,17 @@ namespace client {
         return ai->chooseHypothesis();
     }
 
-    int AIPlayer::chooseACardToShowClient(const std::vector<const state::Card *> &cards) {
-        return ai->chooseACardToShowClient(cards);
+    int AIPlayer::chooseACardToShowClient(const std::vector<const state::Card *> &cards, const state::PlayerState &client) {
+        return ai->chooseACardToShowClient(cards,client);
     }
+
 
     state::TripleClue AIPlayer::chooseAccusation() {
         return ai->chooseAccusation();
     }
 
     void AIPlayer::seeACardFromPlayer(const state::Card &shownCard, const Player &cardOwner) {
-        ai->seeACardFromPlayer(shownCard, cardOwner.getPlayerInfo());
+        ai->seeACardFromPlayer(shownCard, cardOwner.getPlayerState());
     }
 
     void AIPlayer::makePlayerThrowDice() {
@@ -43,8 +44,11 @@ namespace client {
     }
 
     void AIPlayer::displayDiceResult(int result, const Player &player) {
-
+        ai->getDiceResult(result, player.getPlayerState());
     }
 
+    void AIPlayer::startOfTheGame() {
+        ai->startOfTheGame();
+    }
 
 }

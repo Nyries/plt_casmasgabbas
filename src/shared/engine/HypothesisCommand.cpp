@@ -8,22 +8,22 @@
 #include "Engine.h"
 
 namespace engine {
-    HypothesisCommand::HypothesisCommand(Engine &engine, state::PlayerInfo &player, const state::TripleClue &hypothesis): Command(engine, player, HYPOTHESIS), hypothesis(hypothesis) {
+    HypothesisCommand::HypothesisCommand(Engine &engine, state::PlayerState &player, const state::TripleClue &hypothesis): Command(engine, player, HYPOTHESIS), hypothesis(hypothesis) {
 
     }
 
 
     void HypothesisCommand::execute() {
         if (&player == &engine.getCurrentPlayer() and player.getLocation().getType() == state::ROOM){
-            auto& hypothesisRoom = static_cast<state::Room&>(player.getLocation());
+            auto& hypothesisRoom = dynamic_cast<const state::Room&>(player.getLocation());
             if (hypothesisRoom.getRoomName() == hypothesis.room) {
-                std::vector<state::PlayerInfo>& playerInfoVec = engine.getState().getPlayerInfoVec();
+                std::vector<state::PlayerState>& playerStateVec = engine.getState().getPlayerStateVec();
                 state::Suspect teleportedSuspect = hypothesis.suspect;
-                const auto teleportedPlayer = std::find_if(playerInfoVec.begin(), playerInfoVec.end(),
-                    [teleportedSuspect](state::PlayerInfo& i){
+                const auto teleportedPlayer = std::find_if(playerStateVec.begin(), playerStateVec.end(),
+                    [teleportedSuspect](state::PlayerState& i){
                         return teleportedSuspect == i.getIdentity();
                     });
-                if (teleportedPlayer != playerInfoVec.end()) {
+                if (teleportedPlayer != playerStateVec.end()) {
                     teleportedPlayer->setLocation(player.getLocation());
                 }
                 player.setPreviousHypothesisRoom(hypothesisRoom.getRoomName());

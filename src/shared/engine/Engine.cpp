@@ -10,11 +10,11 @@
 #include <algorithm>
 
 namespace engine {
-    Engine::Engine(state::State &state): state(state), playerInfoVec(state.getPlayerInfoVec()), map(state.getMap()), envelope(state.getEnvelope()), currentPlayer(playerInfoVec) {
+    Engine::Engine(state::State &state): state(state), playerStateVec(state.getPlayerStateVec()), map(state.getMap()), envelope(state.getEnvelope()), currentPlayer(playerStateVec.begin()) {
     }
 
     int Engine::determineFirstPlayer() {
-        int firstPlayerIndex = UtilityFunctions::randomInt(playerInfoVec.size());
+        int firstPlayerIndex = UtilityFunctions::randomInt(playerStateVec.size());
         return firstPlayerIndex;
     }
 
@@ -55,7 +55,7 @@ namespace engine {
         int remainingSuspects = 6;
         int remainingWeapons = 6;
         int remainingRooms = 9;
-        CircularIterator<state::PlayerInfo> it(playerInfoVec);
+        auto it = getIterator();
         for (int i = remainingSuspects + remainingWeapons + remainingRooms; i > 0; i--) {
             const int randomIndex = UtilityFunctions::randomInt(remainingSuspects + remainingWeapons + remainingRooms);
             if (randomIndex < remainingSuspects) {
@@ -73,21 +73,19 @@ namespace engine {
                 roomCardsVector.erase(roomCardsVector.begin() + randomIndex - remainingSuspects - remainingWeapons);
                 remainingRooms--;
             }
-            ++it;
+            incrementIterator(it);
         }
     }
 
     void Engine::distributionCharacters () {
-        const int numberOfPlayer = playerInfoVec.size();
+        const int numberOfPlayer = playerStateVec.size();
         const std::vector<state::Suspect> SuspectsVector = {state::ROSE,state::PERVENCHE, state::LEBLANC, state::OLIVE, state::MOUTARDE, state::VIOLET} ;
-        engine::CircularIterator<state::PlayerInfo> it(playerInfoVec, playerInfoVec.begin() + (&getCurrentPlayer() - &playerInfoVec.front())); //iterateur initialisé au joueur actuel
+        auto it = getIterator(); //iterateur initialisé au joueur actuel
         for (int i = 0; i < numberOfPlayer; i++) {
             it->setIdentity(SuspectsVector.at(i));
             state::Cell& startingCell = state.convertSuspectToStartingCell(SuspectsVector.at(i));
             it->setLocation(startingCell);
-            startingCell.setOccupied(true);
-
-            ++it;
+            incrementIterator(it);
         }
     }
 
@@ -100,7 +98,7 @@ namespace engine {
         return dice;
     }
 
-    std::vector<const state::Card*> Engine::getPossessedCards (state::TripleClue inputClues, state::PlayerInfo& player) const{
+    std::vector<const state::Card*> Engine::getPossessedCards (state::TripleClue inputClues, state::PlayerState& player) const{
         std::vector<const state::Card*> possessedCards;
         const auto& suspectCards = player.getSuspectCards();
         for (const state::SuspectCard& card : suspectCards) {
@@ -129,14 +127,14 @@ namespace engine {
     }
 
 
-    std::vector<engine::CommandId> Engine::getPossibleActions (const state::PlayerInfo& player) const {
+    std::vector<engine::CommandId> Engine::getPossibleActions (const state::PlayerState& player) const {
         std::vector<engine::CommandId> possibleCommands;
         // Si c'est ton tour)
         if (&player == &(*currentPlayer)) {
 
             // Si tu es dans une salle
             if (player.getLocation().getType()== state::ROOM) {
-                const auto& currentRoom = static_cast<const state::Room&>(player.getLocation());
+                const auto& currentRoom = dynamic_cast<const state::Room&>(player.getLocation());
                 // Si tu n'as pas encore fait d'hypotèse
                 if (player.getPreviousHypothesisRoom() != currentRoom.getRoomName()) {
                     possibleCommands.push_back(engine::HYPOTHESIS);
@@ -161,12 +159,12 @@ namespace engine {
         commands.push_back( std::move(newCommand));
     }
 
-    std::vector<Move> Engine::getPossibleMoves(const state::PlayerInfo &player) const{
+    std::vector<Move> Engine::getPossibleMoves(const state::PlayerState &player) const{
         std::vector<Move> possibleMoves;
         const state::Location& playerLocation = player.getLocation();
         switch (playerLocation.getType()) {
             case state::CORRIDOR: {
-                const auto& playerCell = static_cast<const state::Cell&>(playerLocation);
+                const auto& playerCell = dynamic_cast<const state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
                 for (int i = 0; i < (int)neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);
@@ -193,7 +191,7 @@ namespace engine {
             break;
             case state::DOOR: {
                 possibleMoves.push_back(ENTER_ROOM);
-                const auto& playerCell = static_cast<const state::Cell&>(playerLocation);
+                const auto& playerCell = dynamic_cast<const state::Cell&>(playerLocation);
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
                 for (unsigned long i = 0; i < neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i);
@@ -235,7 +233,7 @@ namespace engine {
         commands.clear();
     }
 
-    std::vector<state::Card> &Engine::getEnvelope() {
+    state::TripleClue Engine::getEnvelope() const {
         return envelope;
     }
 
@@ -243,12 +241,17 @@ namespace engine {
         return state;
     }
 
-    state::PlayerInfo &Engine::getCurrentPlayer() {
+    state::PlayerState &Engine::getCurrentPlayer() {
         return *currentPlayer;
     }
 
-    void Engine::setCurrentPlayer(state::PlayerInfo &player) {
-        currentPlayer.setElement(player);
+    void Engine::setCurrentPlayer(state::PlayerState &player) {
+        currentPlayer = std::find_if(playerStateVec.begin(), playerStateVec.end(), [&player](const auto& i) {
+            return &i == &player;
+        });
+        if (currentPlayer == playerStateVec.end()) {
+            throw std::runtime_error("element not found in vector");
+        }
     }
 
     state::Location& Engine::convertMoveToLocation(const Move move) {
@@ -275,6 +278,19 @@ namespace engine {
         }
         throw std::invalid_argument("invalid move relative to player's location type");
     }
+
+    std::vector<state::PlayerState>::iterator Engine::getIterator() {
+        return currentPlayer;
+    }
+
+    void Engine::incrementIterator(std::vector<state::PlayerState>::iterator &it) {
+        ++it;
+        if (it == playerStateVec.end()) {
+            it = playerStateVec.begin();
+        }
+    }
+
+
 }
 
 

@@ -12,7 +12,7 @@ namespace state {
         return name;
     }
 
-    std::string Room::getNameAsString()
+    std::string Room::getNameAsString() const
     {
         if (name == STUDY)
             return "STUDY";
