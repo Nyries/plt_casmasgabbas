@@ -88,6 +88,7 @@
       </dia:composite>
     </dia:attribute>
   </dia:diagramdata>
+  <dia:layer name="Arrière-plan" visible="true" connectable="false"/>
   <dia:layer name="Arrière-plan" visible="true" connectable="true" active="true">
     <dia:object type="UML - LargePackage" version="0" id="O0">
       <dia:attribute name="obj_pos">
@@ -2817,7 +2818,7 @@
             <dia:string>#knownRooms#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::array&lt;int,6&gt;#</dia:string>
+            <dia:string>#std::array&lt;int,9&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>#{0}#</dia:string>
@@ -3814,7 +3815,7 @@
             <dia:string>#knownRooms#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::array&lt;int,6&gt;#</dia:string>
+            <dia:string>#std::array&lt;int,9&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>#{0}#</dia:string>
@@ -4642,7 +4643,7 @@
             <dia:string>#knownRooms#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::array&lt;int,6&gt;#</dia:string>
+            <dia:string>#std::array&lt;int,9&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>#{0}#</dia:string>
