@@ -30,9 +30,10 @@ namespace client {
 
     }
 
-    int HumanPlayerRender::chooseACardToShowClient(const std::vector<const state::Card *> &cards, const state::PlayerState &player) {
+    int HumanPlayerRender::chooseACardToShowPlayer(const std::vector<const state::Card *> &cards, const Player &player) {
 
     }
+
 
     void HumanPlayerRender::seeACardFromPlayer(const state::Card &shownCard, const Player &cardOwner) {
 
