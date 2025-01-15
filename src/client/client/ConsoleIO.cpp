@@ -56,16 +56,10 @@ namespace client {
         std::cout << "Dice are thrown" << std::endl;
     }
 
-    void ConsoleIO::displayMap(const state::Map& map) {
-        std::vector<std::vector<std::string>> mapGrid = map.getDisplayMap();
-        for (const std::vector<std::string>& row : mapGrid) {
-            for (const std::string& cell : row) {
-                std::cout << cell;
-            }
-            std::cout << "\n";
-        }
-        std::cout << std::endl;
+    void ConsoleIO::updatePlayerPositions() {
+
     }
+
 
     void ConsoleIO::displayHypothesis(const Player &player, const state::TripleClue &hypothesis) {
         std::cout << player.getName() << " suggests the crime was committed by "

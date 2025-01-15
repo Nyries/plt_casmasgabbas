@@ -20,9 +20,9 @@ namespace engine {
         state::Location& playerLoc = player.getLocation();
         switch (playerLoc.getType()) {
             case state::CORRIDOR:{
+                auto& playerCell = dynamic_cast<state::Cell&>(playerLoc);
                 if (newLocation.getType() == state::CORRIDOR or newLocation.getType() == state::DOOR) {
-                    auto& newCell = static_cast<state::Cell&>(newLocation);
-                    auto& playerCell = static_cast<state::Cell&>(playerLoc);
+                    auto& newCell = dynamic_cast<state::Cell&>(newLocation);
                     auto neighborList = engine.getState().getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
                     auto it = std::find_if(neighborList.begin(), neighborList.end(),
                     [&newCell](const state::Cell* i) {
@@ -35,9 +35,9 @@ namespace engine {
                 break;
             }
             case state::DOOR: {
+                auto& playerCell = dynamic_cast<state::Cell&>(playerLoc);
                 if (newLocation.getType() == state::CORRIDOR or newLocation.getType() == state::DOOR) {
-                    auto& newCell = static_cast<state::Cell&>(newLocation);
-                    auto& playerCell = static_cast<state::Cell&>(playerLoc);
+                    auto& newCell = dynamic_cast<state::Cell&>(newLocation);
                     auto neighborList = engine.getState().getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
                     auto it = std::find_if(neighborList.begin(), neighborList.end(),
                     [&newCell](const state::Cell* i) {
@@ -48,8 +48,8 @@ namespace engine {
                     }
                 }
                 if (newLocation.getType() == state::ROOM) {
-                    auto& newRoom = static_cast<state::Room&>(newLocation);
-                    auto& playerDoor = static_cast<state::Door&>(playerLoc);
+                    auto& newRoom = dynamic_cast<state::Room&>(newLocation);
+                    auto& playerDoor = dynamic_cast<state::Door&>(playerLoc);
                     std::vector<state::Door*>& doorList = newRoom.getDoorList();
                     auto it = std::find_if(doorList.begin(), doorList.end(),
                     [&playerDoor](const state::Door* i) {
@@ -64,8 +64,8 @@ namespace engine {
             }
             case state::ROOM: {
                 if (newLocation.getType() == state::DOOR) {
-                    auto& playerRoom = static_cast<state::Room&>(playerLoc);
-                    auto& newDoor = static_cast<state::Door&>(newLocation);
+                    auto& playerRoom = dynamic_cast<state::Room&>(playerLoc);
+                    auto& newDoor = dynamic_cast<state::Door&>(newLocation);
                     auto doorList = playerRoom.getDoorList();
                     auto it = std::find_if(doorList.begin(), doorList.end(),
                     [&newDoor](const state::Door* i) {
