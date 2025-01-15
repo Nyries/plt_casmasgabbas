@@ -16,7 +16,6 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
     while (!myState.getAccusationSuccess()) {
         client::Player& currentPlayer = myPlayerList.getCurrent();
         state::PlayerState& currentPlayerState =  currentPlayer.getPlayerState();
-        io.displayMap(myState.getMap());
         if (currentPlayerState.getCanWin()) {
             const engine::CommandId currentAction = currentPlayer.chooseAction();
             switch (currentAction) {
@@ -62,7 +61,6 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
                             myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerState, newLocation));
                         }
                         myEngine.executeCommands();
-                        io.displayMap(myState.getMap());
                         if (currentPlayerState.getLocation().getType() == state::ROOM) {
                             const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
                             io.displayHypothesis(currentPlayer, hypothesis);

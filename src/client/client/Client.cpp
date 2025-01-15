@@ -148,7 +148,7 @@ namespace client{
 			auto& player = *it;
 			std::vector<const state::Card*> possessedCards = engine.getPossessedCards(hypothesis, player->getPlayerState());
 			if (!possessedCards.empty()) {
-				int chosenIndex = player->chooseACardToShowClient(possessedCards,player->getPlayerState());  // A VERIF
+				int chosenIndex = player->chooseACardToShowPlayer(possessedCards,*player);
 				hypothesisPlayer.seeACardFromPlayer(*possessedCards.at(chosenIndex), *player);
 				break;
 			}

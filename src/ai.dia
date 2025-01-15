@@ -2661,13 +2661,13 @@
     </dia:object>
     <dia:object type="UML - Class" version="0" id="O20">
       <dia:attribute name="obj_pos">
-        <dia:point val="14.8994,33.0656"/>
+        <dia:point val="16.4494,32.7656"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="14.8494,33.0156;42.3994,50.9156"/>
+        <dia:rectangle val="16.3994,32.7156;43.9494,50.6156"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="14.8994,33.0656"/>
+        <dia:point val="16.4494,32.7656"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
         <dia:real val="27.449999999999999"/>
@@ -2817,7 +2817,7 @@
             <dia:string>#knownRooms#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::array&lt;int,6&gt;#</dia:string>
+            <dia:string>#std::array&lt;int,9&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>#{0}#</dia:string>
@@ -3441,7 +3441,7 @@
         <dia:point val="60.9774,22.3136"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="28.5744,22.2636;61.8274,33.7683"/>
+        <dia:rectangle val="30.1244,22.2636;61.8274,33.7683"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -3449,8 +3449,8 @@
       <dia:attribute name="orth_points">
         <dia:point val="60.9774,22.3136"/>
         <dia:point val="60.9774,32.9283"/>
-        <dia:point val="28.6244,32.9283"/>
-        <dia:point val="28.6244,33.0656"/>
+        <dia:point val="30.1744,32.9283"/>
+        <dia:point val="30.1744,32.7656"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
@@ -3814,7 +3814,7 @@
             <dia:string>#knownRooms#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::array&lt;int,6&gt;#</dia:string>
+            <dia:string>#std::array&lt;int,9&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>#{0}#</dia:string>
@@ -4642,7 +4642,7 @@
             <dia:string>#knownRooms#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#std::array&lt;int,6&gt;#</dia:string>
+            <dia:string>#std::array&lt;int,9&gt;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>#{0}#</dia:string>
