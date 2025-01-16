@@ -71,7 +71,7 @@ namespace engine {
                 if (newLocation.getType() == state::DOOR) {
                     auto& playerRoom = dynamic_cast<state::Room&>(playerLoc);
                     auto& newDoor = dynamic_cast<state::Door&>(newLocation);
-                    if (newDoor.getOccupied()) {
+                    if (!newDoor.getOccupied()) {
                         auto doorList = playerRoom.getDoorList();
                         auto it = std::find_if(doorList.begin(), doorList.end(),
                         [&newDoor](const state::Door* i) {
