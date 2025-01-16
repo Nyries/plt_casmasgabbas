@@ -4,7 +4,7 @@
 #include "Cell.h"
 #include "Map.h"
 namespace state {
-    Cell::Cell(int X, int Y, LocationType type): Location(type), X(X), Y(Y), occupied(false) {
+    Cell::Cell(int X, int Y, LocationType type): Location(type), X(X), Y(Y), player(nullptr) {
     }
 
     Cell::~Cell()
@@ -26,36 +26,16 @@ namespace state {
     }
 
     bool Cell::getOccupied() const {
-        return occupied;
+        return player!=nullptr;
     }
 
-    void Cell::setOccupied(bool occupied) {
-        this->occupied = occupied;
+    const PlayerState *Cell::getPlayer() const {
+        return player;
     }
 
-    /*std::vector<Cell *> Cell::getAccessibleCells() {
-        std::vector<Cell*> accessibleCells;
-
-        std::vector<std::pair<int, int>> directions = {
-                {0, -1}, // Up
-                {0, 1},  // Down
-                {-1, 0}, // Left
-                {1, 0}   // Right
-        };
-
-        for (const auto& [dx, dy] : directions) {
-            int newX = coordX + dx;
-            int newY = coordY + dy;
-
-            // Vérifier les limites via Map::getCell
-            Cell neighbor = Map::getCell(newX, newY);
-            if (neighbor != nullptr && (neighbor.getType() == CORRIDOR || neighbor.getType() == DOOR)) {
-                neighbors.push_back(neighbor);
-            }
-        }
-
-        return accessibleCells;
-    }*/
+    void Cell::setPlayer(const PlayerState *player) {
+        this->player = player;
+    }
 
 
 }

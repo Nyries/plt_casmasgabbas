@@ -123,21 +123,6 @@ namespace client{
 		}
 	}
 
-	void Client::showMeCardClient (state::Card card) {
-		/// Analyse du type de la carte, puis affichage de la carte selon son type
-		/*if (card.getType() == state::SUSPECT_CARD) {
-			auto& shownCard = static_cast<state::SuspectCard&>(card);
-			std::cout <<  " You show " << shownCard.getSuspectName() << std::endl;
-		}
-		else if (card.getType() == state::WEAPON_CARD) {
-			auto& shownCard = static_cast<state::WeaponCard&>(card);
-			std::cout <<  " You show " << shownCard.getWeaponName() << std::endl;
-		}
-		else {
-			std::cout <<  " You show " << card.getRoomName() << std::endl;
-		}*/
-	}
-
 	void Client::throwDiceClient () {
 		std::cout << "Press 1 to throw the dice ! " << std::endl;
 		ConsoleIO::getValidKey(1);
@@ -158,16 +143,16 @@ namespace client{
 	void Client::askHypothesisToNeighbors(Player &hypothesisPlayer, state::TripleClue hypothesis) {
 		const auto& itCurrent = playerList.getIterator();
 		auto it = itCurrent;
-		++it;
+		playerList.incrementIterator(it);
 		while (it != itCurrent) {
 			auto& player = *it;
-			std::vector<const state::Card*> possessedCards = engine.getPossessedCards(hypothesis, player->getPlayerInfo());
+			std::vector<const state::Card*> possessedCards = engine.getPossessedCards(hypothesis, player->getPlayerState());
 			if (!possessedCards.empty()) {
-				int chosenIndex = player->chooseACardToShowClient(possessedCards);
+				int chosenIndex = player->chooseACardToShowPlayer(possessedCards,*player);
 				hypothesisPlayer.seeACardFromPlayer(*possessedCards.at(chosenIndex), *player);
 				break;
 			}
-			++it;
+			playerList.incrementIterator(it);
 		}
 	}
 

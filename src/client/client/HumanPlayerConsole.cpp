@@ -14,11 +14,11 @@
 #include "state/RoomName.hpp"
 
 namespace client {
-    HumanPlayerConsole::HumanPlayerConsole(engine::Engine &engine, state::PlayerInfo &playerInfo, std::string name): HumanPlayer(engine, playerInfo, move(name)) {
+    HumanPlayerConsole::HumanPlayerConsole(engine::Engine &engine, state::PlayerState &playerState, std::string name): HumanPlayer(engine, playerState, move(name)) {
     }
 
     engine::CommandId HumanPlayerConsole::chooseAction()   {
-        const std::vector<engine::CommandId> actions = engine.getPossibleActions (playerInfo);
+        const std::vector<engine::CommandId> actions = engine.getPossibleActions (playerState);
         const int size = static_cast<int>(actions.size());
 
         for (int i=0; i<size; i++) {
@@ -66,7 +66,7 @@ namespace client {
     }
 
     engine::Move HumanPlayerConsole::chooseMoveDirection()   {
-        auto possibleMoves = engine.getPossibleMoves(playerInfo);
+        auto possibleMoves = engine.getPossibleMoves(playerState);
         const int size = static_cast<int>(possibleMoves.size());
 
         for (int i=0; i<size; i++) {
@@ -148,13 +148,13 @@ namespace client {
 
     	std::cout << "You chose the " << hypothesisChoice.weapon << "!\n";
 
-		const auto& currentRoom = static_cast<const state::Room&>(playerInfo.getLocation());
+		const auto& currentRoom = dynamic_cast<const state::Room&>(playerState.getLocation());
 	    hypothesisChoice.room = currentRoom.getRoomName();
 
 	    return hypothesisChoice;
     }
 
-	int HumanPlayerConsole::chooseACardToShowClient(const std::vector<const state::Card*>& cards)  {   //cette fonction va de paire avec celle dans engine qui prend en
+	int HumanPlayerConsole::chooseACardToShowPlayer(const std::vector<const state::Card *> &cards, const Player& player) {
     	// argument un index, c'est la valeur de la carte qui va être montrée. D'abord cette fonction est appelée, puis on prend
     	// ce qu'elle renvoie et on le met en argument de la fonction qui va montrer physiquement la carte.
     	std::cout << "Which card do you want to show ?" << std::endl;
@@ -176,7 +176,8 @@ namespace client {
     	std::cout << "You will show " << cards.at(cardNumber) << std::endl;
 
     	return cardNumber;
-    }
+	}
+
 
 	state::TripleClue HumanPlayerConsole::chooseAccusation()  {
     	state::TripleClue accusationChoice{};
@@ -239,6 +240,10 @@ namespace client {
 
 	void HumanPlayerConsole::displayDiceResult(int result, const Player &player) {
     	std::cout << player.getName() << " threw the dice and got " << result << "!" << std::endl;
+	}
+
+	void HumanPlayerConsole::startOfTheGame() {
+
 	}
 
 

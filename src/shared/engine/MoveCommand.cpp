@@ -12,7 +12,7 @@
 #include "state/LocationType.h"
 
 namespace engine {
-    MoveCommand::MoveCommand(Engine &engine, state::PlayerInfo &player, state::Location& newLocation): Command(engine, player, ACCUSATION), newLocation(newLocation) {
+    MoveCommand::MoveCommand(Engine &engine, state::PlayerState &player, state::Location& newLocation): Command(engine, player, ACCUSATION), newLocation(newLocation) {
 
     }
     
@@ -20,40 +20,41 @@ namespace engine {
         state::Location& playerLoc = player.getLocation();
         switch (playerLoc.getType()) {
             case state::CORRIDOR:{
+                auto& playerCell = dynamic_cast<state::Cell&>(playerLoc);
                 if (newLocation.getType() == state::CORRIDOR or newLocation.getType() == state::DOOR) {
-                    auto& newCell = static_cast<state::Cell&>(newLocation);
-                    auto& playerCell = static_cast<state::Cell&>(playerLoc);
-                    auto neighborList = engine.getState().getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
-                    auto it = std::find_if(neighborList.begin(), neighborList.end(),
-                    [&newCell](const state::Cell* i) {
-                        return i == &newCell;
-                        });
-                    if (it!=neighborList.end()) {
-                        player.setLocation(newCell);
-                        newCell.setOccupied(true);
-                        playerCell.setOccupied(false);
+                    auto& newCell = dynamic_cast<state::Cell&>(newLocation);
+                    if (!newCell.getOccupied()) {
+                        auto neighborList = engine.getState().getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
+                        auto it = std::find_if(neighborList.begin(), neighborList.end(),
+                        [&newCell](const state::Cell* i) {
+                            return i == &newCell;
+                            });
+                        if (it!=neighborList.end()) {
+                            player.setLocation(newCell);
+                        }
                     }
+
                 }
                 break;
             }
             case state::DOOR: {
+                auto& playerDoor = dynamic_cast<state::Door&>(playerLoc);
                 if (newLocation.getType() == state::CORRIDOR or newLocation.getType() == state::DOOR) {
-                    auto& newCell = static_cast<state::Cell&>(newLocation);
-                    auto& playerCell = static_cast<state::Cell&>(playerLoc);
-                    auto neighborList = engine.getState().getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
-                    auto it = std::find_if(neighborList.begin(), neighborList.end(),
-                    [&newCell](const state::Cell* i) {
-                        return i == &newCell;
-                        });
-                    if (it!=neighborList.end()) {
-                        player.setLocation(newCell);
-                        newCell.setOccupied(true);
-                        playerCell.setOccupied(false);
+                    auto& newCell = dynamic_cast<state::Cell&>(newLocation);
+                    if (!newCell.getOccupied()) {
+                        auto neighborList = engine.getState().getMap().getNeighborsAsCell(playerDoor.getX(), playerDoor.getY());
+                        auto it = std::find_if(neighborList.begin(), neighborList.end(),
+                        [&newCell](const state::Cell* i) {
+                            return i == &newCell;
+                            });
+                        if (it!=neighborList.end()) {
+                            player.setLocation(newCell);
+                        }
                     }
+
                 }
                 if (newLocation.getType() == state::ROOM) {
-                    auto& newRoom = static_cast<state::Room&>(newLocation);
-                    auto& playerDoor = static_cast<state::Door&>(playerLoc);
+                    auto& newRoom = dynamic_cast<state::Room&>(newLocation);
                     std::vector<state::Door*>& doorList = newRoom.getDoorList();
                     auto it = std::find_if(doorList.begin(), doorList.end(),
                     [&playerDoor](const state::Door* i) {
@@ -68,15 +69,17 @@ namespace engine {
             }
             case state::ROOM: {
                 if (newLocation.getType() == state::DOOR) {
-                    auto& playerRoom = static_cast<state::Room&>(playerLoc);
-                    auto& newDoor = static_cast<state::Door&>(newLocation);
-                    auto doorList = playerRoom.getDoorList();
-                    auto it = std::find_if(doorList.begin(), doorList.end(),
-                    [&newDoor](const state::Door* i) {
-                        return i == &newDoor;
-                        });
-                    if (it!=doorList.end()) {
-                        player.setLocation(newDoor);
+                    auto& playerRoom = dynamic_cast<state::Room&>(playerLoc);
+                    auto& newDoor = dynamic_cast<state::Door&>(newLocation);
+                    if (newDoor.getOccupied()) {
+                        auto doorList = playerRoom.getDoorList();
+                        auto it = std::find_if(doorList.begin(), doorList.end(),
+                        [&newDoor](const state::Door* i) {
+                            return i == &newDoor;
+                            });
+                        if (it!=doorList.end()) {
+                            player.setLocation(newDoor);
+                        }
                     }
                 }
                 break;

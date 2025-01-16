@@ -5,7 +5,7 @@
 #include "state.h"
 #include "SecretPassageCommand.h"
 namespace engine {
-    SecretPassageCommand::SecretPassageCommand(Engine &engine, state::PlayerInfo &player): Command(engine, player, SECRET_PASSAGE) {
+    SecretPassageCommand::SecretPassageCommand(Engine &engine, state::PlayerState &player): Command(engine, player, SECRET_PASSAGE) {
 
     }
 
@@ -15,7 +15,7 @@ namespace engine {
             throw std::invalid_argument("Invalid player's starting position");
         }
 
-        state::Room *secretPassage = static_cast<state::Room &>(player.getLocation()).getSecretPassage();
+        state::Room *secretPassage = dynamic_cast<state::Room &>(player.getLocation()).getSecretPassage();
         player.setLocation(*secretPassage);
 
     }

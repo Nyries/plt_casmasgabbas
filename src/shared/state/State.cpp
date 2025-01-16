@@ -7,23 +7,23 @@
 #include <json/json.h>
 
 namespace state {
-    State::State(const std::string& mapJsonPath, int playerCount): envelope(), map(mapJsonPath), playerInfoVec(playerCount, PlayerInfo(PERVENCHE)), currentPlayer(playerInfoVec.front()), accusationSuccess(false){
+    State::State(const std::string& mapJsonPath, int playerCount): envelope(), map(mapJsonPath), playerStateVec(playerCount, PlayerState(PERVENCHE)), currentPlayer(playerStateVec.front()), accusationSuccess(false){
     }
 
     Map& State::getMap() {
         return map;
     }
 
-    std::vector<Card> &State::getEnvelope()
-    {
-        return this->envelope;
+    TripleClue State::getEnvelope() const {
+        return envelope;
     }
 
-    std::vector<PlayerInfo> &State::getPlayerInfoVec() {
-        return playerInfoVec;
+
+    std::vector<PlayerState> &State::getPlayerStateVec() {
+        return playerStateVec;
     }
 
-    bool State::getAccusationSuccess() {
+    bool State::getAccusationSuccess() const{
         return accusationSuccess;
     }
 
@@ -31,11 +31,11 @@ namespace state {
         this->accusationSuccess = accusationSuccess;
     }
 
-    PlayerInfo &State::getCurrentPlayer() {
+    PlayerState &State::getCurrentPlayer() {
         return currentPlayer;
     }
 
-    void State::setCurrentPlayer(PlayerInfo &currentPlayer) {
+    void State::setCurrentPlayer(PlayerState &currentPlayer) {
         this->currentPlayer = currentPlayer;
     }
 

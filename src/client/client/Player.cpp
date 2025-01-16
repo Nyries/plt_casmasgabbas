@@ -8,7 +8,7 @@
 #include "Client.h"
 
 namespace client {
-    Player::Player(engine::Engine &engine, state::PlayerInfo &playerInfo, bool isHuman, std::string name): engine(engine), playerInfo(playerInfo), isHuman(isHuman), name(move(name)) {
+    Player::Player(engine::Engine &engine, state::PlayerState &playerState, bool isHuman, std::string name): engine(engine), playerState(playerState), isHuman(isHuman), name(move(name)) {
 
     }
 
@@ -16,12 +16,12 @@ namespace client {
         return name;
     }
 
-    state::PlayerInfo &Player::getPlayerInfo() {
-        return playerInfo;
+    state::PlayerState &Player::getPlayerState() {
+        return playerState;
     }
 
-    const state::PlayerInfo &Player::getPlayerInfo() const {
-        return playerInfo;
+    const state::PlayerState &Player::getPlayerState() const {
+        return playerState;
     }
 
 }

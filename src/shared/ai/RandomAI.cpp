@@ -7,17 +7,17 @@
 #include <engine/UtilityFunctions.h>
 
 namespace ai {
-    RandomAI::RandomAI(engine::Engine &engine, state::PlayerInfo &playerInfo):AI(engine, playerInfo) {
+    RandomAI::RandomAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState) {
     }
 
     engine::CommandId RandomAI::chooseAction() {
-        auto possibleActions = engine.getPossibleActions(playerInfo);
+        auto possibleActions = engine.getPossibleActions(playerState);
         const int randomIndex = engine::UtilityFunctions::randomInt(possibleActions.size());
         return possibleActions.at(randomIndex);
     }
 
     engine::Move RandomAI::chooseMoveDirection() {
-        auto possibleMoves = engine.getPossibleMoves(playerInfo);
+        auto possibleMoves = engine.getPossibleMoves(playerState);
         const int randomIndex = engine::UtilityFunctions::randomInt(possibleMoves.size());
         return possibleMoves.at(randomIndex);
     }
@@ -28,19 +28,24 @@ namespace ai {
         hypothesis.suspect = static_cast<state::Suspect>(randomSuspect);
         int randomWeapon = engine::UtilityFunctions::randomInt(6) + 1;
         hypothesis.weapon = static_cast<state::Weapon>(randomWeapon);
-        state::Location randomPlace = playerInfo.getLocation();
-        state::LocationType randomRoom = randomPlace.getType();
-        hypothesis.room = static_cast<state::RoomName>(randomRoom);
+        auto locationEnum = playerState.getLocation().getType();
+        if (locationEnum == state::ROOM) {
+            auto& randomRoom = static_cast<state::Room&>(playerState.getLocation());
+            hypothesis.room = randomRoom.getRoomName();
+        } else {
+            throw std::runtime_error("error");
+        }
         return hypothesis;
     }
 
 
-    int RandomAI::chooseACardToShowClient(const std::vector<const state::Card*>& cards) {
+    int RandomAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards, const state::PlayerState &client) {
         const int randomIndex = engine::UtilityFunctions::randomInt(cards.size());
         return randomIndex;
     }
 
-    void RandomAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerInfo &cardOwner) {
+
+    void RandomAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerState &cardOwner) {
         // DO NOTHING
     }
 
@@ -60,5 +65,14 @@ namespace ai {
         const int randomIndex = engine::UtilityFunctions::randomInt(doorList.size());
         return *doorList.at(randomIndex);
     }
+
+    void RandomAI::getDiceResult(int result, const state::PlayerState &player) {
+        // NOTHING
+    }
+
+    void RandomAI::startOfTheGame() {
+
+    }
+
 
 }
