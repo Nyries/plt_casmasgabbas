@@ -44,6 +44,7 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
                 break;
                 case engine::MOVE_FROM_DICE: {
                     std::vector<int> diceResult = engine::Engine::dice();
+                    currentPlayer.makePlayerThrowDice();
                     int remainingMoves = diceResult.at(0) + diceResult.at(1);
                     io.displayDiceResult(myPlayerList, remainingMoves, currentPlayer);
                     while (remainingMoves > 0) {
@@ -95,7 +96,7 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
 int main(int argc,char* argv[])
 {
 
-    test();//used for testing methods
+    //test();//used for testing methods
 
     //main
     if (argc < 3) {
