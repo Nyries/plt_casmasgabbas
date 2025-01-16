@@ -167,13 +167,12 @@ namespace client {
     		std::cout << "If you want to show " << cards.at(0)->getValueAsString() << " press 1" << std::endl;
     		std::cout << "If you want to show " << cards.at(1)->getValueAsString() << " press 2" << std::endl;
     		if (size == 3) {
-    			std::cout << "If you want to show " << cards.at(2) << " press 3" << std::endl;
+    			std::cout << "If you want to show " << cards.at(2)->getValueAsString() << " press 3" << std::endl;
     		}
     	}
-    	int cardNumber;
-    	std::cin >> cardNumber;
+    	int cardNumber = ConsoleIO::getValidKey(cards.size()) - 1;
 
-    	std::cout << "You will show " << cards.at(cardNumber) << std::endl;
+    	std::cout << "You will show " << cards.at(cardNumber)->getValueAsString() << std::endl;
 
     	return cardNumber;
 	}
