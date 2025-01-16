@@ -164,16 +164,15 @@ namespace client {
     	}
     	else {
     		std::cout << "You have the choice between " << cards.size() << " cards" << std::endl;
-    		std::cout << "If you want to show " << cards.at(0) << " press 1" << std::endl;
-    		std::cout << "If you want to show " << cards.at(1) << " press 2" << std::endl;
+    		std::cout << "If you want to show " << cards.at(0)->getValueAsString() << " press 1" << std::endl;
+    		std::cout << "If you want to show " << cards.at(1)->getValueAsString() << " press 2" << std::endl;
     		if (size == 3) {
-    			std::cout << "If you want to show " << cards.at(2) << " press 3" << std::endl;
+    			std::cout << "If you want to show " << cards.at(2)->getValueAsString() << " press 3" << std::endl;
     		}
     	}
-    	int cardNumber;
-    	std::cin >> cardNumber;
+    	int cardNumber = ConsoleIO::getValidKey(cards.size()) - 1;
 
-    	std::cout << "You will show " << cards.at(cardNumber) << std::endl;
+    	std::cout << "You will show " << cards.at(cardNumber)->getValueAsString() << std::endl;
 
     	return cardNumber;
 	}
@@ -218,7 +217,7 @@ namespace client {
     }
 
 	void HumanPlayerConsole::seeACardFromPlayer(const state::Card &shownCard, const Player &cardOwner) {
-    	std::cout << cardOwner.getName() << "showed you the card" << shownCard.getValueAsString() << std::endl;
+    	std::cout << cardOwner.getName() << " showed you the card " << shownCard.getValueAsString() << std::endl;
 
     }
 
@@ -243,7 +242,21 @@ namespace client {
 	}
 
 	void HumanPlayerConsole::startOfTheGame() {
-
+    	std::cout << "You play as " << playerState.getIdentity();
+    	std::cout << ", your cards are: \n";
+    	const auto& suspectCards = playerState.getSuspectCards();
+    	for (const auto& card: suspectCards) {
+    		std::cout << card.getSuspectName() << "\n";
+    	}
+    	const auto& weaponCards = playerState.getWeaponCards();
+    	for (const auto& card: weaponCards) {
+    		std::cout << card.getWeaponName() << "\n";
+    	}
+    	const auto& roomCards = playerState.getRoomCards();
+    	for (const auto& card: roomCards) {
+    		std::cout << card.getRoomName() << "\n";
+    	}
+    	std::cout << std::endl;
 	}
 
 

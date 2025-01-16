@@ -123,15 +123,6 @@ namespace client{
 		}
 	}
 
-	void Client::throwDiceClient () {
-		std::cout << "Press 1 to throw the dice ! " << std::endl;
-		ConsoleIO::getValidKey(1);
-		std::cout << "Dice are thrown" << std::endl;
-
-		// finir avec lancer les dés et afficher la valeur
-
-		}
-
 	engine::Engine &Client::getEngine() {
 		return engine;
 	}
@@ -145,11 +136,11 @@ namespace client{
 		auto it = itCurrent;
 		playerList.incrementIterator(it);
 		while (it != itCurrent) {
-			auto& player = *it;
-			std::vector<const state::Card*> possessedCards = engine.getPossessedCards(hypothesis, player->getPlayerState());
+			auto& player = **it;
+			std::vector<const state::Card*> possessedCards = engine.getPossessedCards(hypothesis, player.getPlayerState());
 			if (!possessedCards.empty()) {
-				int chosenIndex = player->chooseACardToShowPlayer(possessedCards,*player);
-				hypothesisPlayer.seeACardFromPlayer(*possessedCards.at(chosenIndex), *player);
+				int chosenIndex = player.chooseACardToShowPlayer(possessedCards,player);
+				hypothesisPlayer.seeACardFromPlayer(*possessedCards.at(chosenIndex), player);
 				break;
 			}
 			playerList.incrementIterator(it);

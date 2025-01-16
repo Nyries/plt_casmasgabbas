@@ -133,7 +133,7 @@ namespace engine {
         if (&player == &(*currentPlayer)) {
 
             // Si tu es dans une salle
-            if (player.getLocation().getType()== state::ROOM) {
+            if (player.getLocation().getType() == state::ROOM) {
                 const auto& currentRoom = dynamic_cast<const state::Room&>(player.getLocation());
                 // Si tu n'as pas encore fait d'hypotèse
                 if (player.getPreviousHypothesisRoom() != currentRoom.getRoomName()) {

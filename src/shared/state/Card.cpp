@@ -9,6 +9,9 @@
 #include "RoomCard.h"
 #include "SuspectCard.h"
 #include "WeaponCard.h"
+#include "Weapon.hpp"
+#include "Suspect.hpp"
+#include "RoomName.hpp"
 
 
 namespace state {
