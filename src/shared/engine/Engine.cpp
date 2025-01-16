@@ -165,10 +165,10 @@ namespace engine {
         switch (playerLocation.getType()) {
             case state::CORRIDOR: {
                 const auto& playerCell = dynamic_cast<const state::Cell&>(playerLocation);
-                const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
+                const auto& neighbourList = state.getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
                 for (int i = 0; i < (int)neighbourList.size(); i++) {
-                    const state::LocationType type = neighbourList.at(i);
-                    if (type == state::CORRIDOR or type == state::DOOR) {
+                    const state::LocationType type = neighbourList.at(i)->getType();
+                    if ((type == state::CORRIDOR or type == state::DOOR) and !neighbourList.at(i)->getOccupied()) {
                         switch (i) {
                             case 0:
                                 possibleMoves.push_back(MOVE_UP);
