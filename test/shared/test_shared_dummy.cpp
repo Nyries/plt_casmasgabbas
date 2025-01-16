@@ -2,6 +2,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <state.h>
+#include <engine.h>
 #include <iostream>
 
 using namespace state;
@@ -443,3 +444,90 @@ BOOST_AUTO_TEST_CASE(TestGetWeaponName)
 }
 }
 BOOST_AUTO_TEST_SUITE_END();
+
+
+// Engine command tests :
+
+// AccusationCommand.cpp test
+BOOST_AUTO_TEST_SUITE(TestAccusationCommand)
+
+    BOOST_AUTO_TEST_CASE(TestCorrectAccusation)
+    {
+        state::PlayerState player(ROSE);
+
+        state::TripleClue correctAccusation{ROSE, CANDLESTICK, STUDY};
+        state::TripleClue envelope{ROSE, CANDLESTICK, STUDY};
+
+        engine::Engine engine;
+        engine.getEnvelope() = envelope;
+
+        engine::AccusationCommand command(engine, player, correctAccusation);
+        command.execute();
+
+        BOOST_CHECK(player.getCanWin() == true);
+        BOOST_CHECK(engine.getState().getAccusationSuccess() == true);
+    }
+
+    BOOST_AUTO_TEST_CASE(TestIncorrectAccusation)
+    {
+        state::PlayerState player(ROSE);
+
+        state::TripleClue incorrectAccusation{ROSE, CANDLESTICK, STUDY};
+        state::TripleClue envelope{PERVENCHE, CANDLESTICK, STUDY};
+
+        engine::Engine engine;
+        engine.getEnvelope() = envelope;
+
+        engine::AccusationCommand command(engine, player, incorrectAccusation);
+        command.execute();
+
+        BOOST_CHECK(player.getCanWin() == false);
+        BOOST_CHECK(engine.getState().getAccusationSuccess() == false);
+    }
+BOOST_AUTO_TEST_SUITE_END()
+
+// SecretPassageCommand.cpp test
+BOOST_AUTO_TEST_SUITE(TestSecretPassageCommand)
+
+    BOOST_AUTO_TEST_CASE(TestValidSecretPassage)
+    {
+        state::Room garage(GARAGE);
+        state::Room kitchen(KITCHEN);
+        garage.setSecretPassage(kitchen);
+
+        state::PlayerState player(ROSE);
+        player.setLocation(garage);
+        engine::Engine engine;
+
+        engine::SecretPassageCommand command(engine, player);
+        command.execute();
+
+        BOOST_CHECK(player.getLocation() == kitchen);
+    }
+
+    BOOST_AUTO_TEST_CASE(TestInvalidStartingPosition)
+    {
+        state::Cell cell(8, 8, CORRIDOR);
+        state::PlayerState player(ROSE);
+        player.setLocation(cell);
+        engine::Engine engine;
+
+        engine::SecretPassageCommand command(engine, player);
+        BOOST_CHECK_THROW(command.execute(), std::invalid_argument);  // On vérifie qu'on déclenche l'exception
+    }
+
+    BOOST_AUTO_TEST_CASE(TestRoomWithoutSecretPassage)
+    {
+        state::Room garage(GARAGE);
+        state::Room kitchen(KITCHEN);
+
+        state::PlayerState player(ROSE);
+        player.setLocation(garage);
+        engine::Engine engine;
+
+        engine::SecretPassageCommand command(engine, player);
+
+        BOOST_CHECK_THROW(command.execute(), std::logic_error);  // On vérifie qu'on déclenche une erreur
+    }
+
+BOOST_AUTO_TEST_SUITE_END()

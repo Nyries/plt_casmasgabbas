@@ -106,8 +106,8 @@ Enfin, on lui associe une valeur booléenne indiquant s'il a effectué une accus
 #### Le plateau de jeu
 Les cases du plateau sont stockées dans un tableau.
 Une case est caractérisée par des coordonnées et par un type (CORRIDOR, DOOR, ROOM, INACCESSIBLE).
-- Une case DOOR est un cas particulier de case CORRIDOR, et possède une référence à la SALLE à laquelle elle mène.
-- Une ROOM est caractérisée par son nom, la liste de ses portes, et par une éventuelle autre SALLE qui serait accessible par passage secret.
+- Une case DOOR est un cas particulier de case CORRIDOR, et possède une référence à la ROOM à laquelle elle mène.
+- Une ROOM est caractérisée par son nom, la liste de ses portes, et par une éventuelle autre ROOM qui serait accessible par passage secret.
 - On qualifie d'INACCESSIBLE les cases auxquelles les joueurs ne peuvent pas accéder (extérieur du manoir & pièce centrale).
 
 #### Les cartes indice
