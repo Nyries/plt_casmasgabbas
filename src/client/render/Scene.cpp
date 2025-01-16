@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "Grid.h"
+#include "RenderMap.h"
 #include "TextBox.h"
 
 namespace render{
@@ -36,13 +36,12 @@ namespace render{
     MapSprite.setScale((float)windowHeight/MapTexture.getSize().x, (float)windowHeight/MapTexture.getSize().y);  
     
     // Setting up the grid above the map
-    Grid grid(27, 26, MapBackground.getSize().x, MapBackground.getSize().y);
+    RenderMap grid(27, 26, MapBackground.getSize().x, MapBackground.getSize().y);
     grid.setPosition(windowWidth-windowHeight, 0);
     grid.mergeFromJson("../configurations/map.json");
 
     //test de textbox
     TextBox test(sf::Vector2f(200, 50), "../ressources/fonts/Futura-Condensed-Extra-Bold.ttf", "Test");
-
 
     while (window.isOpen()){    
         sf::Event event;

@@ -108,6 +108,8 @@ int main(int argc,char* argv[])
         std::unique_ptr<client::IO> tempIO;
         if (std::string(argv[2]) == "console") {
             tempIO = std::make_unique<client::ConsoleIO>();
+        } else if (std::string(argv[2]) == "render") {
+            tempIO = std::make_unique<client::RenderIO>();
         }
         else {
             throw std::invalid_argument(std::string("invalid argument: ") + argv[2]);
