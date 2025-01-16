@@ -1,5 +1,8 @@
 #include "Grid.h"
 
+#include <fstream>
+#include <json/json.h>
+
 namespace render {
     Grid::Grid(int rows, int cols, float width, float height) : rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows)
     {
@@ -60,6 +63,60 @@ namespace render {
             cell.setPosition(cell.getPosition().x + x, cell.getPosition().y + y);
         }
     }
+
+    void Grid::setScale(float factorX, float factorY)
+    {
+        float firstCellX = cells.front().getPosition().x;
+        float firstCellY = cells.front().getPosition().y;
+
+        for (auto& cell : cells) {
+            cell.setScale(factorX, factorY);
+            float newX = firstCellX + (cell.getPosition().x - firstCellX) * factorX;
+            float newY = firstCellY + (cell.getPosition().y - firstCellY) * factorY;
+            cell.setPosition(newX, newY);
+        }
+    }
+
+void Grid::mergeFromJson(std::string mapJsonPath)
+{
+        std::ifstream file(mapJsonPath);
+        Json::Value jsonData;
+        file >> jsonData;
+        file.close();
+        Json::Value mapData = jsonData["map"];
+
+        for (Json::Value cellData : mapData) {
+            int x = cellData["x"].asInt();
+            int y = cellData["y"].asInt();
+
+            std::string locationType = cellData["LocationType"].asString();
+            if (locationType == "INACCESSIBLE") {
+                sf::Color color(255, 255, 255);
+                getRenderCellUsingCoordinate(x, y).setFillColor(color);
+                getRenderCellUsingCoordinate(x, y).setOutlineColor(color); 
+            } else if (locationType == "CORRIDOR") {
+                sf::Color color(255, 255, 153);
+                getRenderCellUsingCoordinate(x, y).setFillColor(color);
+            } else if (locationType == "DOOR") {
+                sf::Color color(255, 0, 0);
+                getRenderCellUsingCoordinate(x, y).setFillColor(color);
+            } else if (locationType == "ROOM") {
+                std::string roomType = cellData["RoomType"].asString();
+                sf::Color color(153, 204, 255);
+                getRenderCellUsingCoordinate(x, y).setFillColor(color);
+                getRenderCellUsingCoordinate(x, y).setOutlineColor(color);
+            }
+        }
+}
+
+RenderCell &Grid::getRenderCellUsingCoordinate(int x, int y)
+{
+    for (auto &cell : cells) {
+        if (cell.gridX == x && cell.gridY == y) {
+            return cell;
+        }
+    }
+}
 
 /*void Grid::placePiece(const sf::Vector2i &mousePos, const sf::Color &pieceColor)
 {

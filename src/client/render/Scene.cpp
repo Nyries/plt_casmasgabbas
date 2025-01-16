@@ -1,7 +1,9 @@
 #include "Scene.h"
 
 #include <iostream>
+
 #include "Grid.h"
+#include "TextBox.h"
 
 namespace render{
     sf::Color cluedoRed(180, 0, 0);   // Rouge Cluedo
@@ -32,9 +34,16 @@ namespace render{
     MapSprite.setTexture(MapTexture);
     MapSprite.setPosition(sf::Vector2f(windowWidth-windowHeight, 0));  
     MapSprite.setScale((float)windowHeight/MapTexture.getSize().x, (float)windowHeight/MapTexture.getSize().y);  
-    Grid grid(25, 24, MapBackground.getSize().x, MapBackground.getSize().y);
-    grid.setPosition(windowWidth-windowHeight, 0);
     
+    // Setting up the grid above the map
+    Grid grid(27, 26, MapBackground.getSize().x, MapBackground.getSize().y);
+    grid.setPosition(windowWidth-windowHeight, 0);
+    grid.mergeFromJson("../configurations/map.json");
+
+    //test de textbox
+    TextBox test(sf::Vector2f(200, 50), "../ressources/fonts/Futura-Condensed-Extra-Bold.ttf", "Test");
+
+
     while (window.isOpen()){    
         sf::Event event;
         while (window.pollEvent(event)){
@@ -58,6 +67,7 @@ namespace render{
 
         window.draw(MapSprite);
         grid.draw(window);
+        test.draw(window);
         
         window.display();
         
