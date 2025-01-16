@@ -484,6 +484,7 @@ BOOST_AUTO_TEST_SUITE(TestAccusationCommand)
         BOOST_CHECK(player.getCanWin() == false);
         BOOST_CHECK(engine.getState().getAccusationSuccess() == false);
     }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 // SecretPassageCommand.cpp test
@@ -529,5 +530,83 @@ BOOST_AUTO_TEST_SUITE(TestSecretPassageCommand)
 
         BOOST_CHECK_THROW(command.execute(), std::logic_error);  // On vérifie qu'on déclenche une erreur
     }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+// HypothesisCommand.cpp test
+BOOST_AUTO_TEST_SUITE(TestHypothesisCommand)
+
+    BOOST_AUTO_TEST_CASE(TestValidHypothesis)
+    {
+        state::Room study(STUDY);
+        state::PlayerState player(ROSE);
+        player.setLocation(study);
+
+        state::PlayerState suspectPlayer(PERVENCHE);
+        state::TripleClue hypothesis{PERVENCHE, CANDLESTICK, STUDY};
+
+        // (+ Création du State)
+        engine::Engine engine;
+        engine.setCurrentPlayer(player);
+
+        engine::HypothesisCommand command(engine, player, hypothesis);
+        command.execute();
+
+        BOOST_CHECK(suspectPlayer.getLocation() == STUDY); // Suspect téléporté
+        BOOST_CHECK(player.getPreviousHypothesisRoom() == STUDY);   // Salle enregistrée
+    }
+
+    BOOST_AUTO_TEST_CASE(TestInvalidRoomHypothesis)
+    {
+        state::Room study(STUDY);
+        state::PlayerState player(ROSE);
+        player.setLocation(study);
+
+        state::TripleClue hypothesis{PERVENCHE, CANDLESTICK, HALL};  // Mauvaise salle
+
+        // (+ Création du State)
+        engine::Engine engine;
+        engine.setCurrentPlayer(player);
+
+        engine::HypothesisCommand command(engine, player, hypothesis);
+        command.execute();
+
+        BOOST_CHECK(player.getPreviousHypothesisRoom() == NO_ROOM); // Hypothèse non enregistrée
+    }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+// MoveCommand.cpp test
+BOOST_AUTO_TEST_SUITE(TestMoveCommand)
+
+    BOOST_AUTO_TEST_CASE(TestMoveWithinCorridor)
+    {
+        state::Cell cell1(8, 8, state::CORRIDOR);
+        state::Cell cell2(8, 9, state::CORRIDOR);
+        // Définir cell2 comme non occupée (?)
+
+        state::PlayerState player(ROSE);
+        player.setLocation(cell1);
+
+        engine::Engine engine;
+        // Definir cell1 et cell2 comme voisins
+
+        engine::MoveCommand command(engine, player, cell2);
+        command.execute();
+
+        BOOST_CHECK(player.getLocation().getX() == 8);
+        BOOST_CHECK(player.getLocation().getY() == 9);
+    }
+
+    /* À tester :
+     * Mouvement valide au sein d'un couloir
+     * Déplacement porte vers couloir non occupé
+     * Entrer dans une salle depuis une porte valide
+     * Sortir d'une salle par une porte connectée à cette salle
+     * Tentative de déplacement vers une cellule non adjacente ou occupée
+     * Tentative de déplacement depuis un type de location non valide
+     */
 
 BOOST_AUTO_TEST_SUITE_END()
