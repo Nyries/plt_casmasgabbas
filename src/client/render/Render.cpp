@@ -1,9 +1,10 @@
 #include "Render.h"
 
 #include <iostream>
-
-#include "RenderMap.h"
+#include "UIPanel.h"
+#include "MapPanel.h"
 #include "TextBox.h"
+#include "Panel.h"
 
 namespace render{
     sf::Color cluedoRed(180, 0, 0);   // Rouge Cluedo
@@ -12,7 +13,8 @@ namespace render{
     sf::Color cluedTurquoise(0, 128, 128); // Turquoise Cluedo
     sf::Color cluedoBeige(191, 128, 128); // Beige Cluedo
     sf::Color cluedoGreenGray(132, 145, 134); // Gris vert Cluedo
-    Render::Render(sf::RenderWindow& window): window(window), desktop()
+
+Render::Render(sf::RenderWindow& window): window(window), desktop()
 {
     desktop = sf::VideoMode::getDesktopMode();
     
@@ -26,8 +28,18 @@ namespace render{
     
     //Splitting the window in two parts, one for the map and the other for the UI
     // Each part is a panel
-    this->addChild(std::make_unique<Panel>(0, 0, windowWidth-windowHeight, windowHeight, cluedoRed));
-    this->addChild(std::make_unique<Panel>(windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White));
+    auto uiPanel = std::make_unique<UIPanel>(0, 0, windowWidth-windowHeight, windowHeight, cluedoRed);
+    auto mapPanel = std::make_unique<MapPanel>(1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White);
+    this->addChild(std::move(uiPanel));
+    this->addChild(std::move(mapPanel));
+}
+
+void Render::draw(sf::RenderWindow &window)
+{
+    this->drawChildren(window);
+}
+
+}
     /*UIBackground = sf::RectangleShape(sf::Vector2f(abs(windowHeight-windowWidth), windowHeight));
     UIBackground.setPosition(0, 0);
     UIBackground.setFillColor(cluedoRed);
@@ -77,7 +89,7 @@ namespace render{
     Background.setScale(desktop.height, desktop.height);
     sf::Vector2u textureSize = BackgroundTexture.getSize();
     std::cout << textureSize.x << "x" << textureSize.y << std::endl;
-*/
+
 }
 void Render::loadMapImage(std::string mapImagePath)
 {
@@ -224,11 +236,7 @@ void Render::gameSetUp()
         window.display();
     }
 }
-
-void Render::draw(sf::RenderWindow &window)
-{
-    this->drawChildren(window);
-}
+*/
     
     // Button to add a player
     /*sf::RectangleShape addButton(sf::Vector2f(200, 50));
@@ -365,7 +373,7 @@ void Render::draw(sf::RenderWindow &window)
             window.draw(nameInputs[i]);
         }
         window.display();
-    }*/
+    }
 
 void Render::suspectDropDown(float firstButtonX, float firstButtonY, std::vector<std::string> suspectList)
 {
@@ -387,6 +395,5 @@ void Render::suspectDropDown(float firstButtonX, float firstButtonY, std::vector
         suspectText.setCharacterSize(20);
         suspectText.setFillColor(sf::Color::Black);
         suspectText.setPosition(FirstButtonX, FirstButtonY + i * 60);
-        suspectTexts.push_back(suspectText);^*/
-}
-}
+        suspectTexts.push_back(suspectText);^
+        }*/
