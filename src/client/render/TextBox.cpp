@@ -12,7 +12,7 @@ render::TextBox::TextBox(const sf::Vector2f &size, const std::string &fontPath, 
     if (!font.loadFromFile(fontPath)) {
         std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
     }
-
+    text = sf::Text(textString, font, 20);
     text.setFont(font);
     text.setString(textString);
     text.setFillColor(sf::Color::Black);
@@ -23,8 +23,9 @@ render::TextBox::TextBox(const sf::Vector2f &size, const std::string &fontPath, 
     text.setPosition(getPosition().x + size.x / 2, getPosition().y + size.y / 2);
 }
 
-void render::TextBox::draw(sf::RenderWindow &window)
+void render::TextBox::draw(sf::RenderWindow &window) const
 {
     window.draw(*this);
     window.draw(text);
+    
 }

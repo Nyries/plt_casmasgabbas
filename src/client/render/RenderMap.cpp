@@ -1,15 +1,21 @@
-#include "Grid.h"
+#include "RenderMap.h"
 
+#include <iostream>
 #include <fstream>
 #include <json/json.h>
+#include "TextBox.h"
 
 namespace render {
-    Grid::Grid(int rows, int cols, float width, float height) : rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows)
+    RenderMap::RenderMap(int rows, int cols, float width, float height) : rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows)
     {
         createGrid();
+        roomTexts.clear();
+        if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
+            std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
+        }
     }
 
-    void Grid::createGrid()
+    void RenderMap::createGrid()
     {
         cells.clear();
         for (int y = 0; y < rows; ++y) {
@@ -21,7 +27,7 @@ namespace render {
         }
     }
 
-    void Grid::mergeCells(int startX, int startY, int endX, int endY, sf::Color& color)
+    void RenderMap::mergeCells(int startX, int startY, int endX, int endY, sf::Color& color)
     {
         float mergedWidth = (endX - startX + 1) * cellWidth;
         float mergedHeight = (endY - startY + 1) * cellHeight;
@@ -48,23 +54,26 @@ namespace render {
         cells.push_back(cell);
     }
 
-    void Grid::draw(sf::RenderWindow &window)
+    void RenderMap::draw(sf::RenderWindow &window)
     {
         for (const auto& cell : cells) {
             if (!cell.isMerged) {
                 window.draw(cell);
             }
         }
+        for (const auto& roomText : roomTexts) {
+            window.draw(roomText);
+        }
     }
 
-    void Grid::setPosition(float x, float y)
+    void RenderMap::setPosition(float x, float y)
     {
         for (auto& cell : cells) {
             cell.setPosition(cell.getPosition().x + x, cell.getPosition().y + y);
         }
     }
 
-    void Grid::setScale(float factorX, float factorY)
+    void RenderMap::setScale(float factorX, float factorY)
     {
         float firstCellX = cells.front().getPosition().x;
         float firstCellY = cells.front().getPosition().y;
@@ -77,7 +86,7 @@ namespace render {
         }
     }
 
-void Grid::mergeFromJson(std::string mapJsonPath)
+void RenderMap::mergeFromJson(std::string mapJsonPath)
 {
         std::ifstream file(mapJsonPath);
         Json::Value jsonData;
@@ -105,20 +114,50 @@ void Grid::mergeFromJson(std::string mapJsonPath)
                 sf::Color color(153, 204, 255);
                 getRenderCellUsingCoordinate(x, y).setFillColor(color);
                 getRenderCellUsingCoordinate(x, y).setOutlineColor(color);
+                if (roomType == "LIVING_ROOM" and roomTexts.size() == 0) {
+                    textCreation("Living Room", x, y);
+                } else if (roomType == "DINING_ROOM" and roomTexts.size() == 1) {
+                    textCreation("Dining Room", x, y); 
+                } else if (roomType == "KITCHEN" and roomTexts.size() == 2) {
+                    textCreation("Kitchen", x, y);
+                } else if (roomType == "STUDY" and roomTexts.size() == 3) {
+                    textCreation("Study", x, y);
+                } else if (roomType == "GAME_ROOM" and roomTexts.size() == 4) {
+                    textCreation("Game Room", x, y);
+                } else if (roomType == "BATHROOM" and roomTexts.size() == 5) {
+                    textCreation("Bathroom", x, y);
+                } else if (roomType == "HALL" and roomTexts.size() == 6) {
+                    textCreation("Hall", x, y);
+                } else if (roomType == "GARAGE" and roomTexts.size() == 7) {
+                    textCreation("Garage", x, y);
+                } else if (roomType == "BEDROOM" and roomTexts.size() == 8) {
+                    textCreation("Bedroom", x, y);
+                }
+
             }
         }
 }
 
-RenderCell &Grid::getRenderCellUsingCoordinate(int x, int y)
+RenderCell &RenderMap::getRenderCellUsingCoordinate(int x, int y)
 {
     for (auto &cell : cells) {
         if (cell.gridX == x && cell.gridY == y) {
             return cell;
         }
     }
+    return cells.front();
 }
 
-/*void Grid::placePiece(const sf::Vector2i &mousePos, const sf::Color &pieceColor)
+void RenderMap::textCreation(std::string text, int x, int y)
+{
+    sf::Text roomText(text, font, 20);
+    roomText.setFillColor(sf::Color::Black);
+    roomText.setOrigin(0, 0);
+    roomText.setPosition(getRenderCellUsingCoordinate(x, y).getPosition().x, getRenderCellUsingCoordinate(x, y).getPosition().y);
+    roomTexts.push_back(roomText);
+}
+
+/*void RenderMap::placePiece(const sf::Vector2i &mousePos, const sf::Color &pieceColor)
 {
     unsigned int col = mousePos.x / m_cellSize;
     unsigned int row = mousePos.y / m_cellSize;
@@ -140,7 +179,7 @@ RenderCell &Grid::getRenderCellUsingCoordinate(int x, int y)
         }
     }
 }
-void Grid::deletePiece(const sf::Vector2i &mousePos)
+void RenderMap::deletePiece(const sf::Vector2i &mousePos)
 {
         unsigned int col = mousePos.x / m_cellSize;
         unsigned int row = mousePos.y / m_cellSize;
