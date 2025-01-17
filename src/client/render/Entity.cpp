@@ -15,6 +15,7 @@ void Entity::drawChildren(sf::RenderWindow &window)
 {
     for (auto &child : children)
     {
+        //std::cout << "Drawing child of type: " << typeid(*child).name() << std::endl;
         child->draw(window);
     }
 }
