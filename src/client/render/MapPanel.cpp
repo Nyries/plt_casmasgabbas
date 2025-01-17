@@ -1,12 +1,11 @@
-#include "RenderMap.h"
+#include "MapPanel.h"
 
-#include <iostream>
 #include <fstream>
 #include <json/json.h>
 #include "TextBox.h"
 
 namespace render {
-    RenderMap::RenderMap(int rows, int cols, float width, float height) : rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows)
+    MapPanel::MapPanel(int rows, int cols, float x, float y, float width, float height, sf::Color color) : Panel(x, y, width, height, color), rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows)
     {
         createGrid();
         roomTexts.clear();
@@ -15,19 +14,40 @@ namespace render {
         }
     }
 
-    void RenderMap::createGrid()
+    void MapPanel::createGrid()
     {
         cells.clear();
         for (int y = 0; y < rows; ++y) {
             for (int x = 0; x < cols; ++x) {
                 sf::Color color(255, 255, 153);
-                RenderCell cell(x * cellWidth, y * cellHeight, cellWidth, cellHeight, x, y);
-                cells.push_back(cell); 
-            }
+                std::unique_ptr<RenderCell> cell = std::make_unique<RenderCell>(x * cellWidth, y * cellHeight, cellWidth, cellHeight, x, y, color);
+                cells.push_back(std::move(cell));
+                children.push_back(std::make_unique<RenderCell>(x * cellWidth, y * cellHeight, cellWidth, cellHeight, x, y, color));}
         }
     }
 
-    void RenderMap::mergeCells(int startX, int startY, int endX, int endY, sf::Color& color)
+    void MapPanel::draw(sf::RenderWindow &window)
+    {
+        window.draw(this->shape);
+        std::cout << "Drawing map panel" << std::endl;
+        this->drawChildren(window);
+        
+    }
+
+    /*void MapPanel::setScale(float factorX, float factorY)
+    {
+        float firstCellX = cells.front()->getPosition().x;
+        float firstCellY = cells.front()->getPosition().y;
+
+        for (auto& cell : cells) {
+            cell->setScale(factorX, factorY);
+            float newX = firstCellX + (cell->getPosition().x - firstCellX) * factorX;
+            float newY = firstCellY + (cell->getPosition().y - firstCellY) * factorY;
+            cell->setPosition(newX, newY);
+        }
+    }*/
+
+    /*void MapPanel::mergeCells(int startX, int startY, int endX, int endY, sf::Color& color)
     {
         float mergedWidth = (endX - startX + 1) * cellWidth;
         float mergedHeight = (endY - startY + 1) * cellHeight;
@@ -54,7 +74,7 @@ namespace render {
         cells.push_back(cell);
     }
 
-    void RenderMap::draw(sf::RenderWindow &window)
+    void MapPanel::draw(sf::RenderWindow &window)
     {
         for (const auto& cell : cells) {
             if (!cell.isMerged) {
@@ -66,27 +86,14 @@ namespace render {
         }
     }
 
-    void RenderMap::setPosition(float x, float y)
+    void MapPanel::setPosition(float x, float y)
     {
         for (auto& cell : cells) {
             cell.setPosition(cell.getPosition().x + x, cell.getPosition().y + y);
         }
     }
 
-    void RenderMap::setScale(float factorX, float factorY)
-    {
-        float firstCellX = cells.front().getPosition().x;
-        float firstCellY = cells.front().getPosition().y;
-
-        for (auto& cell : cells) {
-            cell.setScale(factorX, factorY);
-            float newX = firstCellX + (cell.getPosition().x - firstCellX) * factorX;
-            float newY = firstCellY + (cell.getPosition().y - firstCellY) * factorY;
-            cell.setPosition(newX, newY);
-        }
-    }
-
-void RenderMap::mergeFromJson(std::string mapJsonPath)
+void MapPanel::mergeFromJson(std::string mapJsonPath)
 {
         std::ifstream file(mapJsonPath);
         Json::Value jsonData;
@@ -138,7 +145,7 @@ void RenderMap::mergeFromJson(std::string mapJsonPath)
         }
 }
 
-RenderCell &RenderMap::getRenderCellUsingCoordinate(int x, int y)
+RenderCell &MapPanel::getRenderCellUsingCoordinate(int x, int y)
 {
     for (auto &cell : cells) {
         if (cell.gridX == x && cell.gridY == y) {
@@ -148,7 +155,7 @@ RenderCell &RenderMap::getRenderCellUsingCoordinate(int x, int y)
     return cells.front();
 }
 
-void RenderMap::textCreation(std::string text, int x, int y)
+void MapPanel::textCreation(std::string text, int x, int y)
 {
     sf::Text roomText(text, font, 20);
     roomText.setFillColor(sf::Color::Black);
@@ -157,7 +164,7 @@ void RenderMap::textCreation(std::string text, int x, int y)
     roomTexts.push_back(roomText);
 }
 
-/*void RenderMap::placePiece(const sf::Vector2i &mousePos, const sf::Color &pieceColor)
+/*void MapPanel::placePiece(const sf::Vector2i &mousePos, const sf::Color &pieceColor)
 {
     unsigned int col = mousePos.x / m_cellSize;
     unsigned int row = mousePos.y / m_cellSize;
@@ -179,7 +186,7 @@ void RenderMap::textCreation(std::string text, int x, int y)
         }
     }
 }
-void RenderMap::deletePiece(const sf::Vector2i &mousePos)
+void MapPanel::deletePiece(const sf::Vector2i &mousePos)
 {
         unsigned int col = mousePos.x / m_cellSize;
         unsigned int row = mousePos.y / m_cellSize;
