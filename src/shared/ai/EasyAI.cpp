@@ -18,7 +18,9 @@
 #include <state/SuspectCard.h>
 #include <state/WeaponCard.h>
 #include <iostream>
+#include <iomanip>
 #include <optional>
+#include "state/Suspect.hpp"
 
 namespace ai {
     EasyAI::EasyAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState), doorDestination(nullptr) {
@@ -100,25 +102,25 @@ namespace ai {
 
     engine::Move EasyAI::chooseMoveDirection() {
 
-
+        // AFFICHAGES TABLEAU
+        /*
+        for (size_t i = 0; i < distanceMatrix.size(); ++i) {
+            for (size_t j = 0; j < distanceMatrix[i].size(); ++j) {
+                std::cout << std::setw(4) << distanceMatrix[i][j]; // Alignement avec largeur fixe
+            }
+            std::cout << std::endl; // Nouvelle ligne après chaque ligne du tableau
+        }
+*/
         // JOUEUR DANS UNE PIECE ?
 
         if (playerState.getLocation().getType() == state::ROOM) {
             return engine::EXIT_ROOM;
         }
 
-
-        std::cout << "problem" << std::endl;
         auto& cell1 = static_cast<state::Cell&>(playerState.getLocation());
         auto& cell2 = static_cast<state::Cell &>(*doorDestination);
         std::cout << "depart: " << "X: " << cell1.getX() << " ; Y: " << cell1.getY() << std::endl;
         std::cout << "arrivee: " << "X: " << cell2.getX() << " ; Y: " << cell2.getY() << std::endl;
-
-        // POSITION DEPART ET ARRIVEE
-        int startX = cell1.getX();;
-        int startY = cell1.getY();
-        int targetX = cell2.getX();
-        int targetY = cell2.getY();
 
 
         // SI JOUEUR SUR UNE PORTE IL RENTRE OU PAS
@@ -131,7 +133,10 @@ namespace ai {
             }
         }
 
-        // DIRECTION DES DEPLACEMENTS
+        // POSITION ARRIVEE
+        int startY = cell1.getY();
+        int startX = cell1.getX();
+
         std::vector<std::pair<int, int>> directions = {
             {0, -1},  // UP
             {0, 1},   // DOWN
@@ -139,87 +144,43 @@ namespace ai {
             {1, 0}    // RIGHT
         };
 
+        std::vector<int> neighborsValues;
 
-        // Définir les coûts pour les déplacements
-        int mapWidth = const_cast<state::Map&>(map).getWidth();
-        int mapHeight = const_cast<state::Map&>(map).getHeight();
+        for (int i=0; i<directions.size();i++) {
+            int nextY = startY + directions[i].second;
+            int nextX = startX + directions[i].first;
+            neighborsValues.emplace_back(distanceMatrix[nextY][nextX]);
+        }
 
+        if (neighborsValues.empty()) {
+            throw std::invalid_argument("The vector is empty.");
+        }
 
-        std::vector<std::vector<int>> distances(mapWidth, std::vector<int>(mapHeight, std::numeric_limits<int>::max()));
-        distances[startX][startY] = 0;
-
-        std::vector<std::pair<int, int>> toExplore;
-        toExplore.push_back({startX, startY});
-        // TROUVER LES DISTANCES AVEC TOUTES LES CELLULES
-        while (!toExplore.empty()) {
-            auto [currentX, currentY] = toExplore.front();
-            toExplore.pop_back();
-            // CHECK LES VOISINS
-            std::vector<state::LocationType> neighbors = map.getNeighborsAsLocationType(currentX, currentY);
-
-            for (size_t i = 0; i < directions.size(); i++) {
-                int nextX = currentX + directions[i].first;
-                int nextY = currentY + directions[i].second;
-
-                // CHECK LE TYPE DES CELLULES + LIMITES MAP
-                if (nextX >= 0 && nextY >= 0 && nextX < mapWidth && nextY < mapHeight &&
-                    neighbors[i] != state::ROOM &&
-                    neighbors[i] != state::INACCESSIBLE) {
-                    if (distances[nextX][nextY] > distances[currentX][currentY] + 1) {
-                        distances[nextX][nextY] = distances[currentX][currentY] + 1;
-                        toExplore.push_back({nextX, nextY});
-                    }
-                    }
+        int minIndex = -1; // Initialisation à -1 pour indiquer aucun élément trouvé
+        for (size_t i = 0; i < neighborsValues.size(); ++i) {
+            // On recherche uniquement les éléments positifs
+            if (neighborsValues[i] >= 0 && (minIndex == -1 || neighborsValues[i] < neighborsValues[minIndex])) {
+                minIndex = i;
             }
         }
 
-        for (int y = 0; y < mapHeight; ++y) {
-            for (int x = 0; x < mapWidth; ++x) {
-                std::cout << distances[x][y] << " ";
-            }
-            std::cout << std::endl;
+        switch (minIndex) {
+            case 0: // MOVE UP
+                std::cout<<"up"<<std::endl;
+                return engine::MOVE_UP;
+            case 1: // MOVE DOWN
+                std::cout<<"down"<<std::endl;
+                return engine::MOVE_DOWN;
+            case 2: // MOVE LEFT
+                std::cout<<"left"<<std::endl;
+                return engine::MOVE_LEFT;
+            case 3: // MOVE RIGHT
+                std::cout<<"right"<<std::endl;
+                return engine::MOVE_RIGHT;
+            default:
+                    break;
         }
 
-
-        // REVENIR A LA CELLULE PRECEDENTE
-        for (int i = 0; i < directions.size(); i++) {
-
-            int prevX = targetX - directions[i].first;
-            int prevY = targetY - directions[i].second;
-
-            for (const auto& direction : directions) {
-                std::cout << "pre" << direction.first << ", " << direction.second << ")" << std::endl;
-            }
-
-            std::cout << "prevX: " << prevX << "  prevY: " << prevY <<  " mapWidth: "
-            << mapWidth << " distances[prevX][prevY] : " << distances[prevX][prevY] << " distances[targetX][targetY] - 1: " <<
-                distances[targetX][targetY] - 1 << "value: " <<  distances[prevX][prevY] - (distances[targetX][targetY] - 1) << std::endl;
-
-            if (prevX >= 0 && prevY >= 0 && prevX < mapWidth && prevY < mapHeight &&
-                distances[prevX][prevY] == distances[targetX][targetY] - 1) {
-                // RENVOYER LA DIRECTION
-                std::cout << "yoo" << std::endl;
-                if (directions[i] == std::make_pair(0, 1)) {
-                    std::cout << "c'est down" << std::endl;
-                    return engine::MOVE_DOWN;
-                }
-                if (directions[i] == std::make_pair(0, -1)) {
-                    std::cout << "c'est up" << std::endl;
-                    return engine::MOVE_UP;
-                }
-                if (directions[i] == std::make_pair(1, 0)) {
-                    std::cout << "c'est right" << std::endl;
-                    return engine::MOVE_RIGHT;
-                }
-                if (directions[i] == std::make_pair(-1, 0)) {
-                    std::cout << "c'est left" << std::endl;
-                    return engine::MOVE_LEFT;
-                }
-                for (const auto& direction : directions) {
-                    std::cout << "(" << direction.first << ", " << direction.second << ")" << std::endl;
-                }
-            }
-        }
     }
 
 
@@ -335,8 +296,59 @@ namespace ai {
     }
 
     void EasyAI::getDiceResult(int result, const state::PlayerState &player) {
+
+        for (auto& row : distanceMatrix) {
+            std::fill(row.begin(), row.end(), -1);
+        }
+
         if (playerState.getIdentity() == player.getIdentity()) {
             previousDiceResult = result;
+        }
+
+        auto& target = static_cast<state::Cell &>(*doorDestination);
+
+        // POSITION ARRIVEE
+        int targetY = target.getY();
+        int targetX = target.getX();
+
+        // DIRECTION DES DEPLACEMENTS
+        std::vector<std::pair<int, int>> directions = {
+            {0, -1},  // UP
+            {0, 1},   // DOWN
+            {-1, 0},  // LEFT
+            {1, 0}    // RIGHT
+        };
+
+        // Définir les coûts pour les déplacements
+        int mapWidth = const_cast<state::Map&>(map).getWidth();
+        int mapHeight = const_cast<state::Map&>(map).getHeight();
+
+        distanceMatrix[targetY][targetX] = 0;
+
+        std::vector<std::pair<int, int>> toExplore;
+        toExplore.push_back({targetY, targetX});
+        // TROUVER LES DISTANCES AVEC TOUTES LES CELLULES
+        while (!toExplore.empty()) {
+            auto [currentY, currentX] = toExplore.back();
+            toExplore.pop_back();
+            // CHECK LES VOISINS
+            std::vector<state::LocationType> neighbors = map.getNeighborsAsLocationType(currentX, currentY);
+
+            for (size_t i = 0; i < directions.size(); i++) {
+                int nextY = currentY + directions[i].second;
+                int nextX = currentX + directions[i].first;
+
+
+                // CHECK LE TYPE DES CELLULES + LIMITES MAP
+                if (nextX >= 0 && nextY >= 0 && nextX < mapWidth && nextY < mapHeight &&
+                    neighbors[i] != state::ROOM &&
+                    neighbors[i] != state::INACCESSIBLE) {
+                    if (distanceMatrix[nextY][nextX] < 0 || distanceMatrix[nextY][nextX] > distanceMatrix[currentY][currentX] + 1) {
+                        distanceMatrix[nextY][nextX] = distanceMatrix[currentY][currentX] + 1;
+                        toExplore.push_back({nextY, nextX});
+                    }
+                    }
+            }
         }
 
     }
