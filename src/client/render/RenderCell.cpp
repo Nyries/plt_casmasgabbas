@@ -6,9 +6,10 @@ RenderCell::RenderCell ( int gridX, int gridY, float x, float y, float width, fl
 : Panel(x, y, width, height, color), gridX(gridX), gridY(gridY){
 
     }
-
+/*
 void RenderCell::draw(sf::RenderWindow &window)
 {
     window.draw(shape);
 }
+*/
 }

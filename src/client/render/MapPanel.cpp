@@ -1,6 +1,7 @@
 #include "MapPanel.h"
 
 #include <fstream>
+#include <iostream>
 #include <json/json.h>
 #include "TextBox.h"
 
