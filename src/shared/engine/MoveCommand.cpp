@@ -55,14 +55,15 @@ namespace engine {
                 }
                 if (newLocation.getType() == state::ROOM) {
                     auto& newRoom = dynamic_cast<state::Room&>(newLocation);
-                    std::vector<state::Door*>& doorList = newRoom.getDoorList();
-                    auto it = std::find_if(doorList.begin(), doorList.end(),
-                    [&playerDoor](const state::Door* i) {
-                        return i == &playerDoor;
-                        });
-                    if (it!=doorList.end()) {
-                        player.setLocation(newRoom);
-
+                    if (newRoom.getRoomName() != player.getPreviousHypothesisRoom()) {
+                        std::vector<state::Door*>& doorList = newRoom.getDoorList();
+                        auto it = std::find_if(doorList.begin(), doorList.end(),
+                        [&playerDoor](const state::Door* i) {
+                            return i == &playerDoor;
+                            });
+                        if (it!=doorList.end()) {
+                            player.setLocation(newRoom);
+                        }
                     }
                 }
                 break;
