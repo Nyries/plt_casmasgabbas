@@ -10,8 +10,18 @@
 void test() {
     //put some code you want to run here
     sf::RenderWindow window(sf::VideoMode(800, 600), "Cluedo plt");
-    render::Scene scene(window);
-
+    render::Render myRender(window);
+    window.clear(sf::Color::White);
+    while(window.isOpen()){
+        sf::Event event;
+        while (window.pollEvent(event)){
+            if (event.type == sf::Event::Closed){
+                window.close();
+            }
+        }
+        myRender.draw(window);
+        window.display();
+    }
 }
 
 void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& myClient) {
@@ -96,7 +106,7 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
 int main(int argc,char* argv[])
 {
 
-    //test();//used for testing methods
+    test();//used for testing methods
 
     //main
     if (argc < 3) {
@@ -109,6 +119,8 @@ int main(int argc,char* argv[])
         if (std::string(argv[2]) == "console") {
             tempIO = std::make_unique<client::ConsoleIO>();
         } else if (std::string(argv[2]) == "render") {
+            //sf::RenderWindow window(sf::VideoMode(800, 600), "Cluedo plt");
+            //render::Render scene(window);
             tempIO = std::make_unique<client::RenderIO>();
         }
         else {
