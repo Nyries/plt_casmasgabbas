@@ -38,6 +38,14 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
                 break;
                 case engine::SECRET_PASSAGE: {
                     myEngine.addCommand(std::make_unique<engine::SecretPassageCommand>(myEngine, currentPlayerState));
+                    myEngine.executeCommands();
+                    io.updatePlayerPositions();
+                    const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
+                    io.displayHypothesis(currentPlayer, hypothesis);
+                    myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerState, hypothesis));
+                    myEngine.executeCommands();
+                    io.updatePlayerPositions();
+                    myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
                 }
                 break;
                 case engine::MOVE_FROM_DICE: {
