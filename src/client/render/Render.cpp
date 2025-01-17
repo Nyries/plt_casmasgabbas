@@ -12,7 +12,7 @@ namespace render{
     sf::Color cluedTurquoise(0, 128, 128); // Turquoise Cluedo
     sf::Color cluedoBeige(191, 128, 128); // Beige Cluedo
     sf::Color cluedoGreenGray(132, 145, 134); // Gris vert Cluedo
-    Render::Render(sf::RenderWindow& window): window(window), desktop()
+    Render::Render(sf::RenderWindow& window): window(window), desktop(), mapPanel(0,0,0,0,sf::Color::Green), uiPanel(0,0,0,0,sf::Color::Green)
 {
     desktop = sf::VideoMode::getDesktopMode();
     
