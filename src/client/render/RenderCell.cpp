@@ -1,12 +1,14 @@
 #include "RenderCell.h"
 
-#include <SFML/Graphics.hpp>
+namespace render {
 
-render::RenderCell::RenderCell (float x, float y, float width, float height, int gridX, int gridY)
-: gridX(gridX), gridY(gridY){
-        setPosition(x, y);
-        setSize({width, height});
-        setFillColor(sf::Color(255, 255, 153, 70));
-        setOutlineColor(sf::Color::Black);
-        setOutlineThickness(1);
+RenderCell::RenderCell ( int gridX, int gridY, float x, float y, float width, float height, sf::Color color)
+: Panel(x, y, width, height, color), gridX(gridX), gridY(gridY){
+
     }
+
+void RenderCell::draw(sf::RenderWindow &window)
+{
+    window.draw(shape);
+}
+}
