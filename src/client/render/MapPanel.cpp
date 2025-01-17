@@ -1,29 +1,20 @@
 #include "MapPanel.h"
 
+#include <iostream>
 #include <fstream>
 #include <iostream>
 #include <json/json.h>
-#include "TextBox.h"
+#include "Grid.h"
 
 namespace render {
-    MapPanel::MapPanel(int rows, int cols, float x, float y, float width, float height, sf::Color color) : Panel(x, y, width, height, color), rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows)
+    MapPanel::MapPanel(int rows, int cols, float x, float y, float width, float height, sf::Color color, const state::Map& map) : Panel(x, y, width, height, color),
+    rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows),
+    map(map)
     {
-        createGrid();
-        roomTexts.clear();
+        auto grid = std::make_unique<render::Grid>(rows, cols, width, height);
+        this->addChild(std::move(grid));
         if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
             std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
-        }
-    }
-
-    void MapPanel::createGrid()
-    {
-        cells.clear();
-        for (int y = 0; y < rows; ++y) {
-            for (int x = 0; x < cols; ++x) {
-                sf::Color color(255, 255, 153);
-                std::unique_ptr<RenderCell> cell = std::make_unique<RenderCell>(x * cellWidth, y * cellHeight, cellWidth, cellHeight, x, y, color);
-                cells.push_back(std::move(cell));
-                children.push_back(std::make_unique<RenderCell>(x * cellWidth, y * cellHeight, cellWidth, cellHeight, x, y, color));}
         }
     }
 

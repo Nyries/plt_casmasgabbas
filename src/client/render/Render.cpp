@@ -14,9 +14,9 @@ namespace render{
     sf::Color cluedoBeige(191, 128, 128); // Beige Cluedo
     sf::Color cluedoGreenGray(132, 145, 134); // Gris vert Cluedo
 
-Render::Render(sf::RenderWindow& window): window(window), desktop()
+Render::Render(): window(sf::VideoMode(800, 600), "Cluedo plt"), desktop(sf::VideoMode::getDesktopMode())
 {
-    desktop = sf::VideoMode::getDesktopMode();
+    window.clear(sf::Color::White);
     
     std::cout << desktop.width << "x" << desktop.height << std::endl;
     // Create the window
@@ -29,15 +29,113 @@ Render::Render(sf::RenderWindow& window): window(window), desktop()
     //Splitting the window in two parts, one for the map and the other for the UI
     // Each part is a panel
     auto uiPanel = std::make_unique<UIPanel>(0, 0, windowWidth-windowHeight, windowHeight, cluedoRed);
-    auto mapPanel = std::make_unique<MapPanel>(1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White);
+    auto mapPanel = std::make_unique<MapPanel>(1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White, *map);
     this->addChild(std::move(uiPanel));
     this->addChild(std::move(mapPanel));
 }
+    void Render::draw(sf::RenderWindow &window)
+    {
+        this->drawChildren(window);
+    }
 
-void Render::draw(sf::RenderWindow &window)
-{
-    this->drawChildren(window);
-}
+    void Render::updateWindow() {
+        if(window.isOpen()){
+            sf::Event event;
+            if (window.pollEvent(event)){
+                if (event.type == sf::Event::Closed){
+                    window.close();
+                }
+            }
+            draw(window);
+            window.display();
+        }
+    }
+
+    void Render::setPlayer(client::HumanPlayerRender &player) {
+        this->player = &player;
+    }
+
+    void Render::setEngine(engine::Engine &engine) {
+        this->engine = &engine;
+    }
+
+    void Render::setMap(state::Map &map) {
+        this->map = &map;
+    }
+
+    void Render::setPlayerStateVec(std::vector<state::PlayerState> &playerStateVec) {
+        this->playerStateVec = &playerStateVec;
+    }
+
+    int Render::introductionToTheGame() {
+
+    }
+
+    void Render::startOfTheGame() {
+
+    }
+
+    void Render::diceThrow() {
+
+    }
+
+    void Render::updatePlayerPositions() {
+
+    }
+
+    void Render::displayHypothesis(const client::Player &player, const state::TripleClue &hypothesis) {
+
+    }
+
+    void Render::displayAccusation(const client::Player &player, const state::TripleClue &accusation) {
+
+    }
+
+    void Render::displayGameEnd(const client::Player &winner) {
+
+    }
+
+
+    engine::CommandId Render::chooseAction() {
+
+    }
+
+    engine::Move Render::chooseMoveDirection() {
+
+    }
+
+    state::Door &Render::chooseDoor(const std::vector<state::Door *> &doorList) {
+
+    }
+
+
+    state::TripleClue Render::chooseHypothesis() {
+
+    }
+
+    int Render::chooseACardToShowPlayer(const std::vector<const state::Card *> &cards, const client::Player &player) {
+
+    }
+
+    void Render::seeACardFromPlayer(const state::Card &shownCard, const client::Player &cardOwner) {
+
+    }
+
+    state::TripleClue Render::chooseAccusation() {
+
+    }
+
+    void Render::makePlayerThrowDice() {
+
+    }
+
+    void Render::displayDiceResult(int result, const client::Player &player) {
+
+    }
+
+
+
+
 
 }
     /*UIBackground = sf::RectangleShape(sf::Vector2f(abs(windowHeight-windowWidth), windowHeight));

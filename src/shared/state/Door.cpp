@@ -13,4 +13,9 @@ namespace state {
     {
         return room;
     }
+
+    const Room *Door::getRoom() const {
+        return room;
+    }
+
 }
