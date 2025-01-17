@@ -7,7 +7,9 @@
 #include "Grid.h"
 
 namespace render {
-    MapPanel::MapPanel(int rows, int cols, float x, float y, float width, float height, sf::Color color) : Panel(x, y, width, height, color), rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows)
+    MapPanel::MapPanel(int rows, int cols, float x, float y, float width, float height, sf::Color color, const state::Map& map) : Panel(x, y, width, height, color),
+    rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows),
+    map(map)
     {
         auto grid = std::make_unique<render::Grid>(rows, cols, width, height);
         this->addChild(std::move(grid));
