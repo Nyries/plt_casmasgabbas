@@ -7,11 +7,11 @@
 #include "Grid.h"
 
 namespace render {
-    MapPanel::MapPanel(int rows, int cols, float x, float y, float width, float height, sf::Color color, const state::Map& map) : Panel(x, y, width, height, color),
+    MapPanel::MapPanel(sf::RenderWindow& window, int rows, int cols, float x, float y, float width, float height, sf::Color color, const state::Map& map) : Panel(window, x, y, width, height, color),
     rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows),
     map(map)
     {
-        auto grid = std::make_unique<render::Grid>(rows, cols, width, height);
+        auto grid = std::make_unique<render::Grid>(window, rows, cols, width, height);
         this->addChild(std::move(grid));
         if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
             std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
@@ -22,7 +22,7 @@ namespace render {
     {
         window.draw(this->shape);
         std::cout << "Drawing map panel" << std::endl;
-        this->drawChildren(window);
+        this->drawChildren();
         
     }
 

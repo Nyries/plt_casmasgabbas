@@ -1,7 +1,7 @@
 #include "Button.h"
 
 namespace render {
-Button::Button(float x, float y, float width, float height, const std::string &label, const sf::Font &font)
+Button::Button(sf::RenderWindow& window, float x, float y, float width, float height, const std::string &label, const sf::Font &font): Entity(window)
 {
         m_box.setSize(sf::Vector2f(width, height));
         m_box.setPosition(x, y);
@@ -17,7 +17,7 @@ Button::Button(float x, float y, float width, float height, const std::string &l
         m_text.setPosition(x + width / 2.0f, y + height / 2.0f);
 }
 
-void Button::draw(sf::RenderWindow &window)
+void Button::draw()
 {
         window.draw(m_box);
         window.draw(m_text);
@@ -25,7 +25,7 @@ void Button::draw(sf::RenderWindow &window)
 
 bool Button::isClicked(const sf::Vector2i &mousePos)
 {
-        return m_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+        return m_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && sf::Mouse::isButtonPressed(sf::Mouse::Left);
 }
 
 void Button::setFillColor(const sf::Color &color)
