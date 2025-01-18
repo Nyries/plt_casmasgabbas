@@ -16,6 +16,11 @@ namespace client {
 
     }
 
+    void ConsoleIO::updateIO() {
+
+    }
+
+
     int ConsoleIO::getValidKey(int max) {
         try{
             std::string playerKey;

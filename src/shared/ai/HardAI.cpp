@@ -172,7 +172,7 @@ namespace ai {
 
 
     int HardAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards, const state::PlayerState &client) {
-        int numberOfCards = playerState.getCards().size();
+        /*int numberOfCards = playerState.getCards().size();
         int numberOfPlayers = engine.getState().getPlayerStateVec().size() - 1;
 
         // INITIALISATION DE LA MATRICE A 0
@@ -201,6 +201,7 @@ namespace ai {
             int number = std::stoi(shownCard.getValueAsString());
             knownRooms[number] = 2;
         }
+        */
     }
 
     state::TripleClue HardAI::chooseAccusation() {

@@ -1,7 +1,10 @@
-#include "Scene.h"
+#include "Render.h"
 
 #include <iostream>
-#include "Grid.h"
+#include "UIPanel.h"
+#include "MapPanel.h"
+#include "TextBox.h"
+#include "Panel.h"
 
 namespace render{
     sf::Color cluedoRed(180, 0, 0);   // Rouge Cluedo
@@ -10,9 +13,10 @@ namespace render{
     sf::Color cluedTurquoise(0, 128, 128); // Turquoise Cluedo
     sf::Color cluedoBeige(191, 128, 128); // Beige Cluedo
     sf::Color cluedoGreenGray(132, 145, 134); // Gris vert Cluedo
-    Scene::Scene(sf::RenderWindow& window): window(window)
+
+Render::Render(): window(sf::VideoMode(800, 600), "Cluedo plt"), desktop(sf::VideoMode::getDesktopMode())
 {
-    desktop = sf::VideoMode::getDesktopMode();
+    window.clear(sf::Color::White);
     
     std::cout << desktop.width << "x" << desktop.height << std::endl;
     // Create the window
@@ -23,7 +27,118 @@ namespace render{
     window.setPosition(sf::Vector2i(desktop.width/2 - window.getSize().x/2, desktop.height/2 - window.getSize().y/2));
     
     //Splitting the window in two parts, one for the map and the other for the UI
-    UIBackground = sf::RectangleShape(sf::Vector2f(abs(windowHeight-windowWidth), windowHeight));
+    // Each part is a panel
+    auto uiPanel = std::make_unique<UIPanel>(0, 0, windowWidth-windowHeight, windowHeight, cluedoRed);
+    auto mapPanel = std::make_unique<MapPanel>(1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White, *map);
+    this->addChild(std::move(uiPanel));
+    this->addChild(std::move(mapPanel));
+}
+    void Render::draw(sf::RenderWindow &window)
+    {
+        this->drawChildren(window);
+    }
+
+    void Render::updateWindow() {
+        if(window.isOpen()){
+            sf::Event event;
+            if (window.pollEvent(event)){
+                if (event.type == sf::Event::Closed){
+                    window.close();
+                }
+            }
+            draw(window);
+            window.display();
+        }
+    }
+
+    void Render::setPlayer(client::HumanPlayerRender &player) {
+        this->player = &player;
+    }
+
+    void Render::setEngine(engine::Engine &engine) {
+        this->engine = &engine;
+    }
+
+    void Render::setMap(state::Map &map) {
+        this->map = &map;
+    }
+
+    void Render::setPlayerStateVec(std::vector<state::PlayerState> &playerStateVec) {
+        this->playerStateVec = &playerStateVec;
+    }
+
+    int Render::introductionToTheGame() {
+
+    }
+
+    void Render::startOfTheGame() {
+
+    }
+
+    void Render::diceThrow() {
+
+    }
+
+    void Render::updatePlayerPositions() {
+
+    }
+
+    void Render::displayHypothesis(const client::Player &player, const state::TripleClue &hypothesis) {
+
+    }
+
+    void Render::displayAccusation(const client::Player &player, const state::TripleClue &accusation) {
+
+    }
+
+    void Render::displayGameEnd(const client::Player &winner) {
+
+    }
+
+
+    engine::CommandId Render::chooseAction() {
+
+    }
+
+    engine::Move Render::chooseMoveDirection() {
+
+    }
+
+    state::Door &Render::chooseDoor(const std::vector<state::Door *> &doorList) {
+
+    }
+
+
+    state::TripleClue Render::chooseHypothesis() {
+
+    }
+
+    int Render::chooseACardToShowPlayer(const std::vector<const state::Card *> &cards, const client::Player &player) {
+
+    }
+
+    void Render::seeACardFromPlayer(const state::Card &shownCard, const client::Player &cardOwner) {
+
+    }
+
+    state::TripleClue Render::chooseAccusation() {
+
+    }
+
+    void Render::makePlayerThrowDice() {
+
+    }
+
+    void Render::displayDiceResult(int result, const client::Player &player) {
+
+    }
+
+
+
+
+
+}
+    /*UIBackground = sf::RectangleShape(sf::Vector2f(abs(windowHeight-windowWidth), windowHeight));
     UIBackground.setPosition(0, 0);
     UIBackground.setFillColor(cluedoRed);
     MapBackground = sf::RectangleShape(sf::Vector2f(windowHeight, windowHeight));
@@ -32,10 +147,16 @@ namespace render{
     MapSprite.setTexture(MapTexture);
     MapSprite.setPosition(sf::Vector2f(windowWidth-windowHeight, 0));  
     MapSprite.setScale((float)windowHeight/MapTexture.getSize().x, (float)windowHeight/MapTexture.getSize().y);  
-    Grid grid(25, 24, MapBackground.getSize().x, MapBackground.getSize().y);
+    */
+    // Setting up the grid above the map
+    /*RenderMap grid(27, 26, MapBackground.getSize().x, MapBackground.getSize().y);
     grid.setPosition(windowWidth-windowHeight, 0);
-    
-    while (window.isOpen()){    
+    grid.mergeFromJson("../configurations/map.json");*/
+
+    //test de textbox
+    //TextBox test(sf::Vector2f(200, 50), "../ressources/fonts/Futura-Condensed-Extra-Bold.ttf", "Test");
+
+    /*while (window.isOpen()){    
         sf::Event event;
         while (window.pollEvent(event)){
             if (event.type == sf::Event::Closed){
@@ -47,21 +168,18 @@ namespace render{
                 }
                 if (event.mouseButton.button == sf::Mouse::Right){
                     grid.deletePiece(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
-                }*/
+                }
             }
 
         }
         window.clear(sf::Color::White);
-
-        window.draw(UIBackground);
-        window.draw(MapBackground);
-
-        window.draw(MapSprite);
-        grid.draw(window);
+        //window.draw(MapSprite);
+        //grid.draw(window);
+        //test.draw(window);
         
         window.display();
         
-    }
+    }*/
     /*window.setPosition(sf::Vector2i(desktop.,0));
     window.setSize(sf::Vector2u(desktop.height, desktop.height));
     window.setVerticalSyncEnabled(true);
@@ -69,13 +187,13 @@ namespace render{
     Background.setScale(desktop.height, desktop.height);
     sf::Vector2u textureSize = BackgroundTexture.getSize();
     std::cout << textureSize.x << "x" << textureSize.y << std::endl;
-*/
+
 }
-void Scene::loadMapImage(std::string mapImagePath)
+void Render::loadMapImage(std::string mapImagePath)
 {
   
 }
-void Scene::gameInit()
+void Render::gameInit()
 {
     sf::Font font;
     if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
@@ -130,7 +248,7 @@ void Scene::gameInit()
     }
 
 }
-void Scene::gameSetUp()
+void Render::gameSetUp()
 {
     sf::Font font;
     if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
@@ -215,6 +333,8 @@ void Scene::gameSetUp()
         }
         window.display();
     }
+}
+*/
     
     // Button to add a player
     /*sf::RectangleShape addButton(sf::Vector2f(200, 50));
@@ -351,9 +471,9 @@ void Scene::gameSetUp()
             window.draw(nameInputs[i]);
         }
         window.display();
-    }*/
-}
-void Scene::suspectDropDown(float firstButtonX, float firstButtonY, std::vector<std::string> suspectList)
+    }
+
+void Render::suspectDropDown(float firstButtonX, float firstButtonY, std::vector<std::string> suspectList)
 {
     /*sf::Font font;
     if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
@@ -373,6 +493,5 @@ void Scene::suspectDropDown(float firstButtonX, float firstButtonY, std::vector<
         suspectText.setCharacterSize(20);
         suspectText.setFillColor(sf::Color::Black);
         suspectText.setPosition(FirstButtonX, FirstButtonY + i * 60);
-        suspectTexts.push_back(suspectText);^*/
-}
-}
+        suspectTexts.push_back(suspectText);^
+        }*/

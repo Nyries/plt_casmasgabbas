@@ -9,9 +9,6 @@
 
 void test() {
     //put some code you want to run here
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Cluedo plt");
-    render::Scene scene(window);
-
 }
 
 void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& myClient) {
@@ -29,6 +26,7 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
                     io.displayHypothesis(currentPlayer, hypothesis);
                     myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerState, hypothesis));
                     myEngine.executeCommands();
+                    io.updatePlayerPositions();
                     myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
                 }
                 break;
@@ -40,10 +38,19 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
                 break;
                 case engine::SECRET_PASSAGE: {
                     myEngine.addCommand(std::make_unique<engine::SecretPassageCommand>(myEngine, currentPlayerState));
+                    myEngine.executeCommands();
+                    io.updatePlayerPositions();
+                    const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
+                    io.displayHypothesis(currentPlayer, hypothesis);
+                    myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerState, hypothesis));
+                    myEngine.executeCommands();
+                    io.updatePlayerPositions();
+                    myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
                 }
                 break;
                 case engine::MOVE_FROM_DICE: {
                     std::vector<int> diceResult = engine::Engine::dice();
+                    currentPlayer.makePlayerThrowDice();
                     int remainingMoves = diceResult.at(0) + diceResult.at(1);
                     io.displayDiceResult(myPlayerList, remainingMoves, currentPlayer);
                     while (remainingMoves > 0) {
@@ -66,11 +73,13 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
                             myEngine.addCommand(std::make_unique<engine::MoveCommand>(myEngine, currentPlayerState, newLocation));
                         }
                         myEngine.executeCommands();
+                        io.updatePlayerPositions();
                         if (currentPlayerState.getLocation().getType() == state::ROOM) {
                             const state::TripleClue hypothesis = currentPlayer.chooseHypothesis();
                             io.displayHypothesis(currentPlayer, hypothesis);
                             myEngine.addCommand(std::make_unique<engine::HypothesisCommand>(myEngine, currentPlayerState, hypothesis));
                             myEngine.executeCommands();
+                            io.updatePlayerPositions();
                             myClient.askHypothesisToNeighbors(currentPlayer, hypothesis);
                             break;
                         }
@@ -82,6 +91,7 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
                     throw std::runtime_error("switch case failed!");
             }
             myEngine.executeCommands();
+            io.updatePlayerPositions();
         }
         if ( myState.getAccusationSuccess()) {
             io.displayGameEnd(currentPlayer);
@@ -95,7 +105,7 @@ void gameLoop(state::State& myState, engine::Engine& myEngine, client::Client& m
 int main(int argc,char* argv[])
 {
 
-    test();//used for testing methods
+    //test();//used for testing methods
 
     //main
     if (argc < 3) {
@@ -107,6 +117,9 @@ int main(int argc,char* argv[])
         std::unique_ptr<client::IO> tempIO;
         if (std::string(argv[2]) == "console") {
             tempIO = std::make_unique<client::ConsoleIO>();
+
+        } else if (std::string(argv[2]) == "render") {
+            tempIO = std::make_unique<client::RenderIO>();
         }
         else {
             throw std::invalid_argument(std::string("invalid argument: ") + argv[2]);
@@ -118,8 +131,20 @@ int main(int argc,char* argv[])
         //Construction de la liste des joueurs; le joueur humain est toujours le premier de la liste
         std::vector<state::PlayerState>& playerStateVec = myState.getPlayerStateVec();
         std::vector<std::unique_ptr<client::Player>> playerVec(playerCount);
-        client::HumanPlayerConsole userPlayer(myEngine, playerStateVec.at(0), "User");
-        playerVec.front() = std::make_unique<client::HumanPlayerConsole>(std::move(userPlayer));;
+        if (std::string(argv[2]) == "console") {
+            client::HumanPlayerConsole userPlayer(myEngine, playerStateVec.at(0), "User");
+            playerVec.front() = std::make_unique<client::HumanPlayerConsole>(std::move(userPlayer));;
+        }
+        else if (std::string(argv[2]) == "render") {
+            auto& renderIO = dynamic_cast< client::RenderIO& >(*tempIO);
+            render::Render& myRender = renderIO.getRender();
+            client::HumanPlayerRender userPlayer(myEngine, playerStateVec.at(0), "User", myRender);
+            myRender.setPlayer(userPlayer);
+            myRender.setMap(myState.getMap());
+            myRender.setEngine(myEngine);
+            myRender.setPlayerStateVec(myState.getPlayerStateVec());
+            playerVec.front() = std::make_unique<client::HumanPlayerRender>(std::move(userPlayer));;
+        }
         for (int i = 1; i < playerCount; i++) {
             client::AIPlayer aiPlayer(myEngine, playerStateVec.at(i), "AI " + std::to_string(i), std::make_unique<ai::RandomAI>(myEngine, playerStateVec.at(i)));
             playerVec.at(i) = std::make_unique<client::AIPlayer>(std::move(aiPlayer));
