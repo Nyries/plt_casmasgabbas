@@ -88,7 +88,6 @@
       </dia:composite>
     </dia:attribute>
   </dia:diagramdata>
-  <dia:layer name="Arrière-plan" visible="true" connectable="false"/>
   <dia:layer name="Arrière-plan" visible="true" connectable="true" active="true">
     <dia:object type="UML - LargePackage" version="0" id="O0">
       <dia:attribute name="obj_pos">
@@ -408,13 +407,13 @@
     </dia:object>
     <dia:object type="UML - Class" version="0" id="O4">
       <dia:attribute name="obj_pos">
-        <dia:point val="11.0942,16.9344"/>
+        <dia:point val="10.8942,16.6344"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="11.0442,16.8844;38.5942,28.5844"/>
+        <dia:rectangle val="10.8442,16.5844;38.3942,28.2844"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="11.0942,16.9344"/>
+        <dia:point val="10.8942,16.6344"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
         <dia:real val="27.449999999999999"/>
@@ -1627,7 +1626,7 @@
         <dia:point val="60.9774,22.3136"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="24.7692,15.8344;61.8274,24.2136"/>
+        <dia:rectangle val="24.5692,15.5344;61.8274,24.2136"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -1635,10 +1634,10 @@
       <dia:attribute name="orth_points">
         <dia:point val="60.9774,22.3136"/>
         <dia:point val="60.9774,24.1636"/>
-        <dia:point val="42.8983,24.1636"/>
-        <dia:point val="42.8983,15.8844"/>
-        <dia:point val="24.8192,15.8844"/>
-        <dia:point val="24.8192,16.9344"/>
+        <dia:point val="42.7983,24.1636"/>
+        <dia:point val="42.7983,15.5844"/>
+        <dia:point val="24.6192,15.5844"/>
+        <dia:point val="24.6192,16.6344"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
@@ -4269,7 +4268,7 @@
                 <dia:string>#client#</dia:string>
               </dia:attribute>
               <dia:attribute name="type">
-                <dia:string>#state::PlayerState&amp;#</dia:string>
+                <dia:string>#const state::PlayerState&amp;#</dia:string>
               </dia:attribute>
               <dia:attribute name="value">
                 <dia:string>##</dia:string>
