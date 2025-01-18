@@ -36,6 +36,7 @@ namespace state {
         this->identity = identity;
     }
 
+
     bool PlayerState::getCanWin() {
         return canWin;
     }
