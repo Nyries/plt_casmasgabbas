@@ -54,6 +54,7 @@ namespace render{
                 }
             }
         }
+        this->draw();
     }
 
     void Render::setPlayer(client::HumanPlayerRender &player) {
@@ -87,7 +88,6 @@ namespace render{
             isClicked3 = button3.isClicked();
             isClicked4 = button4.isClicked();
             updateWindow();
-            this->draw();
             button1.draw();
             button2.draw();
             button3.draw();
