@@ -454,11 +454,10 @@ BOOST_AUTO_TEST_SUITE(TestAccusationCommand)
     BOOST_AUTO_TEST_CASE(TestCorrectAccusation)
     {
         state::PlayerState player(ROSE);
-
         state::TripleClue correctAccusation{ROSE, CANDLESTICK, STUDY};
         state::TripleClue envelope{ROSE, CANDLESTICK, STUDY};
-
-        engine::Engine engine;
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
         engine.getEnvelope() = envelope;
 
         engine::AccusationCommand command(engine, player, correctAccusation);
@@ -471,11 +470,10 @@ BOOST_AUTO_TEST_SUITE(TestAccusationCommand)
     BOOST_AUTO_TEST_CASE(TestIncorrectAccusation)
     {
         state::PlayerState player(ROSE);
-
         state::TripleClue incorrectAccusation{ROSE, CANDLESTICK, STUDY};
         state::TripleClue envelope{PERVENCHE, CANDLESTICK, STUDY};
-
-        engine::Engine engine;
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
         engine.getEnvelope() = envelope;
 
         engine::AccusationCommand command(engine, player, incorrectAccusation);
@@ -498,12 +496,14 @@ BOOST_AUTO_TEST_SUITE(TestSecretPassageCommand)
 
         state::PlayerState player(ROSE);
         player.setLocation(garage);
-        engine::Engine engine;
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
 
         engine::SecretPassageCommand command(engine, player);
         command.execute();
 
-        BOOST_CHECK(player.getLocation() == kitchen);
+        BOOST_CHECK(dynamic_cast<Room&>(player.getLocation()) == kitchen);  // Problème de cast
+
     }
 
     BOOST_AUTO_TEST_CASE(TestInvalidStartingPosition)
@@ -511,7 +511,8 @@ BOOST_AUTO_TEST_SUITE(TestSecretPassageCommand)
         state::Cell cell(8, 8, CORRIDOR);
         state::PlayerState player(ROSE);
         player.setLocation(cell);
-        engine::Engine engine;
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
 
         engine::SecretPassageCommand command(engine, player);
         BOOST_CHECK_THROW(command.execute(), std::invalid_argument);  // On vérifie qu'on déclenche l'exception
@@ -524,7 +525,8 @@ BOOST_AUTO_TEST_SUITE(TestSecretPassageCommand)
 
         state::PlayerState player(ROSE);
         player.setLocation(garage);
-        engine::Engine engine;
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
 
         engine::SecretPassageCommand command(engine, player);
 
@@ -546,14 +548,14 @@ BOOST_AUTO_TEST_SUITE(TestHypothesisCommand)
         state::PlayerState suspectPlayer(PERVENCHE);
         state::TripleClue hypothesis{PERVENCHE, CANDLESTICK, STUDY};
 
-        // (+ Création du State)
-        engine::Engine engine;
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
         engine.setCurrentPlayer(player);
 
         engine::HypothesisCommand command(engine, player, hypothesis);
         command.execute();
 
-        BOOST_CHECK(suspectPlayer.getLocation() == STUDY); // Suspect téléporté
+        BOOST_CHECK(dynamic_cast<Room&>(suspectPlayer.getLocation()) == study); // Suspect téléporté // Problème de cast
         BOOST_CHECK(player.getPreviousHypothesisRoom() == STUDY);   // Salle enregistrée
     }
 
@@ -565,8 +567,8 @@ BOOST_AUTO_TEST_SUITE(TestHypothesisCommand)
 
         state::TripleClue hypothesis{PERVENCHE, CANDLESTICK, HALL};  // Mauvaise salle
 
-        // (+ Création du State)
-        engine::Engine engine;
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
         engine.setCurrentPlayer(player);
 
         engine::HypothesisCommand command(engine, player, hypothesis);
@@ -590,14 +592,15 @@ BOOST_AUTO_TEST_SUITE(TestMoveCommand)
         state::PlayerState player(ROSE);
         player.setLocation(cell1);
 
-        engine::Engine engine;
-        // Definir cell1 et cell2 comme voisins
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
+        // Définir cell1 et cell2 comme voisins
 
         engine::MoveCommand command(engine, player, cell2);
         command.execute();
 
-        BOOST_CHECK(player.getLocation().getX() == 8);
-        BOOST_CHECK(player.getLocation().getY() == 9);
+        BOOST_CHECK(dynamic_cast<Cell&>(player.getLocation()).getX() == 8);
+        BOOST_CHECK(dynamic_cast<Cell&>(player.getLocation()).getY() == 9);
     }
 
     /* À tester :
