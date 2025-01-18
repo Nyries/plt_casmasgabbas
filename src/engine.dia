@@ -323,7 +323,7 @@
             <dia:string>#envelope#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#state::TripleClue#</dia:string>
+            <dia:string>#state::TripleClue&amp;#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>

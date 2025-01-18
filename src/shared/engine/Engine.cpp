@@ -52,9 +52,20 @@ namespace engine {
         roomCardsVector.emplace_back(state::GARAGE);
         roomCardsVector.emplace_back(state::GAME_ROOM);
 
-        int remainingSuspects = 6;
-        int remainingWeapons = 6;
-        int remainingRooms = 9;
+        const int randomSuspect = UtilityFunctions::randomInt(6);
+        envelope.suspect = suspectCardsVector.at(randomSuspect).getSuspectName();
+        suspectCardsVector.erase(suspectCardsVector.begin() + randomSuspect);
+        const int randomWeapon = UtilityFunctions::randomInt(6);
+        envelope.weapon = weaponCardsVector.at(randomSuspect).getWeaponName();
+        weaponCardsVector.erase(weaponCardsVector.begin() + randomWeapon);
+        const int randomRoom = UtilityFunctions::randomInt(9);
+        envelope.room = roomCardsVector.at(randomSuspect).getRoomName();
+        roomCardsVector.erase(roomCardsVector.begin() + randomRoom);
+
+
+        int remainingSuspects = 5;
+        int remainingWeapons = 5;
+        int remainingRooms = 8;
         auto it = getIterator();
         for (int i = remainingSuspects + remainingWeapons + remainingRooms; i > 0; i--) {
             const int randomIndex = UtilityFunctions::randomInt(remainingSuspects + remainingWeapons + remainingRooms);
