@@ -191,7 +191,7 @@ namespace engine {
             break;
             case state::DOOR: {
                 const auto& playerCell = dynamic_cast<const state::Door&>(playerLocation);
-                if (player.getPreviousHypothesisRoom() == playerCell.getRoom()->getRoomName()) {
+                if (player.getPreviousHypothesisRoom() != playerCell.getRoom()->getRoomName()) {
                     possibleMoves.push_back(ENTER_ROOM);
                 }
                 const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());

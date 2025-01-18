@@ -143,6 +143,7 @@ namespace client{
 				hypothesisPlayer.seeACardFromPlayer(*possessedCards.at(chosenIndex), player);
 				break;
 			}
+			std::cout << player.getName() << " has nothing to show to " << hypothesisPlayer.getName() << std::endl;
 			playerList.incrementIterator(it);
 		}
 	}

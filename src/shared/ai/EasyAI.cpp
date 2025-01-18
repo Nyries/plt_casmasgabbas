@@ -210,19 +210,20 @@ namespace ai {
     void EasyAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerState &cardOwner) {
 
         if (shownCard.getType() == state::SUSPECT_CARD) {
-            int number = std::stoi(shownCard.getValueAsString());
-            knownSuspects[number] = 2;
+            const auto& suspectCard = static_cast<const state::SuspectCard&>(shownCard);
+            knownSuspects[suspectCard.getSuspectName()-1] = 1;
         }
 
         if (shownCard.getType() == state::WEAPON_CARD) {
-            int number = std::stoi(shownCard.getValueAsString());
-            knownWeapons[number] = 2;
+            const auto& weaponCard = static_cast<const state::WeaponCard&>(shownCard);
+            knownWeapons[weaponCard.getWeaponName()-1] = 1;
         }
 
         if (shownCard.getType() == state::ROOM_CARD) {
-            int number = std::stoi(shownCard.getValueAsString());
-            knownRooms[number] = 2;
+            const auto& roomCard = static_cast<const state::RoomCard&>(shownCard);
+            knownRooms[roomCard.getRoomName()-1] = 1;
         }
+        std::cout << cardOwner.getIdentity() << " showed a card to " << playerState.getIdentity()  << std::endl;
     }
 
     state::TripleClue EasyAI::chooseAccusation() {
@@ -238,16 +239,18 @@ namespace ai {
     }
 
     state::Door &EasyAI::chooseDoor(const std::vector<state::Door *> &doorList) {
-        state::Location position = playerState.getLocation();
-        state::Room room = static_cast<state::Room&>(position);
+        state::Location& position = playerState.getLocation();
+        state::Room& room = static_cast<state::Room&>(position);
 
         std::vector<state::Door*> roomDoors = room.getDoorList();
         std::vector<state::Door*> allDoors;
 
-        for (int i = 1; i <= static_cast<int>(state::BEDROOM); ++i) {
-            state::Room currentRoom = static_cast<state::RoomName>(i);
+
+        auto roomList = map.getRoomList();
+        for (int i = 0; i < roomList.size(); ++i) {
+            auto currentRoom = roomList.at(i);
             if (currentRoom.getRoomName() != room.getRoomName()) {
-                std::vector<state::Door*> roomDoors2 = currentRoom.getDoorList();
+                std::vector<state::Door*> &roomDoors2 = currentRoom.getDoorList();
                 allDoors.insert(allDoors.end(), roomDoors2.begin(), roomDoors2.end());
             }
         }
@@ -257,10 +260,8 @@ namespace ai {
         for (long unsigned i = 0; i<roomDoors.size();i++) {
             for (long unsigned j = 0; j<allDoors.size();j++) {
                 state::Door* door1 = roomDoors.at(i);
-                state::Door* door2 = roomDoors.at(j);
-                auto* door1Cell = static_cast<state::Cell *>(door1);
-                auto* door2Cell = static_cast<state::Cell *>(door2);  // transforme en cellule pour calculer la distance
-                distance.push_back(std::make_tuple(distanceBetweenTwoCells(*door1Cell,*door2Cell), door1, door2));
+                state::Door* door2 = allDoors.at(j);
+                distance.push_back(std::make_tuple(distanceBetweenTwoCells(*door1,*door2), door1, door2));
             }
         }
 
@@ -289,8 +290,8 @@ namespace ai {
                     index = i;
                 }
             }
-            doorDestination = std::get<2>(choice[index]);
-            return *std::get<1>(choice[index]);
+            doorDestination = std::get<2>(distance[index]);
+            return *std::get<1>(distance[index]);
         }
         throw std::runtime_error("error");
     }

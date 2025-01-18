@@ -160,6 +160,7 @@ namespace client {
     	std::cout << "Which card do you want to show ?" << std::endl;
     	const unsigned long size = cards.size();
     	if (size==1) {
+    		std::cout << "Your card: " << cards.at(0)->getValueAsString() << std::endl;
     		std::cout << "You don't really have the choice. Press 1 to show your card " << std::endl;
     	}
     	else {
