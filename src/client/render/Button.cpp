@@ -23,8 +23,9 @@ void Button::draw()
         window.draw(m_text);
 }
 
-bool Button::isClicked(const sf::Vector2i &mousePos)
+bool Button::isClicked() const
 {
+        sf::Vector2i mousePos(sf::Mouse::getPosition(window));
         return m_box.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)) && sf::Mouse::isButtonPressed(sf::Mouse::Left);
 }
 

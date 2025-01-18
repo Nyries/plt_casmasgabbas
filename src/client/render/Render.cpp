@@ -73,7 +73,7 @@ Render::Render(sf::RenderWindow& window): Entity(window), desktop(sf::VideoMode:
         sf::Font myFont;
         myFont.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf");
         Button testButton(window, 100, 100, 200, 200, "test", myFont);
-        while (!testButton.isClicked(sf::Mouse::getPosition(window))) {
+        while (!testButton.isClicked()) {
             updateWindow();
             draw();
             testButton.draw();
