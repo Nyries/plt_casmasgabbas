@@ -16,29 +16,30 @@ namespace render{
     sf::Color cluedoBeige(191, 128, 128); // Beige Cluedo
     sf::Color cluedoGreenGray(132, 145, 134); // Gris vert Cluedo
 
-Render::Render(sf::RenderWindow& window): Entity(window), desktop(sf::VideoMode::getDesktopMode())
-{
-    window.clear(sf::Color::White);
-    
-    std::cout << desktop.width << "x" << desktop.height << std::endl;
-    // Create the window
-    int windowWidth = desktop.width*0.9;
-    int windowHeight = desktop.height*0.9;
-    window.create(sf::VideoMode(windowWidth, windowHeight), "Cluedo plt", sf::Style::Close);
-    window.setFramerateLimit(120); // Réduit la charge sur le processeur.
-    window.setPosition(sf::Vector2i(desktop.width/2 - window.getSize().x/2, desktop.height/2 - window.getSize().y/2));
-    
-    //Splitting the window in two parts, one for the map and the other for the UI
-    // Each part is a panel
-    auto uiPanel = std::make_unique<UIPanel>(window, 0, 0, windowWidth-windowHeight, windowHeight, cluedoRed);
-    auto mapPanel = std::make_unique<MapPanel>(window, 1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White, *map);
-    this->addChild(std::move(uiPanel));
-    this->addChild(std::move(mapPanel));
+    Render::Render(sf::RenderWindow& window): Entity(window), desktop(sf::VideoMode::getDesktopMode())
+    {
+        window.clear(sf::Color::White);
 
-    if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
-        std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
+        std::cout << desktop.width << "x" << desktop.height << std::endl;
+        // Create the window
+        int windowWidth = desktop.width*0.9;
+        int windowHeight = desktop.height*0.9;
+        window.create(sf::VideoMode(windowWidth, windowHeight), "Cluedo plt", sf::Style::Close);
+        window.setFramerateLimit(120); // Réduit la charge sur le processeur.
+        window.setPosition(sf::Vector2i(desktop.width/2 - window.getSize().x/2, desktop.height/2 - window.getSize().y/2));
+
+        //Splitting the window in two parts, one for the map and the other for the UI
+        // Each part is a panel
+        auto uiPanel = std::make_unique<UIPanel>(window, 0, 0, windowWidth-windowHeight, windowHeight, cluedoRed);
+        auto mapPanel = std::make_unique<MapPanel>(window, 1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White, *map);
+        this->addChild(std::move(uiPanel));
+        this->addChild(std::move(mapPanel));
+
+        if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
+            std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
+        }
     }
-}
+
     void Render::draw()
     {
         this->drawChildren();
@@ -52,8 +53,6 @@ Render::Render(sf::RenderWindow& window): Entity(window), desktop(sf::VideoMode:
                     window.close();
                 }
             }
-            //draw(window);
-            //window.display();
         }
     }
 
@@ -74,14 +73,40 @@ Render::Render(sf::RenderWindow& window): Entity(window), desktop(sf::VideoMode:
     }
 
     int Render::introductionToTheGame() {
-        Button button1(window, 100, 100, 200, 200, "test", font);
-        while (!button1.isClicked()) {
+        Button button1(window, 200, 200, 100, 50, "3", font);
+        Button button2(window, 300, 200, 100, 50, "4", font);
+        Button button3(window, 200, 250, 100, 50, "5", font);
+        Button button4(window, 300, 250, 100, 50, "6", font);
+        bool isClicked1 = false;
+        bool isClicked2 = false;
+        bool isClicked3 = false;
+        bool isClicked4 = false;
+        do {
+            isClicked1 = button1.isClicked();
+            isClicked2 = button2.isClicked();
+            isClicked3 = button3.isClicked();
+            isClicked4 = button4.isClicked();
             updateWindow();
-            draw();
+            this->draw();
             button1.draw();
+            button2.draw();
+            button3.draw();
+            button4.draw();
             window.display();
         }
-
+        while (!(isClicked1 or isClicked2 or isClicked3 or isClicked4));
+        if (isClicked1) {
+            return 3;
+        }
+        if (isClicked2) {
+            return 4;
+        }
+        if(isClicked3) {
+            return 5;
+        }
+        if (isClicked4) {
+            return 6;
+        }
     }
 
     void Render::startOfTheGame() {

@@ -19,7 +19,7 @@ namespace client {
 
 
     int RenderIO::introductionToTheGame() {
-        render.introductionToTheGame();
+        return render.introductionToTheGame();
     }
 
     void RenderIO::diceThrow() {
