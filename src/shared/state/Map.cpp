@@ -32,6 +32,8 @@ namespace state {
         roomList.at(4).setSecretPassage(roomList.at(6));
         roomList.at(6).setSecretPassage(roomList.at(4));
 
+
+
         //Creating the map grid from the json file
         height = jsonData["mapHeight"].asInt();
         width = jsonData["mapWidth"].asInt();
