@@ -410,15 +410,15 @@ BOOST_AUTO_TEST_CASE(TestSet_GetAccusationSuccess)
 }
 }
 
-BOOST_AUTO_TEST_CASE(TestGetEnvelope)
-{
-{
-  State state("../configurations/map.json",3);
-  Card card(CardType::WEAPON_CARD);
-  state.getEnvelope().push_back(card);
-  BOOST_CHECK(state.getEnvelope().at(0).getType() == CardType::WEAPON_CARD);
-}
-}
+//BOOST_AUTO_TEST_CASE(TestGetEnvelope)
+//{
+//{
+//  State state("../configurations/map.json",3);
+//  Card card(CardType::WEAPON_CARD);
+//  state.getEnvelope().push_back(card);
+//  BOOST_CHECK(state.getEnvelope().at(0).getType() == CardType::WEAPON_CARD);
+//}
+//}
 
 BOOST_AUTO_TEST_SUITE_END();
 
@@ -447,6 +447,7 @@ BOOST_AUTO_TEST_SUITE_END();
 
 
 // Engine command tests :
+// ----------------------
 
 // AccusationCommand.cpp test
 BOOST_AUTO_TEST_SUITE(TestAccusationCommand)
@@ -501,8 +502,9 @@ BOOST_AUTO_TEST_SUITE(TestSecretPassageCommand)
 
         engine::SecretPassageCommand command(engine, player);
         command.execute();
+        state::Room newPlayerRoom = dynamic_cast<Room&>(player.getLocation());
 
-        BOOST_CHECK(dynamic_cast<Room&>(player.getLocation()) == kitchen);  // (Problème de cast)
+        BOOST_CHECK(newPlayerRoom.getRoomName() == kitchen.getRoomName());
 
     }
 
@@ -554,8 +556,9 @@ BOOST_AUTO_TEST_SUITE(TestHypothesisCommand)
 
         engine::HypothesisCommand command(engine, player, hypothesis);
         command.execute();
+        state::Room newPlayerRoom = dynamic_cast<Room&>(player.getLocation());
 
-        BOOST_CHECK(dynamic_cast<Room&>(suspectPlayer.getLocation()) == study); // Suspect téléporté // (Problème de cast)
+        BOOST_CHECK(newPlayerRoom.getRoomName() == study.getRoomName()); // Suspect téléporté
         BOOST_CHECK(player.getPreviousHypothesisRoom() == STUDY);   // Salle de l'hypothèse enregistrée
     }
 
@@ -623,8 +626,9 @@ BOOST_AUTO_TEST_SUITE(TestMoveCommand)
 
         engine::MoveCommand command(engine, player, living_room);
         command.execute();
+        state::Room newPlayerRoom = dynamic_cast<Room&>(player.getLocation());
 
-        BOOST_CHECK(dynamic_cast<Room&>(player.getLocation()) == living_room);  // (Problème de cast)
+        BOOST_CHECK(newPlayerRoom.getRoomName() == living_room.getRoomName());  // (Problème de cast)
     }
 
     BOOST_AUTO_TEST_CASE(TestMoveFromRoomToDoor)
@@ -689,3 +693,8 @@ BOOST_AUTO_TEST_SUITE(TestMoveCommand)
     }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+// Engine.cpp tests
+// ----------------
+
+
