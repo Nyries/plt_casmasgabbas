@@ -2,16 +2,12 @@
 
 #include <iostream>
 
-render::TextBox::TextBox(const sf::Vector2f &size, const std::string &fontPath, const std::string &textString)
+render::TextBox::TextBox(const sf::Vector2f &size, sf::Font& font, const std::string &textString)
 {
     setSize(size);
     setFillColor(sf::Color::White);
     setOutlineColor(sf::Color::Black);
     setOutlineThickness(2);
-
-    if (!font.loadFromFile(fontPath)) {
-        std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
-    }
     text = sf::Text(textString, font, 20);
     text.setFont(font);
     text.setString(textString);

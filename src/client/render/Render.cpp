@@ -34,6 +34,10 @@ Render::Render(sf::RenderWindow& window): Entity(window), desktop(sf::VideoMode:
     auto mapPanel = std::make_unique<MapPanel>(window, 1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White, *map);
     this->addChild(std::move(uiPanel));
     this->addChild(std::move(mapPanel));
+
+    if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
+        std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
+    }
 }
     void Render::draw()
     {
@@ -70,13 +74,11 @@ Render::Render(sf::RenderWindow& window): Entity(window), desktop(sf::VideoMode:
     }
 
     int Render::introductionToTheGame() {
-        sf::Font myFont;
-        myFont.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf");
-        Button testButton(window, 100, 100, 200, 200, "test", myFont);
-        while (!testButton.isClicked()) {
+        Button button1(window, 100, 100, 200, 200, "test", font);
+        while (!button1.isClicked()) {
             updateWindow();
             draw();
-            testButton.draw();
+            button1.draw();
             window.display();
         }
 
