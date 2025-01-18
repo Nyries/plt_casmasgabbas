@@ -502,7 +502,7 @@ BOOST_AUTO_TEST_SUITE(TestSecretPassageCommand)
         engine::SecretPassageCommand command(engine, player);
         command.execute();
 
-        BOOST_CHECK(dynamic_cast<Room&>(player.getLocation()) == kitchen);  // Problème de cast
+        BOOST_CHECK(dynamic_cast<Room&>(player.getLocation()) == kitchen);  // (Problème de cast)
 
     }
 
@@ -515,7 +515,7 @@ BOOST_AUTO_TEST_SUITE(TestSecretPassageCommand)
         engine::Engine engine(state);
 
         engine::SecretPassageCommand command(engine, player);
-        BOOST_CHECK_THROW(command.execute(), std::invalid_argument);  // On vérifie qu'on déclenche l'exception
+        BOOST_CHECK_THROW(command.execute(), std::invalid_argument);
     }
 
     BOOST_AUTO_TEST_CASE(TestRoomWithoutSecretPassage)
@@ -530,7 +530,7 @@ BOOST_AUTO_TEST_SUITE(TestSecretPassageCommand)
 
         engine::SecretPassageCommand command(engine, player);
 
-        BOOST_CHECK_THROW(command.execute(), std::logic_error);  // On vérifie qu'on déclenche une erreur
+        BOOST_CHECK_THROW(command.execute(), std::logic_error);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -555,8 +555,8 @@ BOOST_AUTO_TEST_SUITE(TestHypothesisCommand)
         engine::HypothesisCommand command(engine, player, hypothesis);
         command.execute();
 
-        BOOST_CHECK(dynamic_cast<Room&>(suspectPlayer.getLocation()) == study); // Suspect téléporté // Problème de cast
-        BOOST_CHECK(player.getPreviousHypothesisRoom() == STUDY);   // Salle enregistrée
+        BOOST_CHECK(dynamic_cast<Room&>(suspectPlayer.getLocation()) == study); // Suspect téléporté // (Problème de cast)
+        BOOST_CHECK(player.getPreviousHypothesisRoom() == STUDY);   // Salle de l'hypothèse enregistrée
     }
 
     BOOST_AUTO_TEST_CASE(TestInvalidRoomHypothesis)
@@ -565,7 +565,7 @@ BOOST_AUTO_TEST_SUITE(TestHypothesisCommand)
         state::PlayerState player(ROSE);
         player.setLocation(study);
 
-        state::TripleClue hypothesis{PERVENCHE, CANDLESTICK, HALL};  // Mauvaise salle
+        state::TripleClue hypothesis{PERVENCHE, CANDLESTICK, HALL};
 
         State state("../configurations/map.json",3);
         engine::Engine engine(state);
@@ -583,18 +583,25 @@ BOOST_AUTO_TEST_SUITE_END()
 // MoveCommand.cpp test
 BOOST_AUTO_TEST_SUITE(TestMoveCommand)
 
+    /* Scénarios testés :
+     * Mouvement valide au sein d'un couloir
+     * Entrer dans une salle depuis une porte associée
+     * Sortir d'une salle par une porte associée
+     * Tentative de déplacement vers une cellule non adjacente
+     * Tentative de déplacement vers une cellule occupée
+     * Tentative de déplacement depuis un type de location non valide
+     */
+
     BOOST_AUTO_TEST_CASE(TestMoveWithinCorridor)
     {
         state::Cell cell1(8, 8, state::CORRIDOR);
         state::Cell cell2(8, 9, state::CORRIDOR);
-        // Définir cell2 comme non occupée (?)
 
         state::PlayerState player(ROSE);
         player.setLocation(cell1);
 
         State state("../configurations/map.json",3);
         engine::Engine engine(state);
-        // Définir cell1 et cell2 comme voisins
 
         engine::MoveCommand command(engine, player, cell2);
         command.execute();
@@ -603,13 +610,82 @@ BOOST_AUTO_TEST_SUITE(TestMoveCommand)
         BOOST_CHECK(dynamic_cast<Cell&>(player.getLocation()).getY() == 9);
     }
 
-    /* À tester :
-     * Mouvement valide au sein d'un couloir
-     * Déplacement porte vers couloir non occupé
-     * Entrer dans une salle depuis une porte valide
-     * Sortir d'une salle par une porte connectée à cette salle
-     * Tentative de déplacement vers une cellule non adjacente ou occupée
-     * Tentative de déplacement depuis un type de location non valide
-     */
+    BOOST_AUTO_TEST_CASE(TestMoveFromDoorToRoom)
+    {
+        state::Room living_room(LIVING_ROOM);
+        state::Door door(5, 8, &living_room);
+        living_room.addDoor(door);
+
+        state::PlayerState player(ROSE);
+        player.setLocation(door);
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
+
+        engine::MoveCommand command(engine, player, living_room);
+        command.execute();
+
+        BOOST_CHECK(dynamic_cast<Room&>(player.getLocation()) == living_room);  // (Problème de cast)
+    }
+
+    BOOST_AUTO_TEST_CASE(TestMoveFromRoomToDoor)
+    {
+        state::Room living_room(LIVING_ROOM);
+        state::Door door(5, 8, &living_room);
+        living_room.addDoor(door);
+
+        state::PlayerState player(ROSE);
+        player.setLocation(living_room);
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
+
+        engine::MoveCommand command(engine, player, door);
+        command.execute();
+
+        BOOST_CHECK(dynamic_cast<Cell&>(player.getLocation()).getX() == 1);
+        BOOST_CHECK(dynamic_cast<Cell&>(player.getLocation()).getY() == 1);
+    }
+
+    BOOST_AUTO_TEST_CASE(TestInvalidMove)
+    {
+        state::Cell cell1(8, 8, state::CORRIDOR);
+        state::Cell cell2(8, 10, state::CORRIDOR);
+
+        state::PlayerState player(ROSE);
+        player.setLocation(cell1);
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
+
+        engine::MoveCommand command(engine, player, cell2);
+        BOOST_CHECK_THROW(command.execute(), std::logic_error);
+    }
+
+    BOOST_AUTO_TEST_CASE(TestMoveToOccupiedCell)
+    {
+        state::Cell cell1(8, 8, state::CORRIDOR);
+        state::Cell cell2(8, 9, state::CORRIDOR);
+
+        state::PlayerState player1(ROSE);
+        player1.setLocation(cell1);
+        state::PlayerState player2(PERVENCHE);
+        player2.setLocation(cell2);
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
+
+        engine::MoveCommand command(engine, player1, cell2);
+        BOOST_CHECK_THROW(command.execute(), std::logic_error);
+    }
+
+    BOOST_AUTO_TEST_CASE(TestInvalidStartingLocationType)
+    {
+        state::Cell inaccessible(0, 0, INACCESSIBLE);
+        state::PlayerState player(ROSE);
+        player.setLocation(inaccessible);
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
+
+        engine::MoveCommand command(engine, player, inaccessible);
+
+        BOOST_CHECK_THROW(command.execute(), std::invalid_argument);
+    }
 
 BOOST_AUTO_TEST_SUITE_END()
