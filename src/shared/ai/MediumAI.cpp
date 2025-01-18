@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <limits>
 #include <queue>
+#include <iostream>
 #include <state/RoomCard.h>
 #include <state/SuspectCard.h>
 #include <state/WeaponCard.h>
@@ -43,7 +44,7 @@ namespace ai {
     }
 
     int MediumAI::distanceBetweenTwoCells(const state::Cell &cell1, const state::Cell &cell2) {
-        int X1 = cell1.getX();
+       int X1 = cell1.getX();
         int Y1 = cell1.getY();
         int X2 = cell2.getX();
         int Y2 = cell2.getY();
@@ -101,22 +102,18 @@ namespace ai {
 
     }
 
-
     engine::Move MediumAI::chooseMoveDirection() {
-        auto& cell1 = static_cast<state::Cell&>(playerState.getLocation());
-        auto& cell2 = doorDestination;
-
-        // POSITION DEPART ET ARRIVEE
-        int startX = cell1.getX();;
-        int startY = cell1.getY();
-        int targetX = cell2->getX();
-        int targetY = cell2->getY();
-
-        // JOUEUR DANS UNE PIECE ?
+         // JOUEUR DANS UNE PIECE ?
 
         if (playerState.getLocation().getType() == state::ROOM) {
             return engine::EXIT_ROOM;
         }
+
+        auto& cell1 = static_cast<state::Cell&>(playerState.getLocation());
+        auto& cell2 = static_cast<state::Cell &>(*doorDestination);
+        std::cout << "depart: " << "X: " << cell1.getX() << " ; Y: " << cell1.getY() << std::endl;
+        std::cout << "arrivee: " << "X: " << cell2.getX() << " ; Y: " << cell2.getY() << std::endl;
+
 
         // SI JOUEUR SUR UNE PORTE IL RENTRE OU PAS
 
@@ -128,7 +125,10 @@ namespace ai {
             }
         }
 
-        // DIRECTION DES DEPLACEMENTS
+        // POSITION ARRIVEE
+        int startY = cell1.getY();
+        int startX = cell1.getX();
+
         std::vector<std::pair<int, int>> directions = {
             {0, -1},  // UP
             {0, 1},   // DOWN
@@ -136,68 +136,56 @@ namespace ai {
             {1, 0}    // RIGHT
         };
 
-        // Définir les coûts pour les déplacements
-        int mapWidth = const_cast<state::Map&>(map).getWidth();
-        int mapHeight = const_cast<state::Map&>(map).getHeight();
+        std::vector<int> neighborsValues;
 
+        for (long unsigned int i=0; i<directions.size();i++) {
+            int nextY = startY + directions[i].second;
+            int nextX = startX + directions[i].first;
+            neighborsValues.emplace_back(distanceMatrix[nextY][nextX]);
+        }
 
-        std::vector<std::vector<int>> distances(mapWidth, std::vector<int>(mapHeight, std::numeric_limits<int>::max()));
-        distances[startX][startY] = 0;
+        if (neighborsValues.empty()) {
+            throw std::invalid_argument("The vector is empty.");
+        }
 
-        std::vector<std::pair<int, int>> toExplore;
-        toExplore.push_back({startX, startY});
-
-        // TROUVER LES DISTANCES AVEC TOUTES LES CELLULES
-        while (!toExplore.empty()) {
-            auto [currentX, currentY] = toExplore.front();
-            toExplore.pop_back();
-
-            // CHECK LES VOISINS
-            std::vector<state::LocationType> neighbors = map.getNeighborsAsLocationType(currentX, currentY);
-            for (size_t i = 0; i < directions.size(); i++) {
-                int nextX = currentX + directions[i].first;
-                int nextY = currentY + directions[i].second;
-
-                // CHECK LE TYPE DES CELLULES + LIMITES MAP
-                if (nextX >= 0 && nextY >= 0 && nextX < mapWidth && nextY < mapHeight &&
-                    neighbors[i] != state::ROOM &&
-                    neighbors[i] != state::INACCESSIBLE) {
-                    if (distances[nextX][nextY] > distances[currentX][currentY] + 1) {
-                        distances[nextX][nextY] = distances[currentX][currentY] + 1;
-                        toExplore.push_back({nextX, nextY});
-                    }
-                }
+        int minIndex = -1; // Initialisation à -1 pour indiquer aucun élément trouvé
+        for (size_t i = 0; i < neighborsValues.size(); ++i) {
+            // On recherche uniquement les éléments positifs
+            if (neighborsValues[i] >= 0 && (minIndex == -1 || neighborsValues[i] < neighborsValues[minIndex])) {
+                minIndex = i;
             }
         }
 
-        // REVENIR A LA CELLULE PRECEDENTE
-        for (size_t i = 0; i < directions.size(); i++) {
-            int prevX = targetX - directions[i].first;
-            int prevY = targetY - directions[i].second;
-
-            if (prevX >= 0 && prevY >= 0 && prevX < mapWidth && prevY < mapHeight &&
-                distances[prevX][prevY] == distances[targetX][targetY] - 1) {
-                // RENVOYER LA DIRECTION
-                if (directions[i] == std::make_pair(0, -1)) return engine::MOVE_DOWN;
-                if (directions[i] == std::make_pair(0, 1)) return engine::MOVE_UP;
-                if (directions[i] == std::make_pair(1, 0)) return engine::MOVE_RIGHT;
-                if (directions[i] == std::make_pair(-1, 0)) return engine::MOVE_LEFT;
-            }
+        switch (minIndex) {
+            case 0: // MOVE UP
+                std::cout<<"up"<<std::endl;
+                return engine::MOVE_UP;
+            case 1: // MOVE DOWN
+                std::cout<<"down"<<std::endl;
+                return engine::MOVE_DOWN;
+            case 2: // MOVE LEFT
+                std::cout<<"left"<<std::endl;
+                return engine::MOVE_LEFT;
+            case 3: // MOVE RIGHT
+                std::cout<<"right"<<std::endl;
+                return engine::MOVE_RIGHT;
+            default:
+                    break;
         }
-
     }
+
 
     state::TripleClue MediumAI::chooseHypothesis() {
 
         state::TripleClue hypothesis{};
 
-        for (int i = 0; i < knownSuspects.size(); ++i) {
+        for (long unsigned int i = 0; i < knownSuspects.size(); ++i) {
             if (knownSuspects[i] == 0) {
                  int mediumSuspect = i;
                  hypothesis.suspect = static_cast<state::Suspect>(mediumSuspect);
             }
         }
-        for (int i = 0; i < knownSuspects.size(); ++i) {
+        for (long unsigned int i = 0; i < knownSuspects.size(); ++i) {
             if (knownSuspects[i] == 0) {
                 int mediumWeapon = i;
                 hypothesis.suspect = static_cast<state::Suspect>(mediumWeapon);
@@ -221,19 +209,20 @@ namespace ai {
     void MediumAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerState &cardOwner) {
 
         if (shownCard.getType() == state::SUSPECT_CARD) {
-            int number = std::stoi(shownCard.getValueAsString());
-            knownSuspects[number] = 2;
+            const auto& suspectCard = static_cast<const state::SuspectCard&>(shownCard);
+            knownSuspects[suspectCard.getSuspectName()-1] = 1;
         }
 
         if (shownCard.getType() == state::WEAPON_CARD) {
-            int number = std::stoi(shownCard.getValueAsString());
-            knownWeapons[number] = 2;
+            const auto& weaponCard = static_cast<const state::WeaponCard&>(shownCard);
+            knownWeapons[weaponCard.getWeaponName()-1] = 1;
         }
 
         if (shownCard.getType() == state::ROOM_CARD) {
-            int number = std::stoi(shownCard.getValueAsString());
-            knownRooms[number] = 2;
+            const auto& roomCard = static_cast<const state::RoomCard&>(shownCard);
+            knownRooms[roomCard.getRoomName()-1] = 1;
         }
+        std::cout << cardOwner.getIdentity() << " showed a card to " << playerState.getIdentity()  << std::endl;
     }
 
     state::TripleClue MediumAI::chooseAccusation() {
@@ -250,29 +239,29 @@ namespace ai {
     }
 
     state::Door &MediumAI::chooseDoor(const std::vector<state::Door *> &doorList) {
-        state::Location position = playerState.getLocation();
-        state::Room room = static_cast<state::Room&>(position);
+         state::Location& position = playerState.getLocation();
+        state::Room& room = static_cast<state::Room&>(position);
 
         std::vector<state::Door*> roomDoors = room.getDoorList();
         std::vector<state::Door*> allDoors;
 
-        for (int i = 1; i <= static_cast<int>(state::BEDROOM); ++i) {
-            state::Room currentRoom = static_cast<state::RoomName>(i);
+
+        auto roomList = map.getRoomList();
+        for (long unsigned int i = 0; i < roomList.size(); ++i) {
+            auto currentRoom = roomList.at(i);
             if (currentRoom.getRoomName() != room.getRoomName()) {
-                std::vector<state::Door*> roomDoors2 = currentRoom.getDoorList();
+                std::vector<state::Door*> &roomDoors2 = currentRoom.getDoorList();
                 allDoors.insert(allDoors.end(), roomDoors2.begin(), roomDoors2.end());
             }
         }
 
         std::vector<std::tuple<int, state::Door*, state::Door*>> distance;
 
-        for (int i = 0; i<roomDoors.size();i++) {
-            for (int j = 0; j<allDoors.size();i++) {
+        for (long unsigned i = 0; i<roomDoors.size();i++) {
+            for (long unsigned j = 0; j<allDoors.size();j++) {
                 state::Door* door1 = roomDoors.at(i);
-                state::Door* door2 = roomDoors.at(j);
-                auto* door1Cell = static_cast<state::Cell *>(door1);
-                auto* door2Cell = static_cast<state::Cell *>(door2);  // transforme en cellule pour calculer la distance
-                distance.push_back(std::make_tuple(distanceBetweenTwoCells(*door1Cell,*door2Cell), door1, door2));
+                state::Door* door2 = allDoors.at(j);
+                distance.push_back(std::make_tuple(distanceBetweenTwoCells(*door1,*door2), door1, door2));
             }
         }
 
@@ -295,24 +284,139 @@ namespace ai {
 
             int min = std::get<0>(distance.at(0));
             int index = 0;
-            for (int i = 1; i<distance.size(); i++) {
+            for (long unsigned i = 1; i<distance.size(); i++) {
                 if (std::get<0>(distance.at(i))<min) {
                     min = std::get<0>(distance.at(i));
                     index = i;
                 }
             }
-            doorDestination = std::get<2>(choice[index]);
-            return *std::get<1>(choice[index]);
+            doorDestination = std::get<2>(distance[index]);
+            return *std::get<1>(distance[index]);
         }
+        throw std::runtime_error("error");
     }
 
     void MediumAI::getDiceResult(int result, const state::PlayerState &player) {
+
+        for (auto& row : distanceMatrix) {
+            std::fill(row.begin(), row.end(), -1);
+        }
+
         if (playerState.getIdentity() == player.getIdentity()) {
             previousDiceResult = result;
         }
+
+        auto& target = static_cast<state::Cell &>(*doorDestination);
+
+        // POSITION ARRIVEE
+        int targetY = target.getY();
+        int targetX = target.getX();
+
+        // DIRECTION DES DEPLACEMENTS
+        std::vector<std::pair<int, int>> directions = {
+            {0, -1},  // UP
+            {0, 1},   // DOWN
+            {-1, 0},  // LEFT
+            {1, 0}    // RIGHT
+        };
+
+        // Définir les coûts pour les déplacements
+        int mapWidth = const_cast<state::Map&>(map).getWidth();
+        int mapHeight = const_cast<state::Map&>(map).getHeight();
+
+        distanceMatrix[targetY][targetX] = 0;
+
+        std::vector<std::pair<int, int>> toExplore;
+        toExplore.push_back({targetY, targetX});
+        // TROUVER LES DISTANCES AVEC TOUTES LES CELLULES
+        while (!toExplore.empty()) {
+            auto [currentY, currentX] = toExplore.back();
+            toExplore.pop_back();
+            // CHECK LES VOISINS
+            std::vector<state::LocationType> neighbors = map.getNeighborsAsLocationType(currentX, currentY);
+
+            for (size_t i = 0; i < directions.size(); i++) {
+                int nextY = currentY + directions[i].second;
+                int nextX = currentX + directions[i].first;
+
+
+                // CHECK LE TYPE DES CELLULES + LIMITES MAP
+                if (nextX >= 0 && nextY >= 0 && nextX < mapWidth && nextY < mapHeight &&
+                    neighbors[i] != state::ROOM &&
+                    neighbors[i] != state::INACCESSIBLE) {
+                    if (distanceMatrix[nextY][nextX] < 0 || distanceMatrix[nextY][nextX] > distanceMatrix[currentY][currentX] + 1) {
+                        distanceMatrix[nextY][nextX] = distanceMatrix[currentY][currentX] + 1;
+                        toExplore.push_back({nextY, nextX});
+                    }
+                    }
+            }
+        }
+
     }
 
     void MediumAI::startOfTheGame() {
+
+        // PARTIE MISE A JOUR DE doorDestination
+
+        // RECUPERER TOUTES LES PORTES DU JEU
+        std::vector<state::Door*> allDoors;
+        for (int i = 0; i < 9; i++) {
+            auto RoomList = map.getRoomList();
+            auto currentRoom = RoomList.at(i);
+            std::vector<state::Door*> roomDoors = currentRoom.getDoorList();
+            allDoors.insert(allDoors.end(), roomDoors.begin(), roomDoors.end());
+        }
+
+        std::vector<std::tuple<int, state::Door*>> distance;
+
+        // CALCULER TOUTES LES DISTANCES ENTRE LA POSITION DU JOUEUR ET LES PORTES
+        for (long unsigned i = 0; i<allDoors.size();i++) {
+
+            auto& positionPlayerPtr = static_cast<state::Cell&>(playerState.getLocation());
+
+            state::Door* door2 = allDoors.at(i);
+            auto* door2CellPtr = static_cast<state::Cell *>(door2);  // transforme en cellule pour calculer la distance
+            state::Cell& cell2 = *door2CellPtr;
+
+
+            distance.push_back(std::make_tuple(distanceBetweenTwoCells(positionPlayerPtr,cell2), door2));
+        }
+
+
+        int min = std::get<0>(distance.at(0));
+        int index = 0;
+        for (long unsigned i = 1; i<distance.size(); i++) {
+            if (std::get<0>(distance.at(i))<min) {
+                min = std::get<0>(distance.at(i));
+                index = i;
+            }
+        }
+        doorDestination = std::get<1>(distance[index]);
+
+        std::cout << "joueur: " << playerState.getIdentity() << " & doorDestination: " << doorDestination << std::endl;
+
+
+        // PARTIE MISE A JOUR DES ARRAYS KNOWN
+
+        auto suspectCards = playerState.getSuspectCards();
+        auto weaponCards = playerState.getWeaponCards();
+        auto roomCards = playerState.getRoomCards();
+
+        for (long unsigned i = 0; i<suspectCards.size();i++) {
+            int suspect = suspectCards.at(i).getSuspectName();
+            knownSuspects.at(suspect-1) = 1;
+        }
+        for (long unsigned i = 0; i<weaponCards.size();i++) {
+            int weapon = weaponCards.at(i).getWeaponName();
+            knownWeapons.at(weapon-1) = 1;
+        }
+        for (long unsigned i = 0; i<roomCards.size();i++) {
+            int room = roomCards.at(i).getRoomName();
+            knownRooms.at(room-1) = 1;
+        }
+
+        // INITIALISATION DE LA MATRICE QUI VA SUIVRE QUELLE CARTE EST MONTREE A QUI
+        // INUTILE POUR EASYAI
 
     }
 
