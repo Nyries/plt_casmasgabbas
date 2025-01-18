@@ -4,7 +4,7 @@
 #include "client/RenderIO.h"
 
 namespace client {
-    RenderIO::RenderIO(): render() {
+    RenderIO::RenderIO(): window(sf::VideoMode(800, 600), "Cluedo plt"), render(window) {
 
     }
 

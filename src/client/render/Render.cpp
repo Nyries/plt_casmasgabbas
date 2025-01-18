@@ -1,6 +1,8 @@
 #include "Render.h"
 
 #include <iostream>
+
+#include "Button.h"
 #include "UIPanel.h"
 #include "MapPanel.h"
 #include "TextBox.h"
@@ -14,7 +16,7 @@ namespace render{
     sf::Color cluedoBeige(191, 128, 128); // Beige Cluedo
     sf::Color cluedoGreenGray(132, 145, 134); // Gris vert Cluedo
 
-Render::Render(): window(sf::VideoMode(800, 600), "Cluedo plt"), desktop(sf::VideoMode::getDesktopMode())
+Render::Render(sf::RenderWindow& window): Entity(window), desktop(sf::VideoMode::getDesktopMode())
 {
     window.clear(sf::Color::White);
     
@@ -28,14 +30,14 @@ Render::Render(): window(sf::VideoMode(800, 600), "Cluedo plt"), desktop(sf::Vid
     
     //Splitting the window in two parts, one for the map and the other for the UI
     // Each part is a panel
-    auto uiPanel = std::make_unique<UIPanel>(0, 0, windowWidth-windowHeight, windowHeight, cluedoRed);
-    auto mapPanel = std::make_unique<MapPanel>(1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White, *map);
+    auto uiPanel = std::make_unique<UIPanel>(window, 0, 0, windowWidth-windowHeight, windowHeight, cluedoRed);
+    auto mapPanel = std::make_unique<MapPanel>(window, 1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White, *map);
     this->addChild(std::move(uiPanel));
     this->addChild(std::move(mapPanel));
 }
-    void Render::draw(sf::RenderWindow &window)
+    void Render::draw()
     {
-        this->drawChildren(window);
+        this->drawChildren();
     }
 
     void Render::updateWindow() {
@@ -46,8 +48,8 @@ Render::Render(): window(sf::VideoMode(800, 600), "Cluedo plt"), desktop(sf::Vid
                     window.close();
                 }
             }
-            draw(window);
-            window.display();
+            //draw(window);
+            //window.display();
         }
     }
 
@@ -68,6 +70,15 @@ Render::Render(): window(sf::VideoMode(800, 600), "Cluedo plt"), desktop(sf::Vid
     }
 
     int Render::introductionToTheGame() {
+        sf::Font myFont;
+        myFont.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf");
+        Button testButton(window, 100, 100, 200, 200, "test", myFont);
+        while (!testButton.isClicked()) {
+            updateWindow();
+            draw();
+            testButton.draw();
+            window.display();
+        }
 
     }
 

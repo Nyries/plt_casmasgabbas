@@ -1,7 +1,7 @@
 #include "Panel.h"
 
 namespace render{
-Panel::Panel(float x, float y, float width, float height, sf::Color color) 
+Panel::Panel(sf::RenderWindow& window, float x, float y, float width, float height, sf::Color color): Entity(window)
 {
     position = {x, y};
     shape.setPosition(position);
@@ -9,10 +9,10 @@ Panel::Panel(float x, float y, float width, float height, sf::Color color)
     shape.setFillColor(color);
 }
 
-void Panel::draw(sf::RenderWindow &window)
+void Panel::draw()
 {
     window.draw(shape);
-    drawChildren(window);
+    drawChildren();
 }
 sf::RectangleShape &Panel::getShape()
 {
