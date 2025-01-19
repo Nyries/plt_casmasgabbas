@@ -205,10 +205,10 @@ namespace engine {
                 if (player.getPreviousHypothesisRoom() != playerCell.getRoom()->getRoomName()) {
                     possibleMoves.push_back(ENTER_ROOM);
                 }
-                const auto& neighbourList = state.getMap().getNeighborsAsLocationType(playerCell.getX(), playerCell.getY());
+                const auto& neighbourList = state.getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
                 for (unsigned long i = 0; i < neighbourList.size(); i++) {
-                    const state::LocationType type = neighbourList.at(i);
-                    if (type == state::CORRIDOR or type == state::DOOR) {
+                    const state::LocationType type = neighbourList.at(i)->getType();
+                    if (type == state::CORRIDOR or type == state::DOOR and !neighbourList.at(i)->getOccupied()) {
                         switch (i) {
                             case 0:
                                 possibleMoves.push_back(MOVE_UP);

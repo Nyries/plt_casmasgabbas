@@ -76,8 +76,19 @@ namespace client {
     }
 
     void ConsoleIO::displayGameEnd(const Player &winner) {
-        std::cout << winner.getName() << "won the game !" << std::endl;
+        std::cout << winner.getName() << " won the game !" << std::endl;
     }
+
+    void ConsoleIO::seeHypothesisResponse(PlayerList& playerList, const state::TripleClue &hypothesis, const Player &askedPlayer, bool response) {
+        IO::seeHypothesisResponse(playerList, hypothesis, askedPlayer, response);
+        if (response) {
+            std::cout << askedPlayer.getName() << " showed a card " << std::endl;
+        }
+        else {
+            std::cout << askedPlayer.getName() << " didn't show a card " << std::endl;
+        }
+    }
+
 
 
 }
