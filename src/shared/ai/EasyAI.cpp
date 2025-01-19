@@ -124,21 +124,75 @@ namespace ai {
         }
 */
         // JOUEUR DANS UNE PIECE ?
-
+        const auto& possibleMoves = engine.getPossibleMoves(playerState);
+        if (possibleMoves.empty()) {
+            throw std::runtime_error("no possible moves");
+        }
+        if (possibleMoves.size()== 1) {
+            return possibleMoves.front();
+        }
+        if (std::find(possibleMoves.begin(), possibleMoves.end(), engine::ENTER_ROOM) != possibleMoves.end()) {
+            const auto& currentDoor = dynamic_cast<const state::Door&>(playerState.getLocation());
+            if (&currentDoor == doorDestination) {
+                return engine::ENTER_ROOM;
+            }
+        }
+        const auto& currentCell = dynamic_cast<const state::Cell&>(playerState.getLocation());
+        int minValue = 999;
+        engine::Move minMove = engine::MOVE_UP;
+        for (engine::Move move: possibleMoves) {
+            switch (move) {
+                case engine::MOVE_UP: {
+                    int currentValue = distanceMatrix[currentCell.getY() - 1][currentCell.getX()];
+                    if (currentValue < minValue) {
+                        minMove = move;
+                        minValue = currentValue;
+                    }
+                    break;
+                }
+                case engine::MOVE_DOWN: {
+                    int currentValue = distanceMatrix[currentCell.getY() + 1][currentCell.getX()];
+                    if (currentValue < minValue) {
+                        minMove = move;
+                        minValue = currentValue;
+                    }
+                    break;
+                }
+                case engine::MOVE_LEFT: {
+                    int currentValue = distanceMatrix[currentCell.getY()][currentCell.getX() - 1];
+                    if (currentValue < minValue) {
+                        minMove = move;
+                        minValue = currentValue;
+                    }
+                    break;
+                }
+                case engine::MOVE_RIGHT: {
+                    int currentValue = distanceMatrix[currentCell.getY()][currentCell.getX() + 1];
+                    if (currentValue < minValue) {
+                        minMove = move;
+                        minValue = currentValue;
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        return minMove;
+        /*
         if (playerState.getLocation().getType() == state::ROOM) {
             return engine::EXIT_ROOM;
         }
 
-        auto& cell1 = static_cast<state::Cell&>(playerState.getLocation());
-        auto& cell2 = static_cast<state::Cell &>(*doorDestination);
+        auto& cell1 = dynamic_cast<state::Cell&>(playerState.getLocation());
         std::cout << "depart: " << "X: " << cell1.getX() << " ; Y: " << cell1.getY() << std::endl;
-        std::cout << "arrivee: " << "X: " << cell2.getX() << " ; Y: " << cell2.getY() << std::endl;
+        std::cout << "arrivee: " << "X: " << doorDestination->getX() << " ; Y: " << doorDestination->getY() << std::endl;
 
 
         // SI JOUEUR SUR UNE PORTE IL RENTRE OU PAS
 
         if (playerState.getLocation().getType() == state::DOOR) {
-            auto& door = static_cast<state::Door&>(playerState.getLocation());
+            auto& door = dynamic_cast<state::Door&>(playerState.getLocation());
             const state::Room* connectedRoom = door.getRoom();
             if (connectedRoom->getRoomName()!=playerState.getPreviousHypothesisRoom()) {
                 return engine::ENTER_ROOM;
@@ -194,7 +248,7 @@ namespace ai {
                 return engine::MOVE_RIGHT;
             default:
                     break;
-        }
+        }*/
 
     }
 

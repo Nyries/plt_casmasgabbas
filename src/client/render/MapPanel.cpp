@@ -11,8 +11,7 @@ namespace render {
     rows(rows), cols(cols), cellWidth(width / cols), cellHeight(height / rows),
     map(map)
     {
-        auto grid = std::make_unique<render::Grid>(window, rows, cols, width, height);
-        this->addChild(std::move(grid));
+        this->addChild(std::move(std::make_unique<Grid>(window, rows, cols, width, height)));
         if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
             std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
         }

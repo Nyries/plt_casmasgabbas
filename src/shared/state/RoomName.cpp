@@ -4,6 +4,7 @@
 #include "RoomName.h"
 
 #include <ostream>
+#include <sstream>
 
 namespace state {
     std::ostream& operator<<(std::ostream& os, RoomName roomName) {
@@ -39,5 +40,11 @@ namespace state {
                 throw std::invalid_argument("invalid room name value");
         }
         return os;
+    }
+
+    std::string toString(RoomName roomName) {
+        std::ostringstream oss;
+        oss << roomName;
+        return oss.str();
     }
 }

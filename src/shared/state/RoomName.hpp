@@ -10,5 +10,6 @@
 
 namespace state{
     std::ostream& operator<<(std::ostream& os, RoomName roomName);
+    std::string toString(RoomName roomName);
 }
 #endif //ROOMNAME_HPP

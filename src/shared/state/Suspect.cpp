@@ -5,6 +5,7 @@
 #include "TripleClue.h"
 
 #include <ostream>
+#include <sstream>
 
 namespace state {
     std::ostream& operator<<(std::ostream& os, Suspect suspect) {
@@ -29,5 +30,11 @@ namespace state {
             break;
         }
         return os;
+    }
+
+    std::string toString(Suspect suspect) {
+        std::ostringstream oss;
+        oss << suspect;
+        return oss.str();
     }
 }
