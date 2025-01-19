@@ -161,7 +161,9 @@ namespace ai {
         for (int i=0; i<directions.size();i++) {
             int nextY = startY + directions[i].second;
             int nextX = startX + directions[i].first;
-            neighborsValues.emplace_back(distanceMatrix[nextY][nextX]);
+            if (!map.getCell(nextX,nextY).getOccupied()) {
+                neighborsValues.emplace_back(distanceMatrix[nextY][nextX]);
+            } else {neighborsValues.emplace_back(-1);}
         }
 
         if (neighborsValues.empty()) {
@@ -170,8 +172,9 @@ namespace ai {
 
         int minIndex = -1; // Initialisation à -1 pour indiquer aucun élément trouvé
         for (size_t i = 0; i < neighborsValues.size(); ++i) {
+
             // On recherche uniquement les éléments positifs
-            if (neighborsValues[i] >= 0 && (minIndex == -1 || neighborsValues[i] < neighborsValues[minIndex])) {
+            if (neighborsValues[i] >= 0 && (minIndex == -1 || neighborsValues[i] < neighborsValues[minIndex]) ) {
                 minIndex = i;
             }
         }
@@ -404,8 +407,6 @@ namespace ai {
             }
         }
         doorDestination = std::get<1>(distance[index]);
-
-        std::cout << "joueur: " << playerState.getIdentity() << " & doorDestination: " << doorDestination << std::endl;
 
 
         // PARTIE MISE A JOUR DES ARRAYS KNOWN
