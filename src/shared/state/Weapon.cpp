@@ -4,6 +4,7 @@
 #include "Weapon.h"
 
 #include <ostream>
+#include <sstream>
 
 namespace state {
     std::ostream& operator<<(std::ostream& os, Weapon weapon) {
