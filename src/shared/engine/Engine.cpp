@@ -56,10 +56,10 @@ namespace engine {
         envelope.suspect = suspectCardsVector.at(randomSuspect).getSuspectName();
         suspectCardsVector.erase(suspectCardsVector.begin() + randomSuspect);
         const int randomWeapon = UtilityFunctions::randomInt(6);
-        envelope.weapon = weaponCardsVector.at(randomSuspect).getWeaponName();
+        envelope.weapon = weaponCardsVector.at(randomWeapon).getWeaponName();
         weaponCardsVector.erase(weaponCardsVector.begin() + randomWeapon);
         const int randomRoom = UtilityFunctions::randomInt(9);
-        envelope.room = roomCardsVector.at(randomSuspect).getRoomName();
+        envelope.room = roomCardsVector.at(randomRoom).getRoomName();
         roomCardsVector.erase(roomCardsVector.begin() + randomRoom);
 
 
