@@ -141,9 +141,10 @@ namespace client{
 			if (!possessedCards.empty()) {
 				int chosenIndex = player.chooseACardToShowPlayer(possessedCards,player);
 				hypothesisPlayer.seeACardFromPlayer(*possessedCards.at(chosenIndex), player);
+				io->seeHypothesisResponse(playerList, hypothesis, player, true);
 				break;
 			}
-			std::cout << player.getName() << " has nothing to show to " << hypothesisPlayer.getName() << std::endl;
+			io->seeHypothesisResponse(playerList, hypothesis, player, false);
 			playerList.incrementIterator(it);
 		}
 	}

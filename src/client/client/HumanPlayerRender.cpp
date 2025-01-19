@@ -5,6 +5,8 @@
 
 #include <render/Render.h>
 
+#include "HumanPlayerConsole.h"
+
 namespace client {
     HumanPlayerRender::HumanPlayerRender(engine::Engine &engine, state::PlayerState &playerState, std::string name, render::Render& render): HumanPlayer(engine, playerState, name), render(render){
 
@@ -52,5 +54,10 @@ namespace client {
     void HumanPlayerRender::displayDiceResult(int result, const Player &player) {
         return render.displayDiceResult(result, player);
     }
+
+    void HumanPlayerRender::seeHypothesisResponse(const state::TripleClue &hypothesis, const Player &askedPlayer, bool response) {
+
+    }
+
 
 }
