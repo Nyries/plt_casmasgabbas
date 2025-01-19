@@ -147,7 +147,7 @@ int main(int argc,char* argv[])
             playerVec.front() = std::make_unique<client::HumanPlayerRender>(std::move(userPlayer));;
         }
         for (int i = 1; i < playerCount; i++) {
-            client::AIPlayer aiPlayer(myEngine, playerStateVec.at(i), "AI " + std::to_string(i), std::make_unique<ai::EasyAI>(myEngine, playerStateVec.at(i)));
+            client::AIPlayer aiPlayer(myEngine, playerStateVec.at(i), "AI " + std::to_string(i), std::make_unique<ai::MediumAI>(myEngine, playerStateVec.at(i)));
             playerVec.at(i) = std::make_unique<client::AIPlayer>(std::move(aiPlayer));
         }
         client::Client myClient(myState, myEngine, tempIO, playerVec);
