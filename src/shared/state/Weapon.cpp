@@ -29,4 +29,10 @@ namespace state {
         }
         return os;
     }
+
+    std::string toString(Weapon weapon) {
+        std::ostringstream oss;
+        oss << weapon;
+        return oss.str();
+    }
 }

@@ -40,4 +40,10 @@ namespace state {
         }
         return os;
     }
+
+    std::string toString(RoomName roomName) {
+        std::ostringstream oss;
+        oss << roomName;
+        return oss.str();
+    }
 }

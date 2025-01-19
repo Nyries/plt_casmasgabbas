@@ -10,5 +10,6 @@
 
 namespace state{
     std::ostream& operator<<(std::ostream& os, Suspect suspect);
+    std::string toString(Suspect suspect);
 }
 #endif //SUSPECT_HPP
