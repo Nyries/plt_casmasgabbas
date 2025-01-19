@@ -54,10 +54,11 @@ std::string gameLoop(state::State& myState, engine::Engine& myEngine, client::Cl
                     int remainingMoves = diceResult.at(0) + diceResult.at(1);
                     io.displayDiceResult(myPlayerList, remainingMoves, currentPlayer);
                     while (remainingMoves > 0) {
+                        /*
                         if (currentPlayerState.getLocation().getType() == state::CORRIDOR or currentPlayerState.getLocation().getType() == state::DOOR) {
                             const auto& testCell = dynamic_cast<const state::Cell&>(currentPlayerState.getLocation());
                             std::cout << "coords: " << testCell.getX() << ", " << testCell.getY() << std::endl;
-                        }
+                        }*/
                         const auto possibleMoves = myEngine.getPossibleMoves(currentPlayerState);
                         if (possibleMoves.empty()) {
                             break;

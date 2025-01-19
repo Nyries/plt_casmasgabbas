@@ -1,5 +1,6 @@
 #include "Render.h"
 
+#include <csignal>
 #include <iostream>
 #include <state/Suspect.hpp>
 #include <state/Weapon.hpp>
@@ -52,6 +53,7 @@ namespace render{
             if (window.pollEvent(event)){
                 if (event.type == sf::Event::Closed){
                     window.close();
+                    raise(SIGTERM);
                 }
             }
         }
