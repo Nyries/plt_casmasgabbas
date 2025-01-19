@@ -1,6 +1,9 @@
 #include "Render.h"
 
 #include <iostream>
+#include <state/Suspect.hpp>
+#include <state/Weapon.hpp>
+#include <state/RoomName.hpp>
 
 #include "Button.h"
 #include "UIPanel.h"
@@ -25,15 +28,13 @@ namespace render{
         int windowWidth = desktop.width*0.9;
         int windowHeight = desktop.height*0.9;
         window.create(sf::VideoMode(windowWidth, windowHeight), "Cluedo plt", sf::Style::Close);
-        window.setFramerateLimit(120); // Réduit la charge sur le processeur.
+        window.setFramerateLimit(60); // Réduit la charge sur le processeur.
         window.setPosition(sf::Vector2i(desktop.width/2 - window.getSize().x/2, desktop.height/2 - window.getSize().y/2));
 
         //Splitting the window in two parts, one for the map and the other for the UI
         // Each part is a panel
-        auto uiPanel = std::make_unique<UIPanel>(window, 0, 0, windowWidth-windowHeight, windowHeight, cluedoRed);
-        auto mapPanel = std::make_unique<MapPanel>(window, 1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White, *map);
-        this->addChild(std::move(uiPanel));
-        this->addChild(std::move(mapPanel));
+
+        this->addChild(std::move(std::make_unique<UIPanel>(window, 0, 0, windowWidth-windowHeight, windowHeight, cluedoRed)));
 
         if (!font.loadFromFile("../ressources/fonts/Futura-Condensed-Extra-Bold.ttf")) {
             std::cerr << "Erreur : Impossible de charger la police !" << std::endl;
@@ -82,19 +83,18 @@ namespace render{
         bool isClicked2 = false;
         bool isClicked3 = false;
         bool isClicked4 = false;
-        do {
-            isClicked1 = button1.isClicked();
-            isClicked2 = button2.isClicked();
-            isClicked3 = button3.isClicked();
-            isClicked4 = button4.isClicked();
+        while (!(isClicked1 or isClicked2 or isClicked3 or isClicked4)) {
             updateWindow();
             button1.draw();
             button2.draw();
             button3.draw();
             button4.draw();
             window.display();
+            isClicked1 = button1.isClicked();
+            isClicked2 = button2.isClicked();
+            isClicked3 = button3.isClicked();
+            isClicked4 = button4.isClicked();
         }
-        while (!(isClicked1 or isClicked2 or isClicked3 or isClicked4));
         if (isClicked1) {
             return 3;
         }
@@ -110,7 +110,9 @@ namespace render{
     }
 
     void Render::startOfTheGame() {
-
+        int windowWidth = desktop.width*0.9;
+        int windowHeight = desktop.height*0.9;
+        this->addChild(std::move(std::make_unique<MapPanel>(window, 1, 2, windowWidth-windowHeight, 0, windowHeight, windowHeight, sf::Color::White, *map)));
     }
 
     void Render::diceThrow() {
@@ -148,11 +150,101 @@ namespace render{
 
 
     state::TripleClue Render::chooseHypothesis() {
-
+        state::TripleClue hypothesis;
+        {
+            std::vector<std::unique_ptr<Button>> suspectButtons;
+            suspectButtons.reserve(6);
+            for (int i = 0; i < 6; i++) {
+                suspectButtons.emplace_back(std::make_unique<Button>(window, 200 + 100 * i, 300, 100, 50, state::toString(static_cast<state::Suspect>(i + 1)), font));
+            }
+            std::vector<bool> suspectIsClickedVec(6, false);
+            while (!std::any_of(suspectIsClickedVec.begin(), suspectIsClickedVec.end(), [](bool b){return b;})) {
+                updateWindow();
+                for (auto& b: suspectButtons) {
+                    b->draw();
+                }
+                window.display();
+                for (int i = 0; i  < 6; i++) {
+                    suspectIsClickedVec.at(i) = suspectButtons.at(i)->isClicked();
+                }
+            }
+            for (int i = 0; i < 6; i++) {
+                if (suspectIsClickedVec.at(i)) {
+                    hypothesis.suspect = static_cast<state::Suspect>(i + 1);
+                }
+            }
+        }
+        {
+            std::vector<std::unique_ptr<Button>> weaponButtons;
+            weaponButtons.reserve(6);
+            for (int i = 0; i < 6; i++) {
+                weaponButtons.emplace_back(std::make_unique<Button>(window, 200 + 100 * i, 300, 100, 50, state::toString(static_cast<state::Weapon>(i + 1)), font));
+            }
+            std::vector<bool> weaponIsClickedVec(6, false);
+            while (!std::any_of(weaponIsClickedVec.begin(), weaponIsClickedVec.end(), [](bool b){return b;})) {
+                updateWindow();
+                for (auto& b: weaponButtons) {
+                    b->draw();
+                }
+                window.display();
+                for (int i = 0; i  < 6; i++) {
+                    weaponIsClickedVec.at(i) = weaponButtons.at(i)->isClicked();
+                }
+            }
+            for (int i = 0; i < 6; i++) {
+                if (weaponIsClickedVec.at(i)) {
+                    hypothesis.weapon = static_cast<state::Weapon>(i + 1);
+                }
+            }
+        }
+        {
+            std::vector<std::unique_ptr<Button>> roomButtons;
+            roomButtons.reserve(9);
+            for (int i = 0; i < 9; i++) {
+                roomButtons.emplace_back(std::make_unique<Button>(window, 200 + 100 * i, 300, 100, 50, state::toString(static_cast<state::RoomName>(i + 1)), font));
+            }
+            std::vector<bool> roomIsClickedVec(9, false);
+            while (!std::any_of(roomIsClickedVec.begin(), roomIsClickedVec.end(), [](bool b){return b;})) {
+                updateWindow();
+                for (auto& b: roomButtons) {
+                    b->draw();
+                }
+                window.display();
+                for (int i = 0; i  < 9; i++) {
+                    roomIsClickedVec.at(i) = roomButtons.at(i)->isClicked();
+                }
+            }
+            for (int i = 0; i < 9; i++) {
+                if (roomIsClickedVec.at(i)) {
+                    hypothesis.room = static_cast<state::RoomName>(i + 1);
+                }
+            }
+        }
+        return hypothesis;
     }
 
     int Render::chooseACardToShowPlayer(const std::vector<const state::Card *> &cards, const client::Player &player) {
-
+        std::vector<std::unique_ptr<Button>> buttonVec;
+        buttonVec.reserve(cards.size());
+        std::vector<bool> isClickedVec(cards.size(), false);
+        for (int i = 0; i < cards.size(); i++) {
+            buttonVec.emplace_back(std::make_unique<Button>(window, 200 + 100 * i, 300, 100, 50, cards.at(i)->getValueAsString(), font));
+        }
+        while (!std::any_of(isClickedVec.begin(), isClickedVec.end(), [](bool b){return b;})) {
+            updateWindow();
+            for (auto& b: buttonVec) {
+                b->draw();
+            }
+            window.display();
+            for (int i = 0; i < cards.size(); i++) {
+                isClickedVec.at(i) = buttonVec.at(i)->isClicked();
+            }
+        }
+        for (int i = 0; i < cards.size(); i++) {
+            if (isClickedVec.at(i)) {
+                return i;
+            }
+        }
     }
 
     void Render::seeACardFromPlayer(const state::Card &shownCard, const client::Player &cardOwner) {
@@ -164,7 +256,16 @@ namespace render{
     }
 
     void Render::makePlayerThrowDice() {
+        Button button(window, 200, 200, 100, 50, "Throw the dice", font);
 
+        bool isClicked = false;
+
+        while (!isClicked) {
+            updateWindow();
+            button.draw();
+            window.display();
+            isClicked = button.isClicked();
+        }
     }
 
     void Render::displayDiceResult(int result, const client::Player &player) {

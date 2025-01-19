@@ -10,5 +10,6 @@
 
 namespace state{
     std::ostream& operator<<(std::ostream& os, Weapon weapon);
+    std::string toString(Weapon weapon);
 }
 #endif //WEAPON_HPP

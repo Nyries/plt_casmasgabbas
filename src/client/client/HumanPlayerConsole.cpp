@@ -209,7 +209,7 @@ namespace client {
     	}
     	std::cout << std::endl;
 
-    	int choice3 = ConsoleIO::getValidKey(6);
+    	int choice3 = ConsoleIO::getValidKey(9);
     	accusationChoice.room = static_cast<state::RoomName>(choice3);
 
     	std::cout << "You chose the " << accusationChoice.room << "!\n";

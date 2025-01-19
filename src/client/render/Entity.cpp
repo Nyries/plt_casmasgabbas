@@ -10,7 +10,7 @@ namespace render{
 
     }
 
-    void Entity::addChild(std::unique_ptr<Entity> child)
+    void Entity::addChild(std::unique_ptr<Entity>&& child)
     {
         children.push_back(std::move(child));
     }

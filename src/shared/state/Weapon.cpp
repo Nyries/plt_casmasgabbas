@@ -4,6 +4,7 @@
 #include "Weapon.h"
 
 #include <ostream>
+#include <sstream>
 
 namespace state {
     std::ostream& operator<<(std::ostream& os, Weapon weapon) {
@@ -28,5 +29,11 @@ namespace state {
             break;
         }
         return os;
+    }
+
+    std::string toString(Weapon weapon) {
+        std::ostringstream oss;
+        oss << weapon;
+        return oss.str();
     }
 }
