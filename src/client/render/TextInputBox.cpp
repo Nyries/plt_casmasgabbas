@@ -61,7 +61,7 @@ void TextInputBox::draw(sf::RenderWindow &window)
         window.draw(m_cursor);
     }
 }
-std::string TextInputBox::getText()
+std::string TextInputBox::getText() const
 {
     return m_textString;
 }

@@ -71,7 +71,7 @@ namespace ai {
     }
 
     void RandomAI::startOfTheGame() {
-
+        // NOTHING ??
     }
 
 
