@@ -16,10 +16,11 @@
 #include <state/WeaponCard.h>
 
 namespace ai {
-    MediumAI::MediumAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState), doorDestination(nullptr) {
+    MediumAI::MediumAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState), doorDestination(nullptr){
     }
 
     engine::CommandId MediumAI::chooseAction() {
+
         auto possibleActions = engine.getPossibleActions(playerState);
 
         if (std::find(knownSuspects.begin(), knownSuspects.end(), 2) != knownSuspects.end()
@@ -31,13 +32,12 @@ namespace ai {
 
         possibleActions.erase(std::remove(possibleActions.begin(), possibleActions.end(), engine::ACCUSATION), possibleActions.end());
 
-
-        auto& playerRoom = static_cast<state::Room&>(playerState.getLocation());
-        if (playerRoom.getRoomName() != playerState.getPreviousHypothesisRoom()) {
-            return engine::HYPOTHESIS;
+        if (playerState.getLocation().getType()==state::ROOM){auto& playerRoom = static_cast<state::Room&>(playerState.getLocation());
+            if (playerRoom.getRoomName() != playerState.getPreviousHypothesisRoom()) {
+                return engine::HYPOTHESIS;
+            }
+            possibleActions.erase(std::remove(possibleActions.begin(), possibleActions.end(), engine::HYPOTHESIS), possibleActions.end());
         }
-
-        possibleActions.erase(std::remove(possibleActions.begin(), possibleActions.end(), engine::HYPOTHESIS), possibleActions.end());
 
         const int randomIndex = engine::UtilityFunctions::randomInt(possibleActions.size());
         return possibleActions.at(randomIndex);
@@ -181,15 +181,18 @@ namespace ai {
 
         for (long unsigned int i = 0; i < knownSuspects.size(); ++i) {
             if (knownSuspects[i] == 0) {
-                 int mediumSuspect = i;
+                 int mediumSuspect = i+1;
                  hypothesis.suspect = static_cast<state::Suspect>(mediumSuspect);
+                 break;
             }
         }
-        for (long unsigned int i = 0; i < knownSuspects.size(); ++i) {
-            if (knownSuspects[i] == 0) {
-                int mediumWeapon = i;
-                hypothesis.suspect = static_cast<state::Suspect>(mediumWeapon);
+        for (long unsigned int i = 0; i < knownWeapons.size(); ++i) {
+            if (knownWeapons[i] == 0) {
+                int mediumWeapon = i+1;
+                hypothesis.weapon = static_cast<state::Weapon>(mediumWeapon);
+                break;
             }
+
         }
         auto locationEnum = playerState.getLocation().getType();
         if (locationEnum == state::ROOM) {
@@ -201,7 +204,7 @@ namespace ai {
         return hypothesis;
     }
 
-    int MediumAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards, state::PlayerState &client) {
+    int MediumAI::chooseACardToShowClient (const std::vector<const state::Card*>& cards, const state::PlayerState& client) {
         const int randomIndex = engine::UtilityFunctions::randomInt(cards.size());
         return randomIndex;
     }

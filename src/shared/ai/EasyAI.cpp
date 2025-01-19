@@ -29,6 +29,18 @@ namespace ai {
     engine::CommandId EasyAI::chooseAction() {
         auto possibleActions = engine.getPossibleActions(playerState);
 
+        if (std::count(knownSuspects.begin(), knownSuspects.end(), 1)==knownSuspects.size()-1) {
+            knownSuspects[*std::find(knownSuspects.begin(), knownSuspects.end(), 0)]=2;
+        }
+
+        if (std::count(knownWeapons.begin(), knownWeapons.end(), 1)==knownWeapons.size()-1) {
+            knownWeapons[*std::find(knownWeapons.begin(), knownWeapons.end(), 0)]=2;
+        }
+
+        if (std::count(knownRooms.begin(), knownRooms.end(), 1)==knownRooms.size()-1) {
+            knownRooms[*std::find(knownRooms.begin(), knownRooms.end(), 0)]=2;
+        }
+
         if (std::find(knownSuspects.begin(), knownSuspects.end(), 2) != knownSuspects.end()
             and std::find(knownWeapons.begin(), knownWeapons.end(), 2) != knownWeapons.end()
             and std::find(knownRooms.begin(), knownRooms.end(), 2) != knownRooms.end())
