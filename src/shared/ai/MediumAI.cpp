@@ -201,7 +201,7 @@ namespace ai {
         return hypothesis;
     }
 
-    int MediumAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards, state::PlayerState &client) {
+    int MediumAI::chooseACardToShowClient(const std::vector<const state::Card *> &cards, const state::PlayerState &client) {
         const int randomIndex = engine::UtilityFunctions::randomInt(cards.size());
         return randomIndex;
     }
