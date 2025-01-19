@@ -628,7 +628,7 @@ BOOST_AUTO_TEST_SUITE(TestMoveCommand)
         command.execute();
         state::Room newPlayerRoom = dynamic_cast<Room&>(player.getLocation());
 
-        BOOST_CHECK(newPlayerRoom.getRoomName() == living_room.getRoomName());  // (Problème de cast)
+        BOOST_CHECK(newPlayerRoom.getRoomName() == living_room.getRoomName());
     }
 
     BOOST_AUTO_TEST_CASE(TestMoveFromRoomToDoor)
@@ -697,4 +697,12 @@ BOOST_AUTO_TEST_SUITE_END()
 // Engine.cpp tests
 // ----------------
 
-
+//BOOST_AUTO_TEST_CASE(test_determineFirstPlayer) {
+//    State state("../configurations/map.json",3);
+//    engine::Engine engine(state);
+//
+//    engine.playerStateVec = {1, 2, 3, 4, 5};
+//    UtilityFunctions::randomInt = [](int max) { return 3; }; // Mock : retourne toujours 3
+//    BOOST_CHECK_EQUAL(engine.determineFirstPlayer(), 3);
+//
+//}

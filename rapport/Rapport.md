@@ -2,26 +2,40 @@
 
 ![Boite_CLUEDO](Images_rapport/boite_CLUEDO.png)
 
-[Louis-Mathis MASSIN](https://github.com/lmmas), [Cassandre CHANDELIER](https://github.com/CassandreChandelier), [Cyprien GABORIEAU](https://github.com/Nyries), [Bastien DUQUENNOY](https://github.com/Bastoune9)
+[Louis-Mathis MASSIN](https://github.com/lmmas),
+[Cassandre CHANDELIER](https://github.com/CassandreChandelier),
+[Cyprien GABORIEAU](https://github.com/Nyries),
+[Bastien DUQUENNOY](https://github.com/Bastoune9)
 
-## Table des matières : (à compléter)
-1. [Présentation générale](##présentation-générale)
+## Table des matières : 
+## [1. Présentation Générale](#1)
+### [1.1 Archétype du jeu](#1.1)
+### [1.2 Règles du jeu](#1.2)
+### [1.3 Ressources](#1.3)
+## [2. Description et conception des états](#2)
+### [2.1 Description des états](#2.1)
+### [2.2 Conception logiciel](#2.2)
+### [2.3 Conception logiciel : extension pour le moteur de jeu](#2.3)
+## [3. Rendu: Stratégie et Conception](#3)
+### [3.1 Stratégie de rendu d'un état](#3.1)
+### [3.2 Conception logiciel](#3.2)
+### [3.3 Exemple de rendu](#3.3)
+## [4. Règles de changement d'états et moteur de jeu](#4)
+### [4.1 Changements extérieurs](#4.1)
+### [4.2 Changements autonomes](#4.2)
+### [4.3 Conception logiciel](#4.3)
+## [5. Intelligence Artificielle](#5)
+### [5.1 Stratégies](#5.1)
+### [5.2 Conception logiciel](#5.2)
 
-   1.1 [Archétype du jeu](###archétype-du-jeu)
+## 1. Présentation générale <a id="1"></a>
 
-   1.2 [Règles du jeu](###règles-du-jeu)
-
-   1.3 [Ressources](###ressources)
-
-
-## 1. Présentation générale
-
-### 1.1 Archétype du jeu
+### 1.1. Archétype du jeu <a id="1.1"></a>
 L'objectif de ce projet est de réaliser le jeu de plateau **CLUEDO** en C++.
 Le CLUEDO est un jeu de société classique d'enquête et de déduction, conçu par Anthony E. Pratt en 1943 et publié pour la première fois en 1949.
 Jouable de 3 à 6 joueurs, il se déroule dans un manoir victorien fictif, où les participants endossent le rôle de détectives pour résoudre un meurtre mystérieux.
 
-### 1.2 Règles du jeu
+### 1.2. Règles du jeu <a id="1.2"></a>
 Samuel Lenoir est retrouvé mort dans sa demeure… La police a découvert sur place six suspects et six armes disséminées dans les 9 pièces de la maison mais n’a pas pu résoudre le mystère. A vous de mener votre enquête pour trouver la solution !
 
 Pour remporter la partie, vous devez déterminer :
@@ -81,7 +95,7 @@ Félicitations ! Vous remportez la partie !
 Des passages secrets sont présents dans la maison. Vous pouvez les utiliser pour passer d’une pièce a une autre.
 
 
-### 1.3 Ressources
+### 1.3. Ressources <a id="1.3"></a>
 
 **Modélisation du plateau de jeu :**
 
@@ -91,9 +105,9 @@ Des passages secrets sont présents dans la maison. Vous pouvez les utiliser pou
 
 ![Cartes_indice](../ressources/allcards/ensemble_cartes.png)
 
-## 2. Description et conception des états
+## 2. Description et conception des états <a id="2"></a>
 
-### 2.1 Description des états
+### 2.1. Description des états <a id="2.1"></a>
 Les états du jeu comprennent toutes les informations nécessaires au bon fonctionnement du moteur du jeu.
 
 Cela inclut toutes les informations sur les joueurs, les cartes indices, et une décomposition de la carte du manoir en salles et en cellules (couloir & portes).
@@ -114,10 +128,90 @@ Une case est caractérisée par des coordonnées et par un type (CORRIDOR, DOOR,
 Chaque carte indice est caractérisée par un type (SUSPECT_CARD, WEAPON_CARD, ROOM_CARD) et par un identifiant.
 On renseigne le nom de chaque carte au sein d'un "enum" pour chaque type de carte.
 
-### 2.2 Conception logiciel
+### 2.2 : Conception logiciel <a id="2.2"></a>
 
-(image dernière version du state.dia)
+![State_dia](Images_rapport/state_dia.png)
 
 Vous trouverez notre diagramme de classes pour les états ci-dessus.
 
-(+Description)
+La classe State (en bleu) permet la création initiale des états du jeu.
+Son constructeur prend en argument le nombre de joueurs dans la partie et la carte du plateau, fournie sous format JSON.
+
+La classe PlayerState (en blanc) permet la création des joueurs et contient toutes les données utiles au fonctionnement du jeu les concernant.
+
+En orange, on retrouve les classes liées à la création des cartes à jouer, réparties en trois catégories : suspect, arme et salle.
+Il y a donc trois classes héritant d'une même classe Card, chacune décrite par un énumérateur.
+
+Enfin, on observe en violet les classes liées au plateau de jeu.
+La classe Map crée le plateau de jeu sous la forme d'un tableau à deux dimensions, à partir d'un fichier JSON fourni en argument.
+Chaque cellule de ce tableau peut prendre une des 4 valeurs suivantes : CORRIDOR (couloir), DOOR (porte), ROOM (salle) et INACCESSIBLE.
+
+### 2.3. Conception logiciel : extension pour le moteur de jeu <a id="2.3"></a>
+
+La structure TripleClue (en gris sur le diagramme de classes) est utilisée dans le moteur de jeu dans le cadre de la création des hypothèses et des accusations formulées par les joueurs.
+
+## 3. Rendu : stratégie et conception <a id="3"></a>
+
+### 3.1. Stratégie de rendu d'un état <a id="3.1"></a>
+
+...
+
+### 3.2. Conception logiciel <a id="3.2"></a>
+
+...
+
+### 3.3. Exemple de rendu <a id="3.3"></a>
+
+...
+
+## 4. Règles de changement d'état et moteur de jeu <a id="4"></a>
+
+La partie engine de notre jeu permet de modifier les données du state en fonction des éléments ayant eu lieu dans la partie.
+Ces changements d’état ne suivent pas d’horloge globale puisque les joueurs ne sont pas limités quant à la durée de leur tour.
+
+### 4.1. Changements extérieurs <a id="4.1"></a>
+
+Les changements extérieurs correspondent aux changements causés par les différentes actions des joueurs.
+Cela inclut :
+
+- Les déplacements des joueurs via un lancer de dés.
+- Les déplacements des joueurs via l'utilisation d'un passage secret.
+
+### 4.2. Changements autonomes <a id="4.2"></a>
+
+Par opposition à la partie précédente, les changements autonomes désignent les changements effectués automatiquement, sans action des joueurs.
+Cela inclut : 
+
+- L'initialisation du jeu
+- Le déplacement d'une arme ou d'un suspect non joué à la suite d'une hypothèse.
+- La victoire / l'élimination d'un joueur à la suite d'une accusation correcte / incorrecte.
+
+### 4.3. Conception logiciel <a id="4.3"></a>
+
+![Engine_dia](Images_rapport/engine_dia.png)
+
+Le diagramme des classes pour le moteur du jeu est présenté ci-dessus.
+L’ensemble du moteur de jeu repose sur le "design pattern" Command, et a pour but la mise en œuvre de commandes extérieures sur l’état du jeu.
+
+Ces commandes correspondent aux différentes actions qu'un joueur peut réaliser pendant son tour : 
+
+- MoveCommand permet de se déplacer vers un lieu considéré comme accessible, comme une cellule adjacente si le joueur se situe dans un CORRIDOR, ou une pièce si le joueur est situé sur une des portes qui y mène.
+- SecretPassageCommand permet d'emprunter un passage secret vers une autre pièce si le joueur se trouve dans une salle qui en dispose. Dans le reste des cas, l'option ne sera pas disponible.
+- HypothesisCommand permet au joueur d'effectuer une hypothèse s'il se trouve dans une pièce.
+- AccusationCommand permet au joueur d'effectuer son accusation unique à la fin de son tour s'il le souhaite.
+
+## 5. Intelligence artificielle <a id="5"></a>
+
+### 5.1. Stratégies <a id="5.1"></a>
+
+#### Intelligence minimale
+
+(IA random)
+
+#### Intelligence basée sur les euristiques
+
+(IA euristiques)
+
+### 5.2. Conception logiciel <a id="5.2"></a>
+
+(ia.dia + explications)
