@@ -220,6 +220,7 @@ namespace render{
                 }
             }
         }
+        return hypothesis;
     }
 
     int Render::chooseACardToShowPlayer(const std::vector<const state::Card *> &cards, const client::Player &player) {
