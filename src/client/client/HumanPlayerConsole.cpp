@@ -260,5 +260,9 @@ namespace client {
     	std::cout << std::endl;
 	}
 
+	void HumanPlayerConsole::seeHypothesisResponse(const state::TripleClue &hypothesis, const Player &askedPlayer, bool response) {
+	}
+
+
 
 }
