@@ -21,5 +21,11 @@ namespace client {
         }
     }
 
+    void IO::seeHypothesisResponse(PlayerList& playerList, const state::TripleClue &hypothesis, const Player &askedPlayer, bool response) {
+        for (auto& currentPlayer: playerList.getVector()) {
+            currentPlayer->seeHypothesisResponse(hypothesis, askedPlayer, response);
+        }
+    }
+
 
 }

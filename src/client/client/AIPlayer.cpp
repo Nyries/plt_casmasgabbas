@@ -52,4 +52,9 @@ namespace client {
         ai->startOfTheGame();
     }
 
+    void AIPlayer::seeHypothesisResponse(const state::TripleClue &hypothesis, const Player &askedPlayer, bool response) {
+
+    }
+
+
 }
