@@ -5,6 +5,7 @@
 
 #include <engine/Engine.h>
 #include <engine/UtilityFunctions.h>
+#include <SFML/Graphics/RenderStates.hpp>
 
 namespace ai {
     RandomAI::RandomAI(engine::Engine &engine, state::PlayerState &playerState):AI(engine, playerState) {
@@ -48,6 +49,11 @@ namespace ai {
     void RandomAI::seeACardFromPlayer(const state::Card &shownCard, const state::PlayerState &cardOwner) {
         // DO NOTHING
     }
+
+    void RandomAI::seeHypothesisResponse(const state::TripleClue &hypothesis, const state::PlayerState &askedPlayer, bool response) {
+        // DO NOTHING
+    }
+
 
 
     state::TripleClue RandomAI::chooseAccusation() {

@@ -203,6 +203,11 @@ namespace ai {
         }
     }
 
+    void HardAI::seeHypothesisResponse(const state::TripleClue &hypothesis, const state::PlayerState &askedPlayer, bool response) {
+        // CODE
+    }
+
+
     state::TripleClue HardAI::chooseAccusation() {
 
         state::TripleClue accusation{};

@@ -4,6 +4,8 @@
 #include <state.h>
 #include <engine.h>
 #include <iostream>
+#include <set>
+
 
 using namespace state;
 
@@ -21,7 +23,7 @@ BOOST_AUTO_TEST_CASE(TestGetType)
   BOOST_CHECK(card.getType() == CardType::WEAPON_CARD);
 }
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 // Cell.cpp test
 BOOST_AUTO_TEST_SUITE(TestCell)
@@ -58,7 +60,7 @@ BOOST_AUTO_TEST_CASE(TestGetY)
 }
 }
 
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 // Door.cpp test
 BOOST_AUTO_TEST_SUITE(TestDoor)
@@ -69,7 +71,7 @@ BOOST_AUTO_TEST_CASE(TestgetRoom)
   BOOST_CHECK(door.getRoom()->getRoomName() == RoomName::KITCHEN);
 }
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 // Location.cpp test
 BOOST_AUTO_TEST_SUITE(TestLocation)
@@ -122,7 +124,7 @@ BOOST_AUTO_TEST_CASE(TestGetTypeAsString)
   BOOST_CHECK(location.getTypeAsString() == "ROOM");
 }
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 // Map.cpp test
 BOOST_AUTO_TEST_SUITE(TestMap)
@@ -253,7 +255,7 @@ BOOST_AUTO_TEST_CASE(TestGetNeighborsAsLocationType){
   BOOST_CHECK_EQUAL(map.getNeighborsAsLocationType(1,1).at(3), LocationType::CORRIDOR);
 }
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 // PlayerState.cpp test
 BOOST_AUTO_TEST_SUITE(TestPlayerState)
@@ -289,9 +291,9 @@ BOOST_AUTO_TEST_CASE(TestSet_GetPreviousHypothesisRoom)
   BOOST_CHECK(playerState.getPreviousHypothesisRoom() == RoomName::KITCHEN);
 }
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(TestRoom);
+BOOST_AUTO_TEST_SUITE(TestRoom)
 BOOST_AUTO_TEST_CASE(TestSet_Add_GetDoorList)
 {
 {
@@ -344,9 +346,9 @@ BOOST_AUTO_TEST_CASE(TestGetNameAsString)
   BOOST_CHECK(room.getNameAsString() == "BEDROOM");
 }
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(TestRoomCard);
+BOOST_AUTO_TEST_SUITE(TestRoomCard)
 BOOST_AUTO_TEST_CASE(TestGetRoomName)
 {
 {
@@ -354,9 +356,9 @@ BOOST_AUTO_TEST_CASE(TestGetRoomName)
   BOOST_CHECK(roomCard.getRoomName() == RoomName::KITCHEN);
 }
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(TestState);
+BOOST_AUTO_TEST_SUITE(TestState)
 BOOST_AUTO_TEST_CASE(TestConvertSuspectToStartingCell){
 {
   State state("../configurations/map.json",3); 
@@ -420,7 +422,7 @@ BOOST_AUTO_TEST_CASE(TestSet_GetAccusationSuccess)
 //}
 //}
 
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 // SuspectCard.cpp test
 BOOST_AUTO_TEST_SUITE(TestSuspectCard)
@@ -431,7 +433,7 @@ BOOST_AUTO_TEST_CASE(TestGetSuspectName)
   BOOST_CHECK(suspectCard.getSuspectName() == Suspect::ROSE);
 }
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 // WeaponCard.cpp test
 BOOST_AUTO_TEST_SUITE(TestWeaponCard)
@@ -443,7 +445,7 @@ BOOST_AUTO_TEST_CASE(TestGetWeaponName)
   BOOST_CHECK(weaponCard.getWeaponName() == Weapon::CANDLESTICK);
 }
 }
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 
 // Engine command tests :
@@ -559,7 +561,7 @@ BOOST_AUTO_TEST_SUITE(TestHypothesisCommand)
         state::Room newPlayerRoom = dynamic_cast<Room&>(player.getLocation());
 
         BOOST_CHECK(newPlayerRoom.getRoomName() == study.getRoomName()); // Suspect téléporté
-        BOOST_CHECK(player.getPreviousHypothesisRoom() == STUDY);   // Salle de l'hypothèse enregistrée
+        BOOST_CHECK(player.getPreviousHypothesisRoom() == STUDY);   // Hypothesis room saved
     }
 
     BOOST_AUTO_TEST_CASE(TestInvalidRoomHypothesis)
@@ -577,7 +579,7 @@ BOOST_AUTO_TEST_SUITE(TestHypothesisCommand)
         engine::HypothesisCommand command(engine, player, hypothesis);
         command.execute();
 
-        BOOST_CHECK(player.getPreviousHypothesisRoom() == NO_ROOM); // Hypothèse non enregistrée
+        BOOST_CHECK(player.getPreviousHypothesisRoom() == NO_ROOM); // Hypothesis room not saved
     }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -585,15 +587,6 @@ BOOST_AUTO_TEST_SUITE_END()
 
 // MoveCommand.cpp test
 BOOST_AUTO_TEST_SUITE(TestMoveCommand)
-
-    /* Scénarios testés :
-     * Mouvement valide au sein d'un couloir
-     * Entrer dans une salle depuis une porte associée
-     * Sortir d'une salle par une porte associée
-     * Tentative de déplacement vers une cellule non adjacente
-     * Tentative de déplacement vers une cellule occupée
-     * Tentative de déplacement depuis un type de location non valide
-     */
 
     BOOST_AUTO_TEST_CASE(TestMoveWithinCorridor)
     {
@@ -697,12 +690,133 @@ BOOST_AUTO_TEST_SUITE_END()
 // Engine.cpp tests
 // ----------------
 
-//BOOST_AUTO_TEST_CASE(test_determineFirstPlayer) {
-//    State state("../configurations/map.json",3);
-//    engine::Engine engine(state);
-//
-//    engine.playerStateVec = {1, 2, 3, 4, 5};
-//    UtilityFunctions::randomInt = [](int max) { return 3; }; // Mock : retourne toujours 3
-//    BOOST_CHECK_EQUAL(engine.determineFirstPlayer(), 3);
-//
-//}
+BOOST_AUTO_TEST_SUITE(TestEngine)
+    BOOST_AUTO_TEST_CASE(TestDealCards)
+    {
+        State state("../configurations/map.json",3);
+        engine::Engine engine(state);
+        engine.dealCards();
+
+        TripleClue env = engine.getEnvelope();
+        BOOST_TEST((std::is_same<decltype(env.suspect), Suspect>::value));
+        BOOST_TEST((std::is_same<decltype(env.weapon), Weapon>::value));
+        BOOST_TEST((std::is_same<decltype(env.room), RoomName>::value));
+
+        std::vector<PlayerState> players = state.getPlayerStateVec();
+        int minCards = 20;
+        int maxCards = 0;
+        for (PlayerState player : players) {
+            int number_of_cards = player.getSuspectCards().size() + player.getWeaponCards().size() + player.getRoomCards().size();
+            minCards = std::min(minCards, number_of_cards);
+            maxCards = std::max(maxCards, number_of_cards);
+        }
+        BOOST_CHECK_LE(maxCards - minCards, 1); // At most one card difference between players
+    }
+
+    BOOST_AUTO_TEST_CASE(TestDistributionCharacters){
+        State state("../configurations/map.json",6);
+        engine::Engine engine(state);
+        engine.distributionCharacters();
+
+        std::vector<PlayerState> players = state.getPlayerStateVec();
+        std::set<state::Suspect> assignedSuspects;
+        for (const auto& player : players) {
+            auto suspect = player.getIdentity();
+            BOOST_CHECK(assignedSuspects.find(suspect) == assignedSuspects.end()); // No doubles
+            assignedSuspects.insert(suspect);
+        }
+    }
+
+    BOOST_AUTO_TEST_CASE(TestDice) {
+        State state("../configurations/map.json", 3);
+        engine::Engine engine(state);
+
+        auto diceRoll = engine::Engine::dice();
+        BOOST_CHECK_EQUAL(diceRoll.size(), 2);
+        BOOST_CHECK(diceRoll[0] >= 1 && diceRoll[0] <= 6);
+        BOOST_CHECK(diceRoll[1] >= 1 && diceRoll[1] <= 6);
+    }
+
+    BOOST_AUTO_TEST_CASE(GetPossessedCardsTest) {
+        State state("../configurations/map.json", 3);
+        engine::Engine engine(state);
+        state::PlayerState player(ROSE);
+
+        state::SuspectCard violetCard(state::VIOLET);
+        state::SuspectCard roseCard(state::ROSE);
+        state::WeaponCard wrenchCard(state::WRENCH);
+        state::WeaponCard pistolCard(state::PISTOL);
+        state::RoomCard kitchenCard(state::KITCHEN);
+        state::RoomCard studyCard(state::STUDY);
+        player.addSuspectCard(violetCard);
+        player.addSuspectCard(roseCard);
+        player.addWeaponCard(wrenchCard);
+        player.addWeaponCard(pistolCard);
+        player.addRoomCard(kitchenCard);
+        player.addRoomCard(studyCard);
+
+        state::TripleClue inputClues{};
+        inputClues.suspect = ROSE;
+        inputClues.weapon = PISTOL;
+        inputClues.room = STUDY;  // All 3 cards possessed by the player
+
+        auto possessedCards = engine.getPossessedCards(inputClues, player);
+
+        BOOST_CHECK_EQUAL(possessedCards.size(), 3);
+        BOOST_CHECK_EQUAL(possessedCards[0], &roseCard);
+        BOOST_CHECK_EQUAL(possessedCards[1], &pistolCard);
+        BOOST_CHECK_EQUAL(possessedCards[2], &studyCard);
+    }
+
+    BOOST_AUTO_TEST_CASE(ShowCardTest) {
+        State state("../configurations/map.json", 3);
+        engine::Engine engine(state);
+
+        state::SuspectCard violetCard(state::VIOLET);
+        state::SuspectCard roseCard(state::ROSE);
+        state::WeaponCard wrenchCard(state::WRENCH);
+        state::WeaponCard pistolCard(state::PISTOL);
+        state::RoomCard kitchenCard(state::KITCHEN);
+        state::RoomCard studyCard(state::STUDY);
+
+        std::vector<state::Card> cards = {violetCard, roseCard, wrenchCard, pistolCard, kitchenCard, studyCard};
+
+        state::Card card = engine.showCard(cards, 1);
+        BOOST_CHECK_EQUAL(&card, &roseCard);
+        BOOST_CHECK_THROW(engine.showCard(cards, 10), std::out_of_range);
+    }
+
+    BOOST_AUTO_TEST_CASE(GetPossibleMovesTest) {
+        State state("../configurations/map.json", 3);
+        engine::Engine engine(state);
+        state::PlayerState player(ROSE);
+
+        // Case 1 : A player in the middle of a corridor
+        state::Cell cell1(8, 8, CORRIDOR);  // A corridor with 4 corridor neighbors
+        player.setLocation(cell1);  // Le joueur est dans ce corridor
+        std::vector<engine::Move> possibleMoves = engine.getPossibleMoves(player);
+        BOOST_CHECK_EQUAL(possibleMoves.size(), 4);  // MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT
+
+        // Cas 2 : A player on a door
+        state::Room hall(HALL);
+        state::Door door(8, 8, &hall);
+        player.setLocation(door);
+
+        std::vector<engine::Move> possibleMovesWithRoom = engine.getPossibleMoves(player);
+        BOOST_CHECK(std::find(possibleMovesWithRoom.begin(), possibleMovesWithRoom.end(), engine::ENTER_ROOM) != possibleMovesWithRoom.end());
+
+        // Case 3 : A player leaving a room
+        state::Room kitchen(KITCHEN);
+        player.setLocation(kitchen);
+
+        std::vector<engine::Move> possibleMovesRoom = engine.getPossibleMoves(player);
+        BOOST_CHECK(std::find(possibleMovesRoom.begin(), possibleMovesRoom.end(), engine::EXIT_ROOM) != possibleMovesRoom.end());
+
+        // Case 4 : Invalid player location
+        state::Location invalidLocation(INACCESSIBLE);
+        player.setLocation(invalidLocation);
+
+        BOOST_CHECK_THROW(engine.getPossibleMoves(player), std::runtime_error);
+    }
+
+BOOST_AUTO_TEST_SUITE_END()
