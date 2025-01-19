@@ -76,7 +76,7 @@ namespace client {
     }
 
     void ConsoleIO::displayGameEnd(const Player &winner) {
-        std::cout << winner.getName() << "won the game !" << std::endl;
+        std::cout << winner.getName() << " won the game !" << std::endl;
     }
 
 
