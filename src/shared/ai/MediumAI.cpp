@@ -111,9 +111,6 @@ namespace ai {
 
         auto& cell1 = static_cast<state::Cell&>(playerState.getLocation());
         auto& cell2 = static_cast<state::Cell &>(*doorDestination);
-        std::cout << "depart: " << "X: " << cell1.getX() << " ; Y: " << cell1.getY() << std::endl;
-        std::cout << "arrivee: " << "X: " << cell2.getX() << " ; Y: " << cell2.getY() << std::endl;
-
 
         // SI JOUEUR SUR UNE PORTE IL RENTRE OU PAS
 
@@ -158,16 +155,12 @@ namespace ai {
 
         switch (minIndex) {
             case 0: // MOVE UP
-                std::cout<<"up"<<std::endl;
                 return engine::MOVE_UP;
             case 1: // MOVE DOWN
-                std::cout<<"down"<<std::endl;
                 return engine::MOVE_DOWN;
             case 2: // MOVE LEFT
-                std::cout<<"left"<<std::endl;
                 return engine::MOVE_LEFT;
             case 3: // MOVE RIGHT
-                std::cout<<"right"<<std::endl;
                 return engine::MOVE_RIGHT;
             default:
                     break;
@@ -225,8 +218,12 @@ namespace ai {
             const auto& roomCard = static_cast<const state::RoomCard&>(shownCard);
             knownRooms[roomCard.getRoomName()-1] = 1;
         }
-        std::cout << cardOwner.getIdentity() << " showed a card to " << playerState.getIdentity()  << std::endl;
     }
+
+    void MediumAI::seeHypothesisResponse(const state::TripleClue& hypothesis, const state::PlayerState &askedPlayer, bool response) {
+
+    }
+
 
     state::TripleClue MediumAI::chooseAccusation() {
 
@@ -242,7 +239,7 @@ namespace ai {
     }
 
     state::Door &MediumAI::chooseDoor(const std::vector<state::Door *> &doorList) {
-         state::Location& position = playerState.getLocation();
+        state::Location& position = playerState.getLocation();
         state::Room& room = static_cast<state::Room&>(position);
 
         std::vector<state::Door*> roomDoors = room.getDoorList();
@@ -261,11 +258,14 @@ namespace ai {
         std::vector<std::tuple<int, state::Door*, state::Door*>> distance;
 
         for (long unsigned i = 0; i<roomDoors.size();i++) {
-            for (long unsigned j = 0; j<allDoors.size();j++) {
-                state::Door* door1 = roomDoors.at(i);
-                state::Door* door2 = allDoors.at(j);
-                distance.push_back(std::make_tuple(distanceBetweenTwoCells(*door1,*door2), door1, door2));
+            if (!roomDoors.at(i)->getOccupied()) {
+                for (long unsigned j = 0; j<allDoors.size();j++) {
+                    state::Door* door1 = roomDoors.at(i);
+                    state::Door* door2 = allDoors.at(j);
+                    distance.push_back(std::make_tuple(distanceBetweenTwoCells(*door1,*door2), door1, door2));
+                }
             }
+
         }
 
         std::vector<std::tuple<int, state::Door*, state::Door*>> choice;
@@ -395,9 +395,6 @@ namespace ai {
             }
         }
         doorDestination = std::get<1>(distance[index]);
-
-        std::cout << "joueur: " << playerState.getIdentity() << " & doorDestination: " << doorDestination << std::endl;
-
 
         // PARTIE MISE A JOUR DES ARRAYS KNOWN
 
