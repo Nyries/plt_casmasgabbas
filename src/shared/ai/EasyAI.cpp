@@ -49,8 +49,11 @@ namespace ai {
         }
 
         possibleActions.erase(std::remove(possibleActions.begin(), possibleActions.end(), engine::ACCUSATION), possibleActions.end());
-        const int randomIndex = engine::UtilityFunctions::randomInt(possibleActions.size());
-        return possibleActions.at(randomIndex);
+        if (!possibleActions.empty()) {
+            const int randomIndex = engine::UtilityFunctions::randomInt(possibleActions.size());
+            return possibleActions.at(randomIndex);
+        }
+        return engine::NO_COMMAND;
     }
 
     int EasyAI::distanceBetweenTwoCells(const state::Cell& cell1, const state::Cell& cell2){

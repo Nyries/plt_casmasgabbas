@@ -89,7 +89,7 @@ std::string gameLoop(state::State& myState, engine::Engine& myEngine, client::Cl
                     break;
                 }
                 default:
-                    throw std::runtime_error("switch case failed!");
+                    break;
             }
             myEngine.executeCommands();
             io.updatePlayerPositions();
@@ -179,6 +179,9 @@ int main(int argc,char* argv[])
             } else if (std::string(argv[2]) == "render") {
                 tempIO = std::make_unique<client::RenderIO>();
             }
+            else if (std::string(argv[2]) == "empty") {
+                tempIO = std::make_unique<client::EmptyIO>();
+            }
             else {
                 throw std::invalid_argument(std::string("invalid argument: ") + argv[2]);
             }
@@ -188,9 +191,7 @@ int main(int argc,char* argv[])
             //Construction de la liste des joueurs; le joueur humain est toujours le premier de la liste
             std::vector<state::PlayerState>& playerStateVec = myState.getPlayerStateVec();
             std::vector<std::unique_ptr<client::Player>> playerVec(playerCount);
-            if (std::string(argv[2]) == "console") {
-            }
-            else if (std::string(argv[2]) == "render") {
+            if (std::string(argv[2]) == "render") {
                 auto& renderIO = dynamic_cast< client::RenderIO& >(*tempIO);
                 render::Render& myRender = renderIO.getRender();
                 myRender.setMap(myState.getMap());
@@ -218,12 +219,13 @@ int main(int argc,char* argv[])
             myEngine.dealCards();
 
             winner = gameLoop(myState, myEngine, myClient);
-            std::cout << "winner " << winner << std::endl;
+            //std::cout << "winner " << winner << std::endl;
             if (winner == "AI 1" or winner == "AI 2") {
                 easyWinCount++;
             }else {
                 mediumWinCount++;
             }
+            std::cout << "Game " << play << " completed" << std::endl;
         }
 
         std::cout << "EasyAI wins: " << easyWinCount << ", MediumAI wins: " << mediumWinCount << std::endl;

@@ -40,6 +40,11 @@ namespace state {
         return doorList;
     }
 
+    const std::vector<Door *> &Room::getDoorList() const {
+        return doorList;
+    }
+
+
     Room* Room::getSecretPassage (){
         return secretPassage;
     }
