@@ -23,9 +23,22 @@ namespace ai {
 
         auto possibleActions = engine.getPossibleActions(playerState);
 
-        if (std::find(knownSuspects.begin(), knownSuspects.end(), 2) != knownSuspects.end()
-            and std::find(knownWeapons.begin(), knownWeapons.end(), 2) != knownWeapons.end()
-            and std::find(knownRooms.begin(), knownRooms.end(), 2) != knownRooms.end())
+        if (std::count(knownSuspects.begin(), knownSuspects.end(), 0)==1) {
+            *std::find(knownSuspects.begin(), knownSuspects.end(), 0)=3;
+        }
+
+        if (std::count(knownWeapons.begin(), knownWeapons.end(), 0)==1) {
+            *std::find(knownWeapons.begin(), knownWeapons.end(), 0)=3;
+        }
+
+        if (std::count(knownRooms.begin(), knownRooms.end(), 0)==1) {
+            *std::find(knownRooms.begin(), knownRooms.end(), 0)=3;
+        }
+
+
+        if (std::find(knownSuspects.begin(), knownSuspects.end(), 3) != knownSuspects.end()
+            and std::find(knownWeapons.begin(), knownWeapons.end(), 3) != knownWeapons.end()
+            and std::find(knownRooms.begin(), knownRooms.end(), 3) != knownRooms.end())
         {
             return engine::ACCUSATION;
         }
@@ -105,66 +118,61 @@ namespace ai {
     engine::Move MediumAI::chooseMoveDirection() {
          // JOUEUR DANS UNE PIECE ?
 
-        if (playerState.getLocation().getType() == state::ROOM) {
-            return engine::EXIT_ROOM;
+               const auto& possibleMoves = engine.getPossibleMoves(playerState);
+        if (possibleMoves.empty()) {
+            throw std::runtime_error("no possible moves");
         }
-
-        auto& cell1 = static_cast<state::Cell&>(playerState.getLocation());
-        auto& cell2 = static_cast<state::Cell &>(*doorDestination);
-
-        // SI JOUEUR SUR UNE PORTE IL RENTRE OU PAS
-
-        if (playerState.getLocation().getType() == state::DOOR) {
-            auto& door = static_cast<state::Door&>(playerState.getLocation());
-            const state::Room* connectedRoom = door.getRoom();
-            if (connectedRoom->getRoomName()!=playerState.getPreviousHypothesisRoom()) {
+        if (possibleMoves.size()== 1) {
+            return possibleMoves.front();
+        }
+        if (std::find(possibleMoves.begin(), possibleMoves.end(), engine::ENTER_ROOM) != possibleMoves.end()) {
+            const auto& currentDoor = dynamic_cast<const state::Door&>(playerState.getLocation());
+            if (&currentDoor == doorDestination) {
                 return engine::ENTER_ROOM;
             }
         }
-
-        // POSITION ARRIVEE
-        int startY = cell1.getY();
-        int startX = cell1.getX();
-
-        std::vector<std::pair<int, int>> directions = {
-            {0, -1},  // UP
-            {0, 1},   // DOWN
-            {-1, 0},  // LEFT
-            {1, 0}    // RIGHT
-        };
-
-        std::vector<int> neighborsValues;
-
-        for (long unsigned int i=0; i<directions.size();i++) {
-            int nextY = startY + directions[i].second;
-            int nextX = startX + directions[i].first;
-            neighborsValues.emplace_back(distanceMatrix[nextY][nextX]);
-        }
-
-        if (neighborsValues.empty()) {
-            throw std::invalid_argument("The vector is empty.");
-        }
-
-        int minIndex = -1; // Initialisation à -1 pour indiquer aucun élément trouvé
-        for (size_t i = 0; i < neighborsValues.size(); ++i) {
-            // On recherche uniquement les éléments positifs
-            if (neighborsValues[i] >= 0 && (minIndex == -1 || neighborsValues[i] < neighborsValues[minIndex])) {
-                minIndex = i;
+        const auto& currentCell = dynamic_cast<const state::Cell&>(playerState.getLocation());
+        int minValue = 999;
+        engine::Move minMove = engine::MOVE_UP;
+        for (engine::Move move: possibleMoves) {
+            switch (move) {
+                case engine::MOVE_UP: {
+                    int currentValue = distanceMatrix[currentCell.getY() - 1][currentCell.getX()];
+                    if (currentValue < minValue) {
+                        minMove = move;
+                        minValue = currentValue;
+                    }
+                    break;
+                }
+                case engine::MOVE_DOWN: {
+                    int currentValue = distanceMatrix[currentCell.getY() + 1][currentCell.getX()];
+                    if (currentValue < minValue) {
+                        minMove = move;
+                        minValue = currentValue;
+                    }
+                    break;
+                }
+                case engine::MOVE_LEFT: {
+                    int currentValue = distanceMatrix[currentCell.getY()][currentCell.getX() - 1];
+                    if (currentValue < minValue) {
+                        minMove = move;
+                        minValue = currentValue;
+                    }
+                    break;
+                }
+                case engine::MOVE_RIGHT: {
+                    int currentValue = distanceMatrix[currentCell.getY()][currentCell.getX() + 1];
+                    if (currentValue < minValue) {
+                        minMove = move;
+                        minValue = currentValue;
+                    }
+                    break;
+                }
+                default:
+                    break;
             }
         }
-
-        switch (minIndex) {
-            case 0: // MOVE UP
-                return engine::MOVE_UP;
-            case 1: // MOVE DOWN
-                return engine::MOVE_DOWN;
-            case 2: // MOVE LEFT
-                return engine::MOVE_LEFT;
-            case 3: // MOVE RIGHT
-                return engine::MOVE_RIGHT;
-            default:
-                    break;
-        }
+        return minMove;
     }
 
 
@@ -172,21 +180,49 @@ namespace ai {
 
         state::TripleClue hypothesis{};
 
-        for (long unsigned int i = 0; i < knownSuspects.size(); ++i) {
-            if (knownSuspects[i] == 0) {
-                 int mediumSuspect = i+1;
-                 hypothesis.suspect = static_cast<state::Suspect>(mediumSuspect);
-                 break;
+        if (std::find(knownSuspects.begin(), knownSuspects.end(), 3)==knownSuspects.end()) {
+            std::vector<size_t> indexZeroSuspect;
+            for (size_t i = 0; i < knownSuspects.size(); i++) {
+                if (knownSuspects.at(i) == 0) {
+                    indexZeroSuspect.push_back(i);
+                }
             }
+            const int randomSuspect = engine::UtilityFunctions::randomInt(indexZeroSuspect.size());
+            const int mediumSuspect = indexZeroSuspect.at(randomSuspect);
+            hypothesis.suspect = static_cast<state::Suspect>(mediumSuspect+1);
+        } else {
+            std::vector<size_t> indexMyCardsSuspect;
+            for (size_t i = 0; i < knownSuspects.size(); i++) {
+                if (knownSuspects.at(i) == 1 or knownSuspects.at(i) == 3) {
+                    indexMyCardsSuspect.push_back(i);
+                }
+            }
+            const int mediumSuspect = engine::UtilityFunctions::randomInt(indexMyCardsSuspect.size());
+            hypothesis.suspect = static_cast<state::Suspect>(mediumSuspect+1);
         }
-        for (long unsigned int i = 0; i < knownWeapons.size(); ++i) {
-            if (knownWeapons[i] == 0) {
-                int mediumWeapon = i+1;
-                hypothesis.weapon = static_cast<state::Weapon>(mediumWeapon);
-                break;
-            }
 
+
+        if (std::find(knownWeapons.begin(), knownWeapons.end(), 3)==knownWeapons.end()) {
+            std::vector<size_t> indexZeroWeapon;
+            for (size_t i = 0; i < knownWeapons.size(); i++) {
+                if (knownWeapons.at(i) == 0) {
+                    indexZeroWeapon.push_back(i);
+                }
+            }
+            const int randomWeapon = engine::UtilityFunctions::randomInt(indexZeroWeapon.size());
+            const int mediumWeapon = indexZeroWeapon.at(randomWeapon);
+            hypothesis.weapon = static_cast<state::Weapon>(mediumWeapon+1);
+        } else {
+            std::vector<size_t> indexMyCardsWeapon;
+            for (size_t i = 0; i < knownWeapons.size(); i++) {
+                if (knownWeapons.at(i) == 1 or knownWeapons.at(i) == 3) {
+                    indexMyCardsWeapon.push_back(i);
+                }
+            }
+            const int mediumWeapon = engine::UtilityFunctions::randomInt(indexMyCardsWeapon.size());
+            hypothesis.weapon = static_cast<state::Weapon>(mediumWeapon+1);
         }
+
         auto locationEnum = playerState.getLocation().getType();
         if (locationEnum == state::ROOM) {
             auto& easyRoom = static_cast<state::Room&>(playerState.getLocation());
@@ -206,33 +242,29 @@ namespace ai {
 
         if (shownCard.getType() == state::SUSPECT_CARD) {
             const auto& suspectCard = static_cast<const state::SuspectCard&>(shownCard);
-            knownSuspects[suspectCard.getSuspectName()-1] = 1;
+            knownSuspects[suspectCard.getSuspectName()-1] = 2;
         }
 
         if (shownCard.getType() == state::WEAPON_CARD) {
             const auto& weaponCard = static_cast<const state::WeaponCard&>(shownCard);
-            knownWeapons[weaponCard.getWeaponName()-1] = 1;
+            knownWeapons[weaponCard.getWeaponName()-1] = 2;
         }
 
         if (shownCard.getType() == state::ROOM_CARD) {
             const auto& roomCard = static_cast<const state::RoomCard&>(shownCard);
-            knownRooms[roomCard.getRoomName()-1] = 1;
+            knownRooms[roomCard.getRoomName()-1] = 2;
         }
+        std::cout << cardOwner.getIdentity() << " showed a card to " << playerState.getIdentity()  << std::endl;
     }
-
-    void MediumAI::seeHypothesisResponse(const state::TripleClue& hypothesis, const state::PlayerState &askedPlayer, bool response) {
-
-    }
-
 
     state::TripleClue MediumAI::chooseAccusation() {
 
         state::TripleClue accusation{};
-        int easySuspect = std::distance(knownSuspects.begin(), std::find(knownSuspects.begin(), knownSuspects.end(), 2));
+        int easySuspect = std::distance(knownSuspects.begin(), std::find(knownSuspects.begin(), knownSuspects.end(), 3));
         accusation.suspect = static_cast<state::Suspect>(easySuspect+1);
-        int easyWeapon = std::distance(knownWeapons.begin(), std::find(knownWeapons.begin(), knownWeapons.end(), 2));
+        int easyWeapon = std::distance(knownWeapons.begin(), std::find(knownWeapons.begin(), knownWeapons.end(), 3));
         accusation.weapon = static_cast<state::Weapon>(easyWeapon+1);
-        int easyRoom = std::distance(knownRooms.begin(), std::find(knownRooms.begin(), knownRooms.end(), 2));
+        int easyRoom = std::distance(knownRooms.begin(), std::find(knownRooms.begin(), knownRooms.end(), 3));
         accusation.room = static_cast<state::RoomName>(easyRoom+1);
         return accusation;
 
@@ -247,8 +279,42 @@ namespace ai {
 
 
         auto roomList = map.getRoomList();
-        for (long unsigned int i = 0; i < roomList.size(); ++i) {
-            auto currentRoom = roomList.at(i);
+        std::vector<state::Room> roomsToGo;
+
+        // DISJONCTION DE CAS
+
+        // ON A DEJA TROUVE LA PIECE DU MEURTRE
+
+        if (std::find(knownRooms.begin(), knownRooms.end(), 3) != knownRooms.end()) {
+            for (int i = 0; i < knownRooms.size(); i++) {
+                if (knownRooms.at(i) == 1 or knownRooms.at(i)==3) {
+                    roomsToGo.emplace_back(roomList.at(i));
+                }
+            }
+        }
+        else {  // ON N A PAS TROUVE LA PIECE DU MEURTRE
+
+            for (int i = 0; i < knownRooms.size(); i++) {
+                if (knownRooms.at(i) == 0) {
+                    roomsToGo.emplace_back(roomList.at(i));
+                }
+            }
+        }
+
+        if (roomsToGo.size()==1) {
+            roomsToGo = roomList;
+        }
+
+
+
+        // RETIRER LES SALLES DEJA EXPLOREES
+
+
+
+
+
+        for (long unsigned int i = 0; i < roomsToGo.size(); ++i) {
+            auto currentRoom = roomsToGo.at(i);
             if (currentRoom.getRoomName() != room.getRoomName()) {
                 std::vector<state::Door*> &roomDoors2 = currentRoom.getDoorList();
                 allDoors.insert(allDoors.end(), roomDoors2.begin(), roomDoors2.end());
@@ -258,14 +324,11 @@ namespace ai {
         std::vector<std::tuple<int, state::Door*, state::Door*>> distance;
 
         for (long unsigned i = 0; i<roomDoors.size();i++) {
-            if (!roomDoors.at(i)->getOccupied()) {
-                for (long unsigned j = 0; j<allDoors.size();j++) {
-                    state::Door* door1 = roomDoors.at(i);
-                    state::Door* door2 = allDoors.at(j);
-                    distance.push_back(std::make_tuple(distanceBetweenTwoCells(*door1,*door2), door1, door2));
-                }
+            for (long unsigned j = 0; j<allDoors.size();j++) {
+                state::Door* door1 = roomDoors.at(i);
+                state::Door* door2 = allDoors.at(j);
+                distance.push_back(std::make_tuple(distanceBetweenTwoCells(*door1,*door2), door1, door2));
             }
-
         }
 
         std::vector<std::tuple<int, state::Door*, state::Door*>> choice;
@@ -396,6 +459,7 @@ namespace ai {
         }
         doorDestination = std::get<1>(distance[index]);
 
+
         // PARTIE MISE A JOUR DES ARRAYS KNOWN
 
         auto suspectCards = playerState.getSuspectCards();
@@ -416,7 +480,7 @@ namespace ai {
         }
 
         // INITIALISATION DE LA MATRICE QUI VA SUIVRE QUELLE CARTE EST MONTREE A QUI
-        // INUTILE POUR EASYAI
+        // INUTILE POUR EASYAI ET MEDIUMAI
 
     }
 

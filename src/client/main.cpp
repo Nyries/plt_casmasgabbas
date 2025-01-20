@@ -164,50 +164,69 @@ int main(int argc,char* argv[])
         return 0;
     }
     if (std::string(argv[1]) == "autoplay") {
+
         //Initialisation
         const std::string mapJsonPath = "../configurations/map.json";
-        std::unique_ptr<client::IO> tempIO;
-        if (std::string(argv[2]) == "console") {
-            tempIO = std::make_unique<client::ConsoleIO>();
+        int easyWinCount = 0;
+        int mediumWinCount = 0;
+        std::string winner;
+        int playerCount = 4;
+        for (int play = 0; play < 100; play++){
+            std::unique_ptr<client::IO> tempIO;
+            if (std::string(argv[2]) == "console") {
+                tempIO = std::make_unique<client::ConsoleIO>();
 
-        } else if (std::string(argv[2]) == "render") {
-            tempIO = std::make_unique<client::RenderIO>();
-        }
-        else {
-            throw std::invalid_argument(std::string("invalid argument: ") + argv[2]);
-        }
-        int playerCount = tempIO->introductionToTheGame();
-        state::State myState(mapJsonPath, playerCount);
-        engine::Engine myEngine(myState);
+            } else if (std::string(argv[2]) == "render") {
+                tempIO = std::make_unique<client::RenderIO>();
+            }
+            else {
+                throw std::invalid_argument(std::string("invalid argument: ") + argv[2]);
+            }
+            state::State myState(mapJsonPath, playerCount);
+            engine::Engine myEngine(myState);
 
-        //Construction de la liste des joueurs; le joueur humain est toujours le premier de la liste
-        std::vector<state::PlayerState>& playerStateVec = myState.getPlayerStateVec();
-        std::vector<std::unique_ptr<client::Player>> playerVec(playerCount);
-        if (std::string(argv[2]) == "console") {
-        }
-        else if (std::string(argv[2]) == "render") {
-            auto& renderIO = dynamic_cast< client::RenderIO& >(*tempIO);
-            render::Render& myRender = renderIO.getRender();
-            myRender.setMap(myState.getMap());
-            myRender.setEngine(myEngine);
-            myRender.setPlayerStateVec(myState.getPlayerStateVec());
-        }
-        for (int i = 0; i < playerCount; i++) {
-            client::AIPlayer aiPlayer(myEngine, playerStateVec.at(i), "AI " + std::to_string(i), std::make_unique<ai::MediumAI>(myEngine, playerStateVec.at(i)));
-            playerVec.at(i) = std::make_unique<client::AIPlayer>(std::move(aiPlayer));
-        }
-        client::Client myClient(myState, myEngine, tempIO, playerVec);
+            //Construction de la liste des joueurs; le joueur humain est toujours le premier de la liste
+            std::vector<state::PlayerState>& playerStateVec = myState.getPlayerStateVec();
+            std::vector<std::unique_ptr<client::Player>> playerVec(playerCount);
+            if (std::string(argv[2]) == "console") {
+            }
+            else if (std::string(argv[2]) == "render") {
+                auto& renderIO = dynamic_cast< client::RenderIO& >(*tempIO);
+                render::Render& myRender = renderIO.getRender();
+                myRender.setMap(myState.getMap());
+                myRender.setEngine(myEngine);
+                myRender.setPlayerStateVec(myState.getPlayerStateVec());
+            }
+            for (int i = 0; i < playerCount; i++) {
+                if (i < 2) {
+                    client::AIPlayer aiPlayer(myEngine, playerStateVec.at(i), "AI " + std::to_string(i + 1), std::make_unique<ai::EasyAI>(myEngine, playerStateVec.at(i)));
+                    playerVec.at(i) = std::make_unique<client::AIPlayer>(std::move(aiPlayer));
+                }
+                else {
+                    client::AIPlayer aiPlayer(myEngine, playerStateVec.at(i), "AI " + std::to_string(i + 1), std::make_unique<ai::MediumAI>(myEngine, playerStateVec.at(i)));
+                    playerVec.at(i) = std::make_unique<client::AIPlayer>(std::move(aiPlayer));
+                }
+            }
+            client::Client myClient(myState, myEngine, tempIO, playerVec);
 
-        //debut de la partie
-        client::PlayerList& myPlayerList = myClient.getPlayerList();
-        int firstPlayerIndex = myEngine.determineFirstPlayer();
-        myPlayerList.setCurrent(myPlayerList.getVector().at(firstPlayerIndex));
-        myEngine.setCurrentPlayer(playerStateVec.at(firstPlayerIndex));
-        myEngine.distributionCharacters();
-        myEngine.dealCards();
+            //debut de la partie
+            client::PlayerList& myPlayerList = myClient.getPlayerList();
+            int firstPlayerIndex = myEngine.determineFirstPlayer();
+            myPlayerList.setCurrent(myPlayerList.getVector().at(firstPlayerIndex));
+            myEngine.setCurrentPlayer(playerStateVec.at(firstPlayerIndex));
+            myEngine.distributionCharacters();
+            myEngine.dealCards();
 
-        std::string winner = gameLoop(myState, myEngine, myClient);
-        std::cout << "winner " << winner << std::endl;
+            winner = gameLoop(myState, myEngine, myClient);
+            std::cout << "winner " << winner << std::endl;
+            if (winner == "AI 1" or winner == "AI 2") {
+                easyWinCount++;
+            }else {
+                mediumWinCount++;
+            }
+        }
+
+        std::cout << "EasyAI wins: " << easyWinCount << ", MediumAI wins: " << mediumWinCount << std::endl;
         return 0;
     }
 }

@@ -5,6 +5,8 @@
 #include <state/Suspect.hpp>
 #include <state/Weapon.hpp>
 #include <state/RoomName.hpp>
+#include <engine/CommandId.hpp>
+#include <engine/Move.hpp>
 
 #include "Button.h"
 #include "UIPanel.h"
@@ -139,15 +141,78 @@ namespace render{
 
 
     engine::CommandId Render::chooseAction() {
-
+        auto possibleActions = engine->getPossibleActions(player->getPlayerState());
+        std::vector<std::unique_ptr<Button>> actionButtons;
+        actionButtons.reserve(possibleActions.size());
+        for (int i = 0; i < possibleActions.size(); i++) {
+            actionButtons.emplace_back(std::make_unique<Button>(window, 200 + 100 * i, 300, 100, 50, engine::toString(possibleActions.at(i)), font));
+        }
+        std::vector<bool> actionIsClickedVec(possibleActions.size(), false);
+        while (!std::any_of(actionIsClickedVec.begin(), actionIsClickedVec.end(), [](bool b){return b;})) {
+            updateWindow();
+            for (auto& b: actionButtons) {
+                b->draw();
+            }
+            window.display();
+            for (int i = 0; i  < 6; i++) {
+                actionIsClickedVec.at(i) = actionButtons.at(i)->isClicked();
+            }
+        }
+        for (int i = 0; i < 6; i++) {
+            if (actionIsClickedVec.at(i)) {
+                return possibleActions.at(i);
+            }
+        }
     }
 
     engine::Move Render::chooseMoveDirection() {
+        auto possibleMoves = engine->getPossibleMoves(player->getPlayerState());
+        std::vector<std::unique_ptr<Button>> actionButtons;
+        actionButtons.reserve(possibleMoves.size());
+        for (int i = 0; i < possibleMoves.size(); i++) {
+            actionButtons.emplace_back(std::make_unique<Button>(window, 200 + 100 * i, 300, 100, 50, engine::toString(possibleMoves.at(i)), font));
+        }
+        std::vector<bool> moveIsClickedVec(possibleMoves.size(), false);
+        while (!std::any_of(moveIsClickedVec.begin(), moveIsClickedVec.end(), [](bool b){return b;})) {
+            updateWindow();
+            for (auto& b: actionButtons) {
+                b->draw();
+            }
+            window.display();
+            for (int i = 0; i  < 6; i++) {
+                moveIsClickedVec.at(i) = actionButtons.at(i)->isClicked();
+            }
+        }
+        for (int i = 0; i < 6; i++) {
+            if (moveIsClickedVec.at(i)) {
+                return possibleMoves.at(i);
+            }
+        }
 
     }
 
     state::Door &Render::chooseDoor(const std::vector<state::Door *> &doorList) {
-
+        std::vector<std::unique_ptr<Button>> actionButtons;
+        actionButtons.reserve(doorList.size());
+        for (int i = 0; i < doorList.size(); i++) {
+            actionButtons.emplace_back(std::make_unique<Button>(window, 200 + 100 * i, 300, 100, 50, "door " + std::to_string(i + 1), font));
+        }
+        std::vector<bool> doorIsClickedVec(doorList.size(), false);
+        while (!std::any_of(doorIsClickedVec.begin(), doorIsClickedVec.end(), [](bool b){return b;})) {
+            updateWindow();
+            for (auto& b: actionButtons) {
+                b->draw();
+            }
+            window.display();
+            for (int i = 0; i  < 6; i++) {
+                doorIsClickedVec.at(i) = actionButtons.at(i)->isClicked();
+            }
+        }
+        for (int i = 0; i < 6; i++) {
+            if (doorIsClickedVec.at(i)) {
+                return *doorList.at(i);
+            }
+        }
     }
 
 
