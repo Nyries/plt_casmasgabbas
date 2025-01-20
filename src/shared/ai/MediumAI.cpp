@@ -51,9 +51,11 @@ namespace ai {
             }
             possibleActions.erase(std::remove(possibleActions.begin(), possibleActions.end(), engine::HYPOTHESIS), possibleActions.end());
         }
-
-        const int randomIndex = engine::UtilityFunctions::randomInt(possibleActions.size());
-        return possibleActions.at(randomIndex);
+        if (!possibleActions.empty()) {
+            const int randomIndex = engine::UtilityFunctions::randomInt(possibleActions.size());
+            return possibleActions.at(randomIndex);
+        }
+        return engine::NO_COMMAND;
     }
 
     int MediumAI::distanceBetweenTwoCells(const state::Cell &cell1, const state::Cell &cell2) {
@@ -254,7 +256,6 @@ namespace ai {
             const auto& roomCard = static_cast<const state::RoomCard&>(shownCard);
             knownRooms[roomCard.getRoomName()-1] = 2;
         }
-        std::cout << cardOwner.getIdentity() << " showed a card to " << playerState.getIdentity()  << std::endl;
     }
 
     state::TripleClue MediumAI::chooseAccusation() {
@@ -483,6 +484,11 @@ namespace ai {
         // INUTILE POUR EASYAI ET MEDIUMAI
 
     }
+
+    void MediumAI::seeHypothesisResponse(const state::TripleClue &hypothesis, const state::PlayerState &askedPlayer, bool response) {
+
+    }
+
 
 }
 

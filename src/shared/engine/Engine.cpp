@@ -142,7 +142,7 @@ namespace engine {
         std::vector<engine::CommandId> possibleCommands;
         // Si c'est ton tour)
         if (&player == &(*currentPlayer)) {
-
+            possibleCommands.push_back(engine::ACCUSATION);
             // Si tu es dans une salle
             if (player.getLocation().getType() == state::ROOM) {
                 const auto& currentRoom = dynamic_cast<const state::Room&>(player.getLocation());
@@ -154,10 +154,15 @@ namespace engine {
                 if (currentRoom.getSecretPassage()!= nullptr) {
                     possibleCommands.push_back(engine::SECRET_PASSAGE);
                 }
+                const auto& doorList = currentRoom.getDoorList();
+                if (!std::all_of(doorList.begin(), doorList.end(), [] (const state::Door* ptr){return ptr->getOccupied();})) {
+                    possibleCommands.push_back(MOVE_FROM_DICE);
+                }
+            }
+            else {
+                possibleCommands.push_back(engine::MOVE_FROM_DICE);
             }
             // on peut toujours se déplacer avec les dés ou faire une accusation
-            possibleCommands.push_back(engine::MOVE_FROM_DICE);
-            possibleCommands.push_back(engine::ACCUSATION);
         }
 
         if (possibleCommands.empty()) {
@@ -208,7 +213,7 @@ namespace engine {
                 const auto& neighbourList = state.getMap().getNeighborsAsCell(playerCell.getX(), playerCell.getY());
                 for (unsigned long i = 0; i < neighbourList.size(); i++) {
                     const state::LocationType type = neighbourList.at(i)->getType();
-                    if (type == state::CORRIDOR or type == state::DOOR and !neighbourList.at(i)->getOccupied()) {
+                    if ((type == state::CORRIDOR or type == state::DOOR) and !neighbourList.at(i)->getOccupied()) {
                         switch (i) {
                             case 0:
                                 possibleMoves.push_back(MOVE_UP);

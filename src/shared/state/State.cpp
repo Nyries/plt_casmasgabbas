@@ -7,7 +7,7 @@
 #include <json/json.h>
 
 namespace state {
-    State::State(const std::string& mapJsonPath, int playerCount): envelope(), map(mapJsonPath), playerStateVec(playerCount, PlayerState(PERVENCHE)), currentPlayer(playerStateVec.front()), accusationSuccess(false){
+    State::State(const std::string& mapJsonPath, int playerCount): envelope(), map(mapJsonPath), playerStateVec(playerCount, PlayerState(PERVENCHE)), accusationSuccess(false){
     }
 
     Map& State::getMap() {
@@ -34,14 +34,6 @@ namespace state {
 
     void State::setAccusationSuccess(bool accusationSuccess) {
         this->accusationSuccess = accusationSuccess;
-    }
-
-    PlayerState &State::getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    void State::setCurrentPlayer(PlayerState &currentPlayer) {
-        this->currentPlayer = currentPlayer;
     }
 
     Cell &State::convertSuspectToStartingCell(Suspect suspect) {
