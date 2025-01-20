@@ -110,7 +110,7 @@ Des passages secrets sont présents dans la maison. Vous pouvez les utiliser pou
 ### 2.1. Description des états <a id="2.1"></a>
 Les états du jeu comprennent toutes les informations nécessaires au bon fonctionnement du moteur du jeu.
 
-Cela inclut toutes les informations sur les joueurs, les cartes indices, et une décomposition de la carte du manoir en salles et en cellules (couloir & portes).
+Cela inclut toutes les informations sur les joueurs, les cartes indices, et une décomposition de la carte du manoir en salles et en cellules (couloirs & portes).
 
 #### Les joueurs
 Un joueur (PlayerState) est caractérisé par son identité (quel suspect il incarne), sa position sur le plateau et sa main (vecteur de cartes indices).
@@ -206,11 +206,25 @@ Ces commandes correspondent aux différentes actions qu'un joueur peut réaliser
 
 #### Intelligence minimale
 
-(IA random)
+IA random:
+L'IA random est l'IA la moins réfléchie possible. Elle choisit au hasard son action (déplacement, accusation, hypothèse,..) et a donc une chance sur deux de mener une accusation dès le début de la partie.
+De plus, elle se déplace de façon complètement aléatoire sur la map et ne note aucune carte montrée par ses adversaires.
+Elle a donc très peu de chance de gagner.
 
 #### Intelligence basée sur les euristiques
 
-(IA euristiques)
+IA easy:
+L'IA easy est une IA random mais avec une certaine logique de fonctionnement. Elle accuse uniquement quand elle est sûre d'avoir trouvé le meurtrier, l'arme du crime et le lieu du crime. De plus, elle note tout ce que ses adversaires lui montre dans des vecteurs (0: inconnue, 1: possédée par un joueur, 2: meurtrier), et choisit ses destinations de façon random lorsque plusieurs destinations sont possibles, ou la plus proche si aucune n'est accessible.
+Elle se déplace donc intelligemment selon sa destination finale, pour s'en rapprocher un maximum.
+En revanche, ses hypothèses (choix du suspect et de l'arme) sont aléatoires. C'est donc une IA random plus intelligente.
+
+IA medium:
+L'IA medium a le même principe que l'IA easy. Elle se déplace intelligemment vers sa destination finale. Mais le choix de la destination finale diffère. En effet, elle cherche les pièces qu'elle n'a pas encore explorées, et elle va aléatoirement dans l'une d'entre elles. Si elle les a toutes explorées, elle se dirige de préférence vers une salle qu'elle possède, ou vers celle du crime. Si elle n'en possède aucune, alors elle ira n'importe quelle salle.
+Pour ses hypothèses, elle distingue dans des vecteurs, les cartes qui n'ont pas encore été révélées, de celles qu'elle possède, et de celles possédées par les autres joueurs. (0: inconnue, 1: possédée par le joueur, 2: possédée par un adversaire, 3: meurtrier). Ainsi, elle a un bon suivi pour la suite, et quand elle cherchera la salle du crime, elle pourra demander un suspect ou une arme qu'elle possède ou qui est dans l'enveloppe pour éviter qu'un adversaire lui remontre une carte qu'elle connaîtrait déjà et ne pas gaspiller un tour.
+Enfin, elle accuse lorsqu'elle connait les trois cartes de l'enveloppe.
+
+Des tests ont été réalisés: avec autoplay (2 IA easy vs 2 IA medium)
+Nous avons observé une victoire écrasante pour les IA medium avec pour valeur environ 85 victoires, contre 15 pour les IA easy.
 
 ### 5.2. Conception logiciel <a id="5.2"></a>
 
