@@ -62,7 +62,22 @@ namespace client {
     }
 
     void ConsoleIO::updatePlayerPositions() {
-
+        auto displayMap = map->getDisplayMap();
+        for (const auto& row: displayMap) {
+            for (const auto& element: row) {
+                if (element == "X" or element == " " or element == "|" or element == "~") {
+                    std::cout << element;
+                }
+                else if (element == "D") {
+                    std::cout << "\033[32m" << element << "\033[0m";
+                }
+                else {
+                    std::cout << "\033[34m" << element << "\033[0m";
+                }
+            }
+            std::cout << "\n";
+        }
+        std::cout << std::endl;
     }
 
 
@@ -80,14 +95,25 @@ namespace client {
     }
 
     void ConsoleIO::seeHypothesisResponse(PlayerList& playerList, const state::TripleClue &hypothesis, const Player &askedPlayer, bool response) {
-        IO::seeHypothesisResponse(playerList, hypothesis, askedPlayer, response);
         if (response) {
             std::cout << askedPlayer.getName() << " showed a card " << std::endl;
         }
         else {
             std::cout << askedPlayer.getName() << " didn't show a card " << std::endl;
         }
+        IO::seeHypothesisResponse(playerList, hypothesis, askedPlayer, response);
     }
+
+    void ConsoleIO::displayDiceResult(PlayerList &playerList, int result, const Player &player) {
+        IO::displayDiceResult(playerList, result, player);
+        std::cout << player.getName() << " threw the dice and got " << result << "!" << std::endl;
+    }
+
+    void ConsoleIO::setMap(const state::Map &map) {
+        this->map = &map;
+    }
+
+
 
 
 

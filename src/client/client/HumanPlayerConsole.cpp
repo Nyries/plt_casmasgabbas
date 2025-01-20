@@ -239,7 +239,6 @@ namespace client {
 	}
 
 	void HumanPlayerConsole::displayDiceResult(int result, const Player &player) {
-    	std::cout << player.getName() << " threw the dice and got " << result << "!" << std::endl;
 	}
 
 	void HumanPlayerConsole::startOfTheGame() {

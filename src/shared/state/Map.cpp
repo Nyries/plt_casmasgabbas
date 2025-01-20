@@ -7,6 +7,9 @@
 #include <iostream>
 #include <memory>
 
+#include "PlayerState.h"
+#include "Suspect.h"
+
 namespace state {
     Map::Map(const std::string& mapJsonPath){
         //system("ls ../../../test/shared;");
@@ -64,35 +67,72 @@ namespace state {
     }
     std::vector<std::vector<std::string>> Map::getDisplayMap() const
     {
-        std::vector<std::vector<std::string>> displayMap(2*height+1, std::vector<std::string>(2*width+1, ""));  
+        std::vector<std::vector<std::string>> displayMap(height, std::vector<std::string>(2*width+1, ""));
         
-        for (int i=0; i< 2*height+1; i++){
+        for (int i=0; i< height; i++){
             for (int j=0; j<2*width+1; j++){
-                if (i%2==0){
-                    displayMap[i][j] ='-';
-                }
-                else if (j%2==0){
+                if (j%2==0){
                     displayMap[i][j] = '|';
                 }
-                else if (mapGrid[j/2][i/2]->getType() == LocationType::CORRIDOR){
-                    const auto& castCell = static_cast<const Cell&>(*mapGrid[j/2][i/2]);
+                else if (mapGrid[j/2][i]->getType() == LocationType::CORRIDOR){
+                    const auto& castCell = static_cast<const Cell&>(*mapGrid[j/2][i]);
                     if (castCell.getOccupied()) {
-                        displayMap[i][j] = 'O';
+                        Suspect suspect = castCell.getPlayer()->getIdentity();
+                        switch (suspect) {
+                            case ROSE:
+                                displayMap[i][j] = 'R';
+                            break;
+                            case PERVENCHE:
+                                displayMap[i][j] = 'P';
+                            break;
+                            case LEBLANC:
+                                displayMap[i][j] = 'L';
+                                break;
+                            case OLIVE:
+                                displayMap[i][j] = 'O';
+                                break;
+                            case MOUTARDE:
+                                displayMap[i][j] = 'M';
+                                break;
+                            case VIOLET:
+                                displayMap[i][j] = 'V';
+                                break;
+                        }
                     }
                     else{
                         displayMap[i][j] = ' ';
                     }
                 }
-                else if (mapGrid[j/2][i/2]->getType() == LocationType::ROOM){
-                    displayMap[i][j] = 'R';
+                else if (mapGrid[j/2][i]->getType() == LocationType::ROOM){
+                    displayMap[i][j] = '~';
                 }                
-                else if (mapGrid[j/2][i/2]->getType() == LocationType::INACCESSIBLE){
+                else if (mapGrid[j/2][i]->getType() == LocationType::INACCESSIBLE){
                     displayMap[i][j] = 'X';
                 }
-                else if (mapGrid[j/2][i/2]->getType() == LocationType::DOOR){
-                    const auto& castCell = static_cast<const Door&>(*mapGrid[j/2][i/2]);
+                else if (mapGrid[j/2][i]->getType() == LocationType::DOOR){
+                    const auto& castCell = dynamic_cast<const Door&>(*mapGrid[j/2][i]);
                     if (castCell.getOccupied()) {
-                        displayMap[i][j] = 'O';
+                        Suspect suspect = castCell.getPlayer()->getIdentity();
+                        switch (suspect) {
+                            case ROSE:
+                                displayMap[i][j] = 'R';
+                            break;
+                            case PERVENCHE:
+                                displayMap[i][j] = 'P';
+                            break;
+                            case LEBLANC:
+                                displayMap[i][j] = 'L';
+                            break;
+                            case OLIVE:
+                                displayMap[i][j] = 'O';
+                            break;
+                            case MOUTARDE:
+                                displayMap[i][j] = 'M';
+                            break;
+                            case VIOLET:
+                                displayMap[i][j] = 'V';
+                            break;
+                        }
                     }
                     else{
                         displayMap[i][j] = 'D';

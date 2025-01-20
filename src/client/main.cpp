@@ -133,6 +133,8 @@ int main(int argc,char* argv[])
         std::vector<state::PlayerState>& playerStateVec = myState.getPlayerStateVec();
         std::vector<std::unique_ptr<client::Player>> playerVec(playerCount);
         if (std::string(argv[2]) == "console") {
+            auto& consoleIO = dynamic_cast< client::ConsoleIO& >(*tempIO);
+            consoleIO.setMap(myState.getMap());
             client::HumanPlayerConsole userPlayer(myEngine, playerStateVec.at(0), "User");
             playerVec.front() = std::make_unique<client::HumanPlayerConsole>(std::move(userPlayer));;
         }
@@ -147,7 +149,7 @@ int main(int argc,char* argv[])
             playerVec.front() = std::make_unique<client::HumanPlayerRender>(std::move(userPlayer));;
         }
         for (int i = 1; i < playerCount; i++) {
-            client::AIPlayer aiPlayer(myEngine, playerStateVec.at(i), "AI " + std::to_string(i), std::make_unique<ai::MediumAI>(myEngine, playerStateVec.at(i)));
+            client::AIPlayer aiPlayer(myEngine, playerStateVec.at(i), "AI " + std::to_string(i), std::make_unique<ai::EasyAI>(myEngine, playerStateVec.at(i)));
             playerVec.at(i) = std::make_unique<client::AIPlayer>(std::move(aiPlayer));
         }
         client::Client myClient(myState, myEngine, tempIO, playerVec);
